@@ -34,11 +34,28 @@ if (session()->has('admin')) {
                     </span> </a>
             </li>
 
-            <li class="treeview">
-                <a to="/"><i class="fa fa-user-secret"></i> <span>
-                        <router-link :to="{ name: 'admin' }">Admins</router-link>
+                  <li class="treeview">
+                <a to="/"><i class="fa fa-money"></i> <span>
+                        <router-link :to="{ name: 'mit_credit' }"> Credit
+                        </router-link>
                     </span> </a>
             </li>
+
+
+            <li class="treeview">
+                <a to="/"><i class="fa fa-money"></i> <span>
+                        <router-link :to="{ name: 'mit_debit' }"> Debit </router-link>
+                    </span> </a>
+            </li>
+
+
+          <li class="treeview">
+                <a to="/"><i class="fa fa-list-alt"></i> <span>
+                        <router-link :to="{ name: 'balance' }">Mange Balance
+                </router-link>
+                    </span> </a>
+            </li>
+
 
 
             <li class="treeview">
@@ -58,20 +75,6 @@ if (session()->has('admin')) {
 
 
 
-            <li class="treeview">
-                <a to="/"><i class="fa fa-money"></i> <span>
-                        <router-link :to="{ name: 'mit_credit' }"> Credit
-                        </router-link>
-                    </span> </a>
-            </li>
-
-
-            <li class="treeview">
-                <a to="/"><i class="fa fa-money"></i> <span>
-                        <router-link :to="{ name: 'mit_debit' }"> Debit </router-link>
-                    </span> </a>
-            </li>
-
 
 
             <li class="treeview">
@@ -81,6 +84,33 @@ if (session()->has('admin')) {
 
                     </span> </a>
             </li>
+
+
+
+            <li class="treeview">
+                <a to="/"><i class="fa fa-users"></i> <span>
+
+                        <router-link :to="{ name: 'team_member' }">Manage Employee
+                        </router-link>
+
+                    </span> </a>
+            </li>
+
+
+            <li class="treeview">
+                <a to="/"><i class="fa fa-user-secret"></i> <span>
+                        <router-link :to="{ name: 'admin' }">Admins</router-link>
+                    </span> </a>
+            </li>
+
+
+            <li class="treeview">
+                <a to="/"><i class="fa fa-user-secret"></i> <span>
+                        <router-link :to="{ name: 'directors' }">Directors</router-link>
+                    </span> </a>
+            </li>
+
+
 
         </ul>
     </section>

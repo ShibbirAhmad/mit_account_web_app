@@ -15,6 +15,18 @@ import Permissions from "./components/admin/Permissions/Permissions.vue";
 Vue.use(datePicker);
 Vue.mixin(Permissions);
 
+import VueToastr from 'vue-toastr';
+// use plugin
+Vue.use(VueToastr, {
+    defaultTimeout: 4000,
+    defaultProgressBar: false,
+    defaultProgressBarValue: 0,
+    defaultType: 'error',
+    defaultCloseOnHover: false,
+    defaultClassNames: ['animated', 'zoomInUp'],
+    defaultPosition: 'toast-top-right',
+});
+
 
 
 import InfiniteLoading from 'vue-infinite-loading';

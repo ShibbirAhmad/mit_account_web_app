@@ -23,6 +23,20 @@ class SmsService{
 
 
 
+    public   static function directorPaymentConfirmationMessage($director,$amount,$payable_amount,$total_amount){
+
+        $sms = 'Assalamualikum, '.$director->name .' you have paid '. number_format($amount).'/= of '.number_format($total_amount).'/= as your director fund and payable amount is '. $payable_amount .'/= Thanks for being with mit' ;
+        return self::smsApi($director->phone,$sms);
+    }
+
+
+
+    public   static function directorRefundConfirmationMessage($director,$amount,$payable_amount){
+
+        $sms = 'Assalamualikum, '.$director->name .' you have refunded '. number_format($amount).'/=  from your director fund and  payable amount is '. $payable_amount .'/= Thanks for being with mit ';
+        return self::smsApi($director->phone,$sms);
+    }   
+
 
 
     public static function sendDueMessageToClient($client_phone,$client_name,$service,$due_amount){
@@ -282,6 +296,7 @@ class SmsService{
         // $sms = "Your password reset code is ".$code.' Thanks by mohasagor.com';
         $sms = "আপনার পাসওয়ার্ড রিসেট কোড হলো ".$code.' ধন্যবাদান্তে mohasagor.com';
         return self::smsApi($contacts,$sms);
+
     }
 
 
@@ -289,22 +304,16 @@ class SmsService{
 
     public  static function   smsApi($contacts,$sms){
 
-        $api_key = "C200842360d46fec549020.69644003";
-        $senderid = '8809612436210';
-        $URL = "http://sms.esmsbd.com/smsapi?api_key=" . urlencode($api_key) . "&type=text&contacts=" . urlencode($contacts) . "&senderid=" . urlencode($senderid) . "&msg=" . urlencode($sms);
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $URL);
-        curl_setopt($ch, CURLOPT_HEADER, 0);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_POST, 0);
+        $url = "http://mshastra.com/sendurl.aspx?user=20102177&pwd=Moh@123&senderid=MTSMS3&CountryCode=880&mobileno=".$contacts."&msgtext=". urlencode($sms) .'"';
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         try {
-            $output = $content = curl_exec($ch);
-        //  print_r($output);
-        } catch (Exception $ex) {
-        return back();
+            $curl_scraped_page = curl_exec($ch);
+            curl_close($ch);
+            return $curl_scraped_page;
+        }catch (Exception $e) {
+            return $e->getMessage();
         }
-        return $output;
 
 
     }

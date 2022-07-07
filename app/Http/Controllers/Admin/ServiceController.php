@@ -163,6 +163,7 @@ class ServiceController extends Controller
 
 
 
+
     public function addClient(Request $request){
 
         $validatedData = $request->validate([
@@ -345,10 +346,10 @@ class ServiceController extends Controller
                     $partial_balance=Balance::where('department','mit')->where('name',$data['partials_paid_by'])->first();
                     $credit = new Credit();
                     $credit->department = 'mit';
-                    $credit->purpose = "service package sale".$service->name;
+                    $credit->purpose = 'service package sale'.$service->name .'('. $client->company_name .')' ;
                     $credit->amount = $request->paid - $request->partials_payment_amount;
                     $credit->credit_in=$balance->id;
-                    $credit->comment ='service package sale -'.$service->name;
+                    $credit->comment ='service package sale -'.$service->name  .'('. $client->company_name .')';
                     $credit->date = date('Y-m-d');
                     $credit->insert_admin_id=session()->get('admin')['id'];
                     $credit->save();
@@ -356,10 +357,10 @@ class ServiceController extends Controller
                     if($request->partials_payment_amount > 0){
                         $credit = new Credit();
                         $credit->department = 'mit';
-                        $credit->purpose = "service package sale ".$service->name;
+                        $credit->purpose = "service package sale ".$service->name .'('. $client->company_name .')' ;
                         $credit->amount = $request->partials_payment_amount;
                         $credit->credit_in=$partial_balance->id;
-                        $credit->comment ="service package sale, Partials Payment -".$service->name;
+                        $credit->comment ="service package sale, Partials Payment -".$service->name .'('. $client->company_name .')' ;
                         $credit->date = date('Y-m-d');
                         $credit->insert_admin_id=session()->get('admin')['id'];
                         $credit->save();
@@ -372,7 +373,7 @@ class ServiceController extends Controller
                     $s_p_payment->is_regular = 0 ;
                     $s_p_payment->payment_method_id = $balance->id ;
                     $s_p_payment->trx_id = null ;
-                    $s_p_payment->comment = "service package sale".$service->name  ;
+                    $s_p_payment->comment = "service package sale".$service->name .'('. $client->company_name .')'   ;
                     $s_p_payment->created_by = session()->get('admin')['id'] ;
                     $s_p_payment->save();
              }

@@ -16,4 +16,9 @@ class Debit extends Model
      public function balance(){
          return $this->belongsTo('App\Models\Balance','debit_from','id');
     }
+
+
+     protected $fillable = [ 'id', 'date', 'department', 'purpose', 'debit_from', 'amount', 'comment', 'signature', 'insert_admin_id', 'created_at', 'updated_at'] ;
+
+     
 }

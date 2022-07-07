@@ -15,4 +15,7 @@ class Credit extends Model
          return $this->belongsTo('App\Models\Balance','credit_in','id');
     }
 
+
+   protected $fillable = ['id', 'date', 'department', 'order_id', 'purpose', 'credit_in', 'amount', 'comment', 'insert_admin_id', 'created_at', 'updated_at'] ;
+
 }

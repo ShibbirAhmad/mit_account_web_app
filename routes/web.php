@@ -644,6 +644,25 @@ Route::group([
     Route::get('api/get/order/statistic', 'OrderController@orderStatistic');
     Route::get('api/get/due/customer/payment/history/{phone}', 'CreditDueController@paymentHistory');
 
+
+
+
+
+    //-----------director routes start -------------------
+    Route::get('api/directors','DirectorController@getDirectors');
+    Route::post('api/director/add','DirectorController@addDirector');
+    Route::post('api/director/update/info/{id}','DirectorController@updateDirector');
+    Route::get('api/get/director/{id}','DirectorController@getDirector');
+    Route::get('api/director/search/{phone}','DirectorController@searchDirector');
+    Route::post('api/store/director/payment','DirectorController@storeDirectorPayment');
+    Route::post('api/refund/director/payment','DirectorController@refundDirectorPayment');
+   //-----------director routes end -------------------
+
+
+
+
+
+
 });
 
 Route::post('/admin/login', 'Admin\LoginController@login');
@@ -651,9 +670,6 @@ Route::post('api/verify/otp/admin/login', 'Admin\LoginController@otpVerification
 Route::get('check/session/admin', 'Admin\LoginController@sessionCheck');
 Route::get('/resller', 'Reseller\HomeController@home');
 
-// //social login
-// Route::get('auth/redirect/{provider}', 'Admin\SocialAuthController@redirect');
-// Route::get('{provider}/callback', 'Admin\SocialAuthController@callback');
 
 //opt verify
  Route::post('send/otp', 'Frontend\HomeController@SendOtp');

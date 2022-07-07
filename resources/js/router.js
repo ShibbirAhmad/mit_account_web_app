@@ -1661,58 +1661,48 @@ const routes = [
         }
     },
 
+         {
+             path: '/backend/director',
+             name: 'directors',
+             component: () => import( /*webpackChunkName: "admin/directors" */ './components/admin/directors/Index.vue'),
+             meta: {
+                 requiresAuthAdmin: true,
+                 title: 'director '
+             }
+         },
 
-    {
-        path: '/backend/campaign/manage',
-        component: () =>
-            import( /* webpackChunkName: "backendCampaign" */ './components/admin/campaign/Index'),
-        name: 'backendCampaign',
-        meta: {
+         {
+             path: '/backend/director/add',
+             name: 'director_add',
+             component: () => import( /*webpackChunkName: "admin/director_add" */ './components/admin/directors/Add.vue'),
+             meta: {
+                 requiresAuthAdmin: true,
+                 title: 'director add'
+             }
+         },
 
-            title: "campaign",
-            requiresAuthAdmin: true
-        }
-    },
-    {
-        path: '/backend/campaign/add',
-        component: () => import( /* webpackChunkName: "campaignAdd" */ './components/admin/campaign/Add'),
-        name: 'campaignAdd',
-        meta: {
-            title: "campaign|add",
-            requiresAuthAdmin: true
-        }
-    },
-    {
-        path: '/backend/campaign/edit/:id',
-        component: () =>
-            import( /* webpackChunkName: "campaignEdit" */ './components/admin/campaign/Edit'),
-        name: 'campaign_edit',
-        meta: {
-            title: "campaign|Edit",
-            requiresAuthAdmin: true
-        }
-    },
-    {
-        path: '/backend/campaign/image/:id',
-        component: () =>
-            import( /* webpackChunkName: "campaign_image" */ './components/admin/campaign/Image'),
-        name: 'campaign_image',
-        meta: {
-            title: "campaign|Image",
-            requiresAuthAdmin: true
-        }
-    },
-    {
-        path: '/backend/campaign/slider',
-        component: () =>
-            import( /* webpackChunkName: "campaign_slider" */ './components/admin/campaign/Slider'),
-        name: 'campaign_slider',
-        meta: {
-            title: "campaign|Slider",
-            requiresAuthAdmin: true,
+         {
+             path: '/backend/director/edit/:id',
+             name: 'director_edit',
+             component: () => import( /*webpackChunkName: "admin/director_edit" */ './components/admin/directors/Edit.vue'),
+             meta: {
+                 requiresAuthAdmin: true,
+                 title: 'director  edit'
+             }
+         },
 
-        }
-    },
+
+         {
+             path: '/backend/director/payment/details/:id',
+             name: 'director_payment_details',
+             component: () => import( /*webpackChunkName:"admin/director_payment_details"*/ './components/admin/directors/Details.vue'),
+             meta: {
+                 requiresAuthAdmin: true,
+                 title: 'director payment history '
+             }
+         },
+
+
 
     {
         path: '/backend/balance',
@@ -1734,31 +1724,7 @@ const routes = [
         }
     },
 
-    {
-        path: '/backend/parallax/banner/campaign',
-        name: 'parallax_banner',
-        component: () => import(/* webpackChunkName: "parallax_banner" */'./components/admin/parallax_banner/Index.vue'),
-        meta: {
-            title: 'parallax banner campaign',
-            requiresAuthAdmin: true,
-        }
-    },
 
-
-
-    {
-        path: '/backend/product/bulk/print/preview',
-        component: () => import(/* webpackChunkName: "bulk_product_print_preview" */'./components/admin/product/BulkPrintPreview.vue'),
-        name: 'bulk_product_print_preview',
-        props: {
-                header: true,
-                content: true
-               },
-        meta: {
-            requiresAuthAdmin: true,
-            title: 'bulk products print barcode preview'
-           }
-    },
 
 
 
