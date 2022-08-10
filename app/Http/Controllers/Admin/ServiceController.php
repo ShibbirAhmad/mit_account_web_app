@@ -256,13 +256,14 @@ class ServiceController extends Controller
               $service_clients=ServiceClient::where('name','like','%'.$request->search.'%')
                                     ->orWhere('phone','like','%'.$request->search.'%')
                                     ->orWhere('company_name','like','%'.$request->search.'%')
-                                    ->paginate(30);
+                                    ->orderBy('id','desc')
+                                    ->paginate(60);
               return response()->json([
                     'success' => 'OK',
                     'service_clients' => $service_clients
                   ]);
         }else{
-           $service_clients=ServiceClient::paginate(30);
+           $service_clients=ServiceClient::select('*',DB::raw('total_amount - total_paid_amount as due_amount'))->orderBy('due_amount' ,'desc')->paginate(60);
             return response()->json([
                    'success' => 'OK',
                    'service_clients' => $service_clients

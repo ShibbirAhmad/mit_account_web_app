@@ -2,9 +2,7 @@
   <header class="main-header">
     <a href="#" class="logo">
       <span class="logo-mini"><b>A</b>LT</span>
-      <span class="logo-lg"><b>MIT </b> Ltd.</span>
-
-      <span class="logo-lg"><b>MIT  </b> Ltd.</span>
+      <span class="logo-lg"><b>M</b> </span>
     </a>
     <nav class="navbar navbar-static-top">
       <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
@@ -47,7 +45,7 @@
 
                 <p>
                   {{ getAdmin.name }} - admin
-                  <small>Member since Nov. 2012</small>
+                 
                 </p>
               </li>
               <li class="user-body"></li>

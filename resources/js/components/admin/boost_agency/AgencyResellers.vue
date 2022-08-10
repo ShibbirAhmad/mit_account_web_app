@@ -24,8 +24,8 @@
         </ol>
       </section>
       <section class="content">
-        <div class="container">
-          <div class="row justify-content-center">
+        <div class="container-fluid">
+          <div class="row ">
             <div class="col-lg-11 col-md-11">
               <div class="box box-primary">
                 <div class="box-header with-border text-center">
@@ -680,8 +680,8 @@ export default {
       this.$modal.show("pdf_form");
     },
 
-    insertResellerDollar() {
-      this.dollar_store_form
+  async  insertResellerDollar() {
+   await   this.dollar_store_form
         .post("/api/store/boost/reseller/dollar", {
           transformRequest: [
             function (data, headers) {
@@ -704,22 +704,20 @@ export default {
             this.dollar_store_form.boost_agency_reseller_id = "";
             this.getBoostAgencyResellers();
             this.$modal.hide("store");
-          } else {
-            this.$toasted.show(resp.data.message, {
+          }
+
+        })
+        .catch((error) => {
+           this.$toasted.show(error.response.data.message, {
               type: "error",
               position: "top-center",
               duration: 4000,
             });
-          }
-        })
-        .catch((e) => {
-          this.errors = [];
-          this.errors.push(e.response.data.errors);
         });
     },
 
-    getResellerPayment() {
-      this.payment_paid_form
+   async  getResellerPayment() {
+     await this.payment_paid_form
         .post("/api/store/boost/reseller/payment", {
           transformRequest: [
             function (data, headers) {
@@ -730,11 +728,7 @@ export default {
         .then((resp) => {
           console.log(resp);
           if (resp.data.status == "OK") {
-            this.$toasted.show(resp.data.message, {
-              type: "success",
-              position: "top-center",
-              duration: 4000,
-            });
+
             this.reseller_company_name = "";
             this.payment_paid_form.amount = "";
             this.payment_paid_form.comment = "";
@@ -742,17 +736,19 @@ export default {
             this.payment_paid_form.credit_in = "";
             this.getBoostAgencyResellers();
             this.$modal.hide("paid");
-          } else {
-            this.$toasted.show(resp.data.message, {
-              type: "error",
+              this.$toasted.show(resp.data.message, {
+              type: "success",
               position: "top-center",
               duration: 4000,
             });
           }
         })
-        .catch((e) => {
-          this.errors = [];
-          this.errors.push(e.response.data.errors);
+        .catch((error) => {
+           this.$toasted.show(error.response.data.message, {
+              type: "error",
+              position: "top-center",
+              duration: 4000,
+            });
         });
     },
 
@@ -900,10 +896,6 @@ export default {
 }
 span {
   font-size: 14px;
-}
-
-.box-primary {
-  overflow-x: scroll;
 }
 
 .total_style {

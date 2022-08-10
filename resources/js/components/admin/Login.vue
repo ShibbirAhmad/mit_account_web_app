@@ -27,7 +27,7 @@
           <has-error :form="form" field="email"></has-error>
         </div>
         <div class="form-group">
-          <label for="password">Passowrd</label>
+          <label for="password">Password</label>
           <input
             type="password"
             class="form-control"
@@ -141,7 +141,7 @@ export default {
             this.error = resp.data.message;
           }
         })
-       
+
     },
 
     // sendOtp() {

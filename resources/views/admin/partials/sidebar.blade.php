@@ -86,6 +86,41 @@ if (session()->has('admin')) {
             </li>
 
 
+             @if ($admin->can('Manage Boost'))
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-bullhorn"></i> <span>Boost Service</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+
+                        <li>
+                            <router-link :to="{ name: 'boost_agency'}"><i class="fa fa-eye"></i> Manage
+                            </router-link>
+                        </li>
+                        <li>
+                            <router-link :to="{ name: 'boost_credit'}"><i class="fa fa-eye"></i> Credit
+                            </router-link>
+                        </li>
+                        <li>
+                            <router-link :to="{ name: 'boost_debit'}"><i class="fa fa-eye"></i> Debit
+                            </router-link>
+                        </li>
+
+                        <li>
+                            <router-link :to="{ name: 'boost_fund_transfer'}"><i class="fa fa-exchange"></i>Fund
+                                Transfer
+                            </router-link>
+                        </li>
+
+                    </ul>
+                </li>
+            @endif
+
+
+
 
             <li class="treeview">
                 <a to="/"><i class="fa fa-users"></i> <span>

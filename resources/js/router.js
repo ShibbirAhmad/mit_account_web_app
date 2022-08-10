@@ -630,6 +630,77 @@ const routes = [
     },
 
 
+        {
+            path: '/backend/boost/agency',
+            name: 'boost_agency',
+            component: () => import( /*webpackChunkName: "boost_agency" */ './components/admin/boost_agency/Index.vue'),
+            meta: {
+                requiresAuthAdmin: true,
+                title: 'boost agency'
+            }
+        },
+
+        {
+            path: '/backend/boost/agency/add',
+            name: 'boost_agency_add',
+            component: () => import( /*webpackChunkName: "boost_agency_add" */ './components/admin/boost_agency/Add.vue'),
+            meta: {
+                requiresAuthAdmin: true,
+                title: 'add agency'
+            }
+        },
+
+        {
+            path: '/backend/boost/agency/reseller/add/:id',
+            name: 'boost_agency_reseller_add',
+            component: () => import( /*webpackChunkName: "boost_agency_reseller_add" */ './components/admin/boost_agency/BoostResellerAdd.vue'),
+            meta: {
+                requiresAuthAdmin: true,
+                title: 'add boost reseller '
+            }
+        },
+
+        {
+            path: '/backend/boost/agency/resellers/:id',
+            name: 'boost_agency_reselllers',
+            component: () => import( /*webpackChunkName:"boost_agency_reselllers"*/ './components/admin/boost_agency/AgencyResellers.vue'),
+            meta: {
+                requiresAuthAdmin: true,
+                title: 'boost agency resellers'
+            }
+        },
+
+
+        {
+            path: '/backend/boost/resellers/dollar/and/payment/:id',
+            name: 'boost_reselller_dollar_payment',
+            component: () => import( /*webpackChunkName:"boost_reselller_dollar_payment"*/ './components/admin/boost_agency/ResellerDollarAndPayment.vue'),
+            meta: {
+                requiresAuthAdmin: true,
+                title: 'boost agency resellers dollars and payments '
+            }
+        }, {
+            path: '/backend/boost/agency/reseller/info/edit/:id',
+            name: 'boost_agency_reseller_edit',
+            component: () => import( /*webpackChunkName: "boost_agency_reseller_edit" */ './components/admin/boost_agency/BoostResellerEdit.vue'),
+            meta: {
+                requiresAuthAdmin: true,
+                title: 'boost reseller info edit '
+            }
+        },
+
+
+        {
+            path: '/backend/boost/agency/payment/details/:id',
+            name: 'boost_agency_payment_details',
+            component: () => import( /*webpackChunkName:"boost_agency_payment_details"*/ './components/admin/boost_agency/AgencyPaymentDetails.vue'),
+            meta: {
+                requiresAuthAdmin: true,
+                title: 'boost agency payment details'
+            }
+        },
+
+
     {
         path: '/backend/boost/fund/transfer',
         component: () => import( /* webpackChunkName: "boost_fund_transfer" */ './components/admin/account/BoostBalanceTransfer.vue'),

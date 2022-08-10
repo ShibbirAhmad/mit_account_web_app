@@ -16,8 +16,8 @@
         </ol>
       </section>
       <section class="content">
-        <div class="container">
-          <div class="row justify-content-center">
+        <div class="container-fluid">
+          <div class="row ">
             <div class="col-lg-11 col-md-11">
               <div class="box box-primary">
                 <div class="box-header with-border text-center">
@@ -25,17 +25,17 @@
                 </div>
                 <div class="box-body">
 
-                  <table class="table text-center table-striped  table-bordered table-hover">
+                  <table class="table text-center table-centered table-striped  table-bordered table-hover">
                     <thead>
                       <tr>
-                        <th scope="col">#</th>
-                        <th scope="col"> Company Name </th>
-                        <th scope="col">Dollar</th>
-                        <th scope="col"> Clients & Accounts </th>
-                        <th scope="col"> Amount </th>
-                        <th scope="col"> Paid </th>
-                        <th scope="col"> Due </th>
-                        <th scope="col"> Action </th>
+                        <th >#</th>
+                        <th > Company Name </th>
+                        <th >Dollar</th>
+                        <th > Clients & Accounts </th>
+                        <th > Amount </th>
+                        <th > Paid </th>
+                        <th > Due </th>
+                        <th > Action </th>
                       </tr>
                     </thead>
                     <tbody>
@@ -189,8 +189,8 @@ export default {
       this.$modal.show("paid");
     },
 
-     BoostAgencyPayment(){
-       this.payment_paid_form
+    async BoostAgencyPayment(){
+    await   this.payment_paid_form
         .post("/api/pay/boost/agency/payment", {
           transformRequest: [
             function (data, headers) {
@@ -213,17 +213,14 @@ export default {
             this.payment_paid_form.paid_by='Cash';
             this.getBoostAgencys();
             this.$modal.hide('paid');
-          }else {
-            this.$toasted.show(resp.data.message,{
+          }
+        })
+        .catch((error) => {
+         this.$toasted.show(error.response.data.message,{
                 type: "error",
                 position: "top-center",
                 duration: 4000,
             });
-          }
-        })
-        .catch((e) => {
-          this.errors = [];
-          this.errors.push(e.response.data.errors);
         });
 
     },
@@ -299,9 +296,6 @@ export default {
 </script>
 
 <style scoped>
-.box-primary {
-  overflow-x: scroll;
-}
 
 .badge {
   font-size:14px !important ;

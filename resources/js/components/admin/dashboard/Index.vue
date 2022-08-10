@@ -19,6 +19,8 @@
 
          <mitAccounts  />
 
+         <boostAccounts  />
+
       </section>
     </div>
 
@@ -26,7 +28,7 @@
 </template>
 
 <script>
-
+import boostAccounts from "../account/BoostAccounts.vue" ;
 import mitAccounts from "../account/MitAccounts.vue" ;
 export default {
   mounted(){
@@ -41,6 +43,7 @@ export default {
   },
   components:{
     mitAccounts,
+    boostAccounts
   },
   created() {
     this.$store.dispatch("admin");

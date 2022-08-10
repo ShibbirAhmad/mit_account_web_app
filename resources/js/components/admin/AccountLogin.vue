@@ -3,7 +3,7 @@
  <div class="login_container_account">
      <div class="login-box" v-if="!isLoading">
     <div class="login-logo text-center">
-      <a href="#"> <b>Mohasagor IT Solutions Ltd. </b></a>
+      <a href="#"> <b>Mohasagor  </b></a>
     </div>
     <!-- /.login-logo -->
     <div class="login-box-body">
@@ -20,8 +20,7 @@
             name="email"
             v-model="form.email"
             placeholder="example@gmail.com"
-            autocomplete="off"
-            autofocus
+            required
           />
           <has-error :form="form" field="email"></has-error>
         </div>
@@ -33,7 +32,7 @@
             :class="{ 'is-invalid': form.errors.has('password') }"
             name="password"
             v-model="form.password"
-            autocomplete="off"
+            required
           />
           <has-error :form="form" field="password"></has-error>
         </div>

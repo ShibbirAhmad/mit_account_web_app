@@ -122,7 +122,6 @@ import { Form, HasError, AlertError } from "vform";
 
 Vue.component(HasError.name, HasError);
 export default {
-  name: "Add",
   data() {
     return {
       form: new Form({
@@ -136,8 +135,8 @@ export default {
   },
 
   methods: {
-    addPrintHouse() {
-      this.form
+   async addPrintHouse() {
+    await  this.form
         .post("/api/boost/agency/add")
         .then((resp) => {
           console.log(resp);
@@ -148,13 +147,14 @@ export default {
               position: "top-right",
               duration: 4000,
             });
-          } else {
-            this.error = "some thing went to wrong";
           }
         })
         .catch((error) => {
-          console.log(error);
-          this.error = "some thing went to wrong";
+            this.$toasted.show(error.response.data.message, {
+              type: "error",
+              position: "top-right",
+              duration: 4000,
+            });
         });
     },
   },

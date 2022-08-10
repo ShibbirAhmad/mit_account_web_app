@@ -35,7 +35,7 @@ class SmsService{
 
         $sms = 'Assalamualikum, '.$director->name .' you have refunded '. number_format($amount).'/=  from your director fund and  payable amount is '. $payable_amount .'/= Thanks for being with mit ';
         return self::smsApi($director->phone,$sms);
-    }   
+    }
 
 
 
@@ -75,8 +75,7 @@ class SmsService{
         $due_amount=$payable_amount - $paid_amount;
         $contacts = $reseller->phone;
         ///send message
-        // $sms =  'Assalamualaikum, Dear '.$reseller->name. ' You have purchase  $'.number_format($transaction->dollar).' for your advertise account ('.$advertise_account->name.'),  your total purchase dollar is '.$total_dollar.' and your due amount is '.$due_amount.'/=BDT, Thanks from Mohasagor It Solution ';   // put here your dynamic message text here
-        $sms = 'আসসালামু আলাইকুম '.$reseller->name. ' আপনি ক্রয় করেছেন $'.number_format($transaction->dollar).' আপনার বিজ্ঞাপন অ্যাকাউন্টের জন্য ('.$advertise_account->name.'), আপনার মোট ক্রয়কৃত ডলারের পরিমান '.$total_dollar.' এবং আপনার বকেয়া '.$due_amount.'টাকা, ধন্যবাদান্তে mohasagorit.solutions '; // put here your dynamic message text here
+        $sms =  'Assalamualaikum, Dear '.$reseller->name. ' You have purchase  $'.number_format($transaction->dollar).' for your advertise account ('.$advertise_account->name.'),  your total purchase dollar is '.$total_dollar.' and your due amount is '.$due_amount.'/=BDT, Thanks from MIT ';   // put here your dynamic message text here
         return self::smsApi($contacts,$sms);
     }
 
@@ -90,8 +89,7 @@ class SmsService{
         $due_amount=$payable_amount - $paid_amount;
         $contacts = $reseller->phone;
         ///send message
-        // $sms = 'Assalamualaikum, Dear '.$reseller->name. ' Thanks for your recent payment . You have paid '.number_format($amount).'/=BDT, and your due amount is '.$due_amount.'/=BDT, Thanks from Mohasagor It Solution '; // put here your dynamic message text here
-        $sms = 'আসসালামু আলাইকুম '.$reseller->name. ' আপনার পেমেন্টের জন্য ধন্যবাদ। আপনি পরিশোধ করেছেন '.number_format($amount).'টাকা, এবং বকেয়া টাকার পরিমান '.$due_amount.'টাকা, ধন্যবাদান্তে mohasagorit.solutions '; // put here your dynamic message text here
+        $sms = 'Assalamualaikum, Dear '.$reseller->name. ' Thanks for your recent payment . You have paid '.number_format($amount).'/=BDT, and your due amount is '.$due_amount.'/=BDT, Thanks from MIT '; 
         return self::smsApi($contacts,$sms);
     }
 

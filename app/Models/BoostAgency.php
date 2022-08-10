@@ -13,8 +13,15 @@ class BoostAgency extends Model
       }
 
 
-    public  function payments(){
+      public  function payments(){
 
             return $this->hasMany('App\Models\BoostAgencyPayment','boost_agency_id') ;
         }
+
+
+      protected $guarded = [] ;
+
+
+
+
 }

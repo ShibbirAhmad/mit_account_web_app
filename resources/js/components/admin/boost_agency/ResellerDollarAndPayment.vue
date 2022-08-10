@@ -66,178 +66,205 @@
             <div class="col-md-12 col-sm-12">
               <div class="box box-primary">
                 <div class="box-header with-border text-center">
-                   <a  class="btn btn_conditional" @click="dollarMode=true" :class="{ active_border : dollarMode == true }" > Dollar History </a>   <a class="btn btn_conditional" @click="dollarMode=false" :class="{ active_border : dollarMode == false }"  > Payment History </a>
+                  <a
+                    class="btn btn_conditional"
+                    @click="dollarMode = true"
+                    :class="{ active_border: dollarMode == true }"
+                  >
+                    Dollar History
+                  </a>
+                  <a
+                    class="btn btn_conditional"
+                    @click="dollarMode = false"
+                    :class="{ active_border: dollarMode == false }"
+                  >
+                    Payment History
+                  </a>
                 </div>
 
                 <div v-if="dollarMode == true">
-
-                <div class="box-body">
-                  <table
-                    class="
-                      table table-hover table-striped
-                      text-center
-                      table-bordered
-                    "
-                  >
-                    <tr>
-                      <th>#</th>
-                      <th>Advertise Account</th>
-                      <th>Page Name</th>
-                      <th>Dollar</th>
-                      <th>Amount</th>
-                      <th>Action</th>
-                    </tr>
-                    <tbody>
-                      <tr v-for="(item, index) in accounts" :key="index">
-                        <td>{{ index + 1 }}</td>
-                        <td> <button v-on:click="displayAccountDetails(item)" style="font-size:16px" class="btn_account "> {{ item.name }} </button> </td>
-                        <td> {{ item.page_name ? item.page_name : "empty" }} </td>
-                        <td> {{ item.total_dollar }}  </td>
-                        <td> {{ item.total_amount }}</td>
-                        <td>
-                        <a @click="showDollarTransferModal(item)" class="btn btn-xs btn-primary">
-                          <i class="fa fa-exchange"></i> Dollar Transfer
-                        </a>
-                        <a  :href="'/api/download/pdf/boost/reseller/ad-account/'+item.id"  class="btn btn-xs btn-success"> <i class="fa fa-download"></i>  PDF</a>
-
-                       </td>
-                      </tr>
+                  <div class="box-body">
+                    <table
+                      class="
+                        table table-hover table-striped
+                        text-center
+                        table-bordered
+                      "
+                    >
                       <tr>
-                        <td colspan="3">In Total </td>
-                         <td>
-                          <span class="badge badge-success">
-                            <i class="fa fa-dollar"></i> {{ overAllDollar() }}
-                          </span>
-                        </td>
-                        <td>
-                          <span class="badge badge-success">
-                            &#2547; {{ overAllAmount() }}
-                          </span>
-                        </td>
+                        <th>#</th>
+                        <th>Advertise Account</th>
+                        <th>Page Name</th>
+                        <th>Dollar</th>
+                        <th>Amount</th>
+                        <th>Action</th>
                       </tr>
-                    </tbody>
-                  </table>
-                </div>
+                      <tbody>
+                        <tr v-for="(item, index) in accounts" :key="index">
+                          <td>{{ index + 1 }}</td>
+                          <td>
+                            <button
+                              v-on:click="displayAccountDetails(item)"
+                              style="font-size: 16px"
+                              class="btn_account"
+                            >
+                              {{ item.name }}
+                            </button>
+                          </td>
+                          <td>
+                            {{ item.page_name ? item.page_name : "empty" }}
+                          </td>
+                          <td>{{ item.total_dollar }}</td>
+                          <td>{{ item.total_amount }}</td>
+                          <td>
+                            <a
+                              @click="showDollarTransferModal(item)"
+                              class="btn btn-xs btn-primary"
+                            >
+                              <i class="fa fa-exchange"></i> Dollar Transfer
+                            </a>
+                            <a
+                              :href="
+                                '/api/download/pdf/boost/reseller/ad-account/' +
+                                item.id
+                              "
+                              class="btn btn-xs btn-success"
+                            >
+                              <i class="fa fa-download"></i> PDF</a
+                            >
+                          </td>
+                        </tr>
+                        <tr>
+                          <td colspan="3">In Total</td>
+                          <td>
+                            <span class="badge badge-success">
+                              <i class="fa fa-dollar"></i> {{ overAllDollar() }}
+                            </span>
+                          </td>
+                          <td>
+                            <span class="badge badge-success">
+                              &#2547; {{ overAllAmount() }}
+                            </span>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
 
-
-               <div v-if="dollarMode != true">
-                <div class="box-body">
-                  <table
-                    class="
-                      table table-hover table-striped
-                      text-center
-                      table-bordered
-                    "
-                  >
-                    <tr>
-                      <th>#</th>
-                      <th>Date</th>
-                      <th>Comment</th>
-                      <th>Paid By</th>
-                      <th>Amount</th>
-                    </tr>
-                    <tbody>
-                      <tr v-for="(item, index) in payments.data" :key="index">
-                        <td>{{ index + 1 }}</td>
-                        <td>{{ item.created_at }}</td>
-                        <td>{{ item.comment ? item.comment : "none" }}</td>
-                        <td>{{ item.paid_by }}</td>
-                        <td>{{ item.amount }}</td>
-                      </tr>
+                <div v-if="dollarMode != true">
+                  <div class="box-body">
+                    <table
+                      class="
+                        table table-hover table-striped
+                        text-center
+                        table-bordered
+                      "
+                    >
                       <tr>
-                        <td colspan="4">In Total Paid</td>
-                        <td>
-                          <span class="badge badge-success">
-                            &#2547; {{ payment_total }}
-                          </span>
-                        </td>
+                        <th>#</th>
+                        <th>Date</th>
+                        <th>Comment</th>
+                        <th>Paid By</th>
+                        <th>Amount</th>
                       </tr>
-                    </tbody>
-                  </table>
-                </div>
-                <div class="box-footer">
-                  <div class="row">
-                    <div class="col-sm-12">
-                      <pagination
-                        :data="payments"
-                        @pagination-change-page="transactionDetails"
-                        :limit="3"
-                      >
-                      </pagination>
-                    </div>
-                    <div class="col-sm-12">
-                      <p>
-                        Showing <strong>{{ payments.from }}</strong> to
-                        <strong>{{ payments.to }}</strong> of total
-                        <strong>{{ payments.total }}</strong> entries
-                      </p>
+                      <tbody>
+                        <tr v-for="(item, index) in payments.data" :key="index">
+                          <td>{{ index + 1 }}</td>
+                          <td>{{ item.created_at }}</td>
+                          <td>{{ item.comment ? item.comment : "none" }}</td>
+                          <td>{{ item.paid_by }}</td>
+                          <td>{{ item.amount }}</td>
+                        </tr>
+                        <tr>
+                          <td colspan="4">In Total Paid</td>
+                          <td>
+                            <span class="badge badge-success">
+                              &#2547; {{ payment_total }}
+                            </span>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="box-footer">
+                    <div class="row">
+                      <div class="col-sm-12">
+                        <pagination
+                          :data="payments"
+                          @pagination-change-page="transactionDetails"
+                          :limit="3"
+                        >
+                        </pagination>
+                      </div>
+                      <div class="col-sm-12">
+                        <p>
+                          Showing <strong>{{ payments.from }}</strong> to
+                          <strong>{{ payments.to }}</strong> of total
+                          <strong>{{ payments.total }}</strong> entries
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
-               </div>
-
               </div>
             </div>
-
-
           </div>
         </div>
       </section>
     </div>
 
-
     <!-- start payment store modal  -->
-    <modal name="account_details_modal" :width="700" :height="500" >
-        <div class="card" style="padding: 20px;">
-          <div class="card-header text-center">
-               <h4 class="heading">  {{ account_name }} </h4>
-          </div>
-          <div  class="card-body">
-
-                <table
-
-                    class="
-                      table table-hover table-striped
-                      text-center
-                      table-bordered
-                    "
-                  >
-                    <tr>
-                      <th>#</th>
-                      <th>Date</th>
-                      <th>Dollar</th>
-                      <th>BDT(rate)</th>
-                      <th>Amount</th>
-                    </tr>
-                    <tbody>
-                      <tr v-for="(item, index) in account_details" :key="index">
-                        <td>{{ index + 1 }}</td>
-                        <td>{{ item.created_at }}</td>
-                        <td>{{ item.dollar }}</td>
-                        <td>{{ item.rate }}</td>
-                        <td>{{ item.amount }}</td>
-                      </tr>
-
-                      <tr>
-                        <td colspan="2"> </td>
-                        <td> <span class="badge badge-success"> <i class="fa fa-dollar"></i> {{ detailsTotalDollar }}  </span> </td>
-                        <td> </td>
-                        <td>  <span class="badge badge-success"> &#2547; {{ detailsTotalAmount }}  </span> </td>
-                      </tr>
-
-                    </tbody>
-                  </table>
-
-          </div>
+    <modal name="account_details_modal" :width="700" :height="500">
+      <div class="card" style="padding: 20px">
+        <div class="card-header text-center">
+          <h4 class="heading">{{ account_name }}</h4>
         </div>
+        <div class="card-body">
+          <table
+            class="table table-hover table-striped text-center table-bordered"
+          >
+            <tr>
+              <th>#</th>
+              <th>Date</th>
+              <th>Dollar</th>
+              <th>BDT(rate)</th>
+              <th>Amount</th>
+            </tr>
+            <tbody>
+              <tr v-for="(item, index) in account_details" :key="index">
+                <td>{{ index + 1 }}</td>
+                <td>{{ item.created_at }}</td>
+                <td>{{ item.dollar }}</td>
+                <td>{{ item.rate }}</td>
+                <td>{{ item.amount }}</td>
+              </tr>
+
+              <tr>
+                <td colspan="2"></td>
+                <td>
+                  <span class="badge badge-success">
+                    <i class="fa fa-dollar"></i> {{ detailsTotalDollar }}
+                  </span>
+                </td>
+                <td></td>
+                <td>
+                  <span class="badge badge-success">
+                    &#2547; {{ detailsTotalAmount }}
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </modal>
     <!-- end payment store modal  -->
 
     <!-- start payment store modal  -->
     <modal name="add_account_modal" :width="350" :height="250">
       <form @submit.prevent="addResellerAdAccount">
-        <div class="card" style="padding:20px;">
+        <div class="card" style="padding: 20px">
           <div class="card-body">
             <div class="form-group">
               <label>Advertise Account Name</label>
@@ -245,12 +272,11 @@
                 type="text"
                 name="name"
                 required
-                v-model="form.name"
-                :class="{ 'is-invalid': form.errors.has('name') }"
+                v-model="accountForm.name"
                 class="form-control"
                 placeholder="abc"
               />
-              <has-error :form="form" field="name"> </has-error>
+
             </div>
 
             <div class="form-group">
@@ -258,13 +284,12 @@
               <input
                 type="text"
                 name="page_name"
-                v-model="form.page_name"
-                :class="{ 'is-invalid': form.errors.has('page_name') }"
+                v-model="accountForm.page_name"
                 class="form-control"
                 placeholder="xyz"
                 required
               />
-              <has-error :form="form" field="page_name"> </has-error>
+
             </div>
             <br />
             <div class="form-group text-center">
@@ -282,20 +307,35 @@
     <!-- start payment store modal  -->
     <modal name="dollar_transfer_modal" :width="450" :height="400">
       <form @submit.prevent="dollarTransfer">
-        <div class="card" style="padding:20px;">
+        <div class="card" style="padding: 20px">
           <div class="card-body">
             <div class="form-group">
               <label>Select Reseller </label>
-               <select name="boost_agency_reseller_id"
-                  v-model="DollarTransferForm.boost_agency_reseller_id"
-                  :class="{ 'is-invalid': DollarTransferForm.errors.has('boost_agency_reseller_id') }"
-                   class="form-control">
-                    <option disabled> Select One </option>
-                    <option v-for="reseller in boost_resellers" :value="reseller.id" :key="reseller.id">{{ reseller.company_name }} </option>
-                </select>
-              <has-error :form="DollarTransferForm" field="boost_agency_reseller_id"> </has-error>
+              <select
+                name="boost_agency_reseller_id"
+                v-model="DollarTransferForm.boost_agency_reseller_id"
+                :class="{
+                  'is-invalid': DollarTransferForm.errors.has(
+                    'boost_agency_reseller_id'
+                  ),
+                }"
+                class="form-control"
+              >
+                <option disabled>Select One</option>
+                <option
+                  v-for="reseller in boost_resellers"
+                  :value="reseller.id"
+                  :key="reseller.id"
+                >
+                  {{ reseller.company_name }}
+                </option>
+              </select>
+              <has-error
+                :form="DollarTransferForm"
+                field="boost_agency_reseller_id"
+              >
+              </has-error>
             </div>
-
 
             <div class="form-group">
               <label>Advertise Account Name</label>
@@ -317,22 +357,27 @@
                 type="text"
                 name="page_name"
                 v-model="DollarTransferForm.page_name"
-                :class="{ 'is-invalid': DollarTransferForm.errors.has('page_name') }"
+                :class="{
+                  'is-invalid': DollarTransferForm.errors.has('page_name'),
+                }"
                 class="form-control"
                 placeholder="xyz"
                 required
               />
-              <has-error :form="DollarTransferForm" field="page_name"> </has-error>
+              <has-error :form="DollarTransferForm" field="page_name">
+              </has-error>
             </div>
 
-              <div class="form-group">
+            <div class="form-group">
               <label>Transaction Dollar </label>
               <input
                 type="number"
                 name="dollar"
                 required
                 v-model="DollarTransferForm.dollar"
-                :class="{ 'is-invalid': DollarTransferForm.errors.has('dollar') }"
+                :class="{
+                  'is-invalid': DollarTransferForm.errors.has('dollar'),
+                }"
                 class="form-control"
                 placeholder="000"
               />
@@ -351,24 +396,21 @@
       </form>
     </modal>
     <!-- end payment store modal  -->
-
-
-
-
   </div>
 </template>
 
 <script>
-import Vue from "vue";
+
 import { Form, HasError, AlertError } from "vform";
+
 export default {
   created() {
     this.transactionDetails();
   },
   data() {
     return {
-      dollarMode:true ,
-      paymentMode:false,
+      dollarMode: true,
+      paymentMode: false,
       boost_agency_reseller: "",
       boost_resellers: "",
       accounts: "",
@@ -379,46 +421,73 @@ export default {
       payments: {},
       payment_total: "",
       loading: true,
-      form: new Form({
+      accountForm: new Form({
         boost_agency_reseller_id: this.$route.params.id,
         name: "",
-        page_name:"",
+        page_name: "",
       }),
       DollarTransferForm: new Form({
-        boost_agency_reseller_id:"",
-        name:"",
-        page_name:"",
-        transfer_account_id:"",
-        dollar:"",
+        boost_agency_reseller_id: "",
+        name: "",
+        page_name: "",
+        transfer_account_id: "",
+        dollar: "",
       }),
     };
   },
   methods: {
 
-    resellerList(){
-       axios.get('/api/boost/reseller/just/list')
-       .then(resp=>{
-          this.boost_resellers = resp.data.resellers
-       })
+
+  async addResellerAdAccount() {
+
+     await this.accountForm
+        .post("/api/boost/reseller/advertise/account/add")
+        .then((resp) => {
+          console.log(resp);
+          if (resp.data.success == true ) {
+            this.accountForm.name = "";
+            this.accountForm.page_name = "";
+            this.transactionDetails();
+            this.$modal.hide("add_account_modal");
+            this.$toasted.show(resp.data.message, {
+              type: "success",
+              position: "top-center",
+              duration: 4000,
+            })
+          }
+        })
+        .catch((error) => {
+          this.$toasted.show(error.response.data.message, {
+            type: "error",
+            position: "top-center",
+            duration: 4000,
+          })
+        });
     },
 
-    displayAccountDetails(account){
-       this.account_name = account.name ;
-       this.account_details = account.transactions ;
-       let dollar =0 ;
-       let amount =0 ;
-       account.transactions.forEach(item=> {
-           dollar +=parseFloat(item.dollar);
-       });
-
-        account.transactions.forEach(item=> {
-           amount += parseFloat(item.amount);
-       });
-       this.detailsTotalAmount=amount ;
-       this.detailsTotalDollar=dollar ;
-       this.$modal.show('account_details_modal');
+    resellerList() {
+      axios.get("/api/boost/reseller/just/list")
+       .then((resp) => {
+        this.boost_resellers = resp.data.resellers;
+      });
     },
 
+    displayAccountDetails(account) {
+      this.account_name = account.name;
+      this.account_details = account.transactions;
+      let dollar = 0;
+      let amount = 0;
+      account.transactions.forEach((item) => {
+        dollar += parseFloat(item.dollar);
+      });
+
+      account.transactions.forEach((item) => {
+        amount += parseFloat(item.amount);
+      });
+      this.detailsTotalAmount = amount;
+      this.detailsTotalDollar = dollar;
+      this.$modal.show("account_details_modal");
+    },
 
     accountTotalDollar($transactions) {
       let x = 0;
@@ -436,101 +505,47 @@ export default {
       return x.toFixed(2);
     },
 
-    // overAllDollar() {
-    //   if (this.accounts.length > 0) {
-    //     let x = 0;
-    //     this.accounts.forEach((item) => {
-    //       item.transactions.forEach((element) => {
-    //           x +=parseFloat(element.dollar);
-    //       });
-    //     });
-    //     return x.toFixed(2);
-    //   }
-    // },
-
-     overAllDollar() {
+    overAllDollar() {
       if (this.accounts.length > 0) {
         let x = 0;
         this.accounts.forEach((item) => {
-            x +=parseFloat(item.total_dollar);
+          x += parseFloat(item.total_dollar);
         });
         return x.toFixed(2);
       }
     },
 
-      overAllAmount() {
+    overAllAmount() {
       if (this.accounts.length > 0) {
         let x = 0;
         this.accounts.forEach((item) => {
-           x += parseFloat(item.total_amount);
+          x += parseFloat(item.total_amount);
         });
         return x.toFixed(2);
       }
     },
 
-    // overAllAmount() {
-    //   if (this.accounts.length > 0) {
-    //     let x = 0;
-    //     this.accounts.forEach((item) => {
-    //       item.transactions.forEach((element) => {
-    //         x += parseFloat(element.amount);
-    //       });
-    //     });
-    //     return x.toFixed(2);
-    //   }
-    // },
 
-    addResellerAdAccount() {
-      this.form
-        .post("/api/boost/reseller/advertise/account/add", {
-          transformRequest: [
-            function (data, headers) {
-              return objectToFormData(data);
-            },
-          ],
-        })
-        .then((resp) => {
-          console.log(resp);
-          if (resp.data.status == "OK") {
-            this.$toasted.show(resp.data.message, {
-              type: "success",
-              position: "top-center",
-              duration: 4000,
-            });
-            this.form.name = "";
-            this.form.page_name = "";
-            this.transactionDetails();
-            this.$modal.hide("add_account_modal");
-          } else {
-            this.$toasted.show(resp.data.message, {
-              type: "error",
-              position: "top-center",
-              duration: 4000,
-            });
-          }
-        });
-    },
 
     showModal() {
       this.$modal.show("add_account_modal");
     },
 
     showDollarTransferModal(item) {
-     this.DollarTransferForm.name= item.name ;
-     this.DollarTransferForm.transfer_account_id= item.id ;
+      this.DollarTransferForm.name = item.name;
+      this.DollarTransferForm.transfer_account_id = item.id;
       this.resellerList();
       this.$modal.show("dollar_transfer_modal");
     },
 
-    dollarTransfer(){
-      this.DollarTransferForm
-        .post("/api/dollar/transfer/from/reseller", {
-          transformRequest: [
-            function (data, headers) {
-              return objectToFormData(data);
-            },
-          ],
-        })
+    dollarTransfer() {
+      this.DollarTransferForm.post("/api/dollar/transfer/from/reseller", {
+        transformRequest: [
+          function (data, headers) {
+            return objectToFormData(data);
+          },
+        ],
+      })
         .then((resp) => {
           console.log(resp);
           if (resp.data.status == "OK") {
@@ -546,13 +561,14 @@ export default {
             this.DollarTransferForm.page_name = "";
             this.transactionDetails();
             this.$modal.hide("dollar_transfer_modal");
-          }else {
-            this.$toasted.show("please, try again", {
-              type: "error",
-              position: "top-center",
-              duration: 4000,
-            });
           }
+        })
+        .catch((error) => {
+          this.$toasted.show(error.response.data.message, {
+            type: "error",
+            position: "top-center",
+            duration: 4000,
+          });
         });
     },
 
@@ -578,9 +594,7 @@ export default {
       window.history.back();
     },
   },
-  components: {
-    HasError,
-  },
+
 };
 </script>
 
@@ -595,6 +609,7 @@ export default {
   text-align: center;
   box-shadow: 3px 3px 3px #ddd;
 }
+
 .box-title {
   padding: 5px 6px;
   cursor: pointer;
@@ -618,40 +633,38 @@ export default {
   margin-bottom: 20px;
   overflow-y: auto;
 }
-.btn_account{
-    padding: 3px 20px ;
-    border:none ;
-    min-width: 225px;
-    background: #eee ;
+.btn_account {
+  padding: 3px 20px;
+  border: none;
+  min-width: 225px;
+  background: #eee;
 }
-
 
 .btn_account:hover {
-   transition:3s;
-   background: blueviolet  ;
-   color:#fff ;
+  transition: 3s;
+  background: blueviolet;
+  color: #fff;
 }
 
-.active_border{
-    color: #000;
-    border-bottom: 2px dashed #000;
+.active_border {
+  color: #000;
+  border-bottom: 2px dashed #000;
 }
 
 .btn_conditional {
-    box-shadow: 0 1pt 12pt rgb(150 165 237);
-    font-size: 16px;
-    font-weight: bold;
-    font-family: serif;
-    margin: 0px 10px;
+  box-shadow: 0 1pt 12pt rgb(150 165 237);
+  font-size: 16px;
+  font-weight: bold;
+  font-family: serif;
+  margin: 0px 10px;
 }
 .vm--modal {
-    position: relative;
-    overflow: hidden;
-    box-sizing: border-box;
-    background-color: white;
-    border-radius: 3px;
-    box-shadow: 0 20px 60px -2px rgba(27, 33, 58, 0.4);
-    overflow-y: scroll !important;
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+  background-color: white;
+  border-radius: 3px;
+  box-shadow: 0 20px 60px -2px rgba(27, 33, 58, 0.4);
+  overflow-y: scroll !important;
 }
-
 </style>
