@@ -55,8 +55,8 @@
                     :key="index"
                     class="list-group-item"
                   >
-                    account- {{ index + 1 }} :
-                    <strong> {{ account.name }}</strong>
+                    account - {{ index + 1 }} :
+                    <strong> {{ account.name }} <sup style="font-size:13px;"  v-if="account.previous_dollar">(previous limit : {{ account.previous_dollar  }}  + current limit : {{ account.total_dollar  }} = {{ parseInt(account.previous_dollar) + parseInt(account.total_dollar )  }} )</sup></strong>
                   </li>
                 </ul>
               </div>
@@ -289,7 +289,18 @@
                 placeholder="xyz"
                 required
               />
+            </div>
 
+           <div class="form-group">
+              <label>Previous Limit (optional)</label>
+              <input
+                type="text"
+                name="page_name"
+                v-model="accountForm.previous_dollar"
+                class="form-control"
+                placeholder="0000"
+                required
+              />
             </div>
             <br />
             <div class="form-group text-center">
@@ -425,6 +436,7 @@ export default {
         boost_agency_reseller_id: this.$route.params.id,
         name: "",
         page_name: "",
+        previous_dollar: "",
       }),
       DollarTransferForm: new Form({
         boost_agency_reseller_id: "",
@@ -447,6 +459,7 @@ export default {
           if (resp.data.success == true ) {
             this.accountForm.name = "";
             this.accountForm.page_name = "";
+            this.accountForm.previous_dollar = "";
             this.transactionDetails();
             this.$modal.hide("add_account_modal");
             this.$toasted.show(resp.data.message, {

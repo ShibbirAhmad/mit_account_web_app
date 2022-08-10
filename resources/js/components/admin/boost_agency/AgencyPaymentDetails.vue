@@ -30,7 +30,7 @@
                 </div>
 
                 <div class="box-body">
-                  <table class="table table-striped text-center table-borderd">
+                  <table class="table table-striped text-center table-bordered">
                     <tr>
                       <th>#</th>
                       <th width="20%" >Date</th>

@@ -267,7 +267,7 @@
           </div>
 
           <!-- start dollar store modal  -->
-          <modal name="store" :width="400" :height="400">
+          <modal name="store" :width="400" :height="550">
             <form @submit.prevent="insertResellerDollar">
               <div class="card" style="padding: 20px">
                 <div class="card-header text-center">
@@ -285,6 +285,7 @@
                         dollar_store_form.boost_agency_reseller_ad_account_id
                       "
                     >
+                      <option value="" disabled> select advertise account</option>
                       <option
                         v-for="(account, index) in advertise_accounts"
                         :value="account.id"
@@ -329,6 +330,36 @@
                     <has-error :form="dollar_store_form" field="amount">
                     </has-error>
                   </div>
+
+                 <div class="form-group">
+                    <label>Paid Amount</label>
+                    <input
+                      type="number"
+                      name="amount"
+                      v-model="dollar_store_form.paid"
+                      class="form-control"
+                      placeholder="0"
+                    />
+
+                  </div>
+
+                  <div class="form-group">
+                    <label for="credit_in">Credit In</label>
+                    <select
+                      class="form-control"
+                      v-model="dollar_store_form.credit_in"
+                    >
+                      <option value="" disabled selected>Select Balance</option>
+                      <option
+                        v-for="(balance, index) in balance"
+                        :value="balance.id"
+                        :key="index"
+                      >
+                        {{ balance.name }}
+                      </option>
+                    </select>
+                  </div>
+
 
                   <br />
                   <div class="form-group text-center">
@@ -523,7 +554,7 @@
 </template>
 
 <script>
-import Vue from "vue";
+
 import { Form, HasError, AlertError } from "vform";
 
 export default {
@@ -548,6 +579,8 @@ export default {
         boost_agency_reseller_ad_account_id: "",
         dollar: "",
         amount: "",
+        paid: "",
+        credit_in: "",
         rate: "",
       }),
       payment_paid_form: new Form({
@@ -681,6 +714,12 @@ export default {
     },
 
   async  insertResellerDollar() {
+
+   if (this.dollar_store_form.paid > 0 && this.dollar_store_form.credit_in == '') {
+       alert('select payment balance');
+       return ;
+   }
+   this.loading = true ;
    await   this.dollar_store_form
         .post("/api/store/boost/reseller/dollar", {
           transformRequest: [
@@ -691,7 +730,7 @@ export default {
         })
         .then((resp) => {
           console.log(resp);
-          if (resp.data.status == "OK") {
+          if (resp.data.success == true) {
             this.$toasted.show(resp.data.message, {
               type: "success",
               position: "top-center",
@@ -701,6 +740,8 @@ export default {
             this.dollar_store_form.dollar = "";
             this.dollar_store_form.rate = "";
             this.dollar_store_form.amount = "";
+            this.dollar_store_form.paid = "";
+            this.dollar_store_form.credit_in = "";
             this.dollar_store_form.boost_agency_reseller_id = "";
             this.getBoostAgencyResellers();
             this.$modal.hide("store");
@@ -710,13 +751,14 @@ export default {
         .catch((error) => {
            this.$toasted.show(error.response.data.message, {
               type: "error",
-              position: "top-center",
+              position: "top-right",
               duration: 4000,
             });
-        });
+        })
     },
 
    async  getResellerPayment() {
+     this.loading = true ;
      await this.payment_paid_form
         .post("/api/store/boost/reseller/payment", {
           transformRequest: [

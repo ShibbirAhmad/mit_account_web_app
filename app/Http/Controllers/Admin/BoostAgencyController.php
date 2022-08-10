@@ -263,36 +263,65 @@ class BoostAgencyController extends Controller
 
     public function storeBoostResellerDollar(Request $request){
 
-          $validatedData = $request->validate([
+          $data = $request->validate([
             'boost_agency_reseller_id' => 'required',
             'boost_agency_reseller_ad_account_id' => 'required',
             'amount' => 'required',
             'rate' => 'required',
             'dollar' => 'required',
+            'paid' => 'nullable|integer',
+            'credit_in' => 'nullable|integer',
           ]);
-            $transaction= new BoostAgencyResellerDollarTransaction();
-            $transaction->boost_agency_reseller_id=$request->boost_agency_reseller_id;
-            $transaction->boost_agency_reseller_ad_account_id=$request->boost_agency_reseller_ad_account_id;
-            $transaction->dollar=$request->dollar;
-            $transaction->rate=$request->rate;
-            $transaction->amount=$request->amount;
-            if($transaction->save()) {
-              $ad_account= BoostAgencyResellerAdAccount::findOrFail($transaction->boost_agency_reseller_ad_account_id);
-              $ad_account->total_dollar = intval($ad_account->total_dollar) + intval($request->dollar ) ;
-              $ad_account->total_amount = intval($ad_account->total_amount) +  ( intval($request->dollar) * intval($transaction->rate) )   ;
-              $ad_account->save();
-              //send message to reseller
-              SmsService::sendDollarConfirmationMessage($transaction);
-               return response()->json([
-                'status'=>'OK',
-                'message'=>'Added successfully'
-                ]);
-            }else {
-                return response()->json([
-                'status'=>'Failed',
-                'message'=>'Transaction Failed'
-                ]);
+
+          DB::beginTransaction();
+          try{
+            $client=BoostAgencyReseller::findOrFail($data['boost_agency_reseller_id']);
+            $transaction= BoostAgencyResellerDollarTransaction::query()->create($data);
+            //send message to reseller
+            SmsService::sendDollarConfirmationMessage($transaction);
+            //save advertise account record
+            $ad_account= BoostAgencyResellerAdAccount::findOrFail($transaction->boost_agency_reseller_ad_account_id);
+            $ad_account->total_dollar = intval($ad_account->total_dollar) + intval($transaction->dollar ) ;
+            $ad_account->total_amount = intval($ad_account->total_amount) +  ( intval($transaction->dollar) * intval($transaction->rate) )   ;
+            $ad_account->save();
+            //insert paid transaction
+            if (!empty($data['paid'] && $data['paid'] > 0 )) {
+                  $balance=Balance::findOrFail($data['credit_in']);
+                  $payment= new BoostAgencyResellerPayment();
+                  $payment->boost_agency_reseller_id= $client->id;
+                  $payment->paid_by=$balance->name;
+                  $payment->comment='paid at  '.date('Y-m-d');  ;
+                  $payment->amount=$data['paid'];
+                  $payment->save();
+                  //insert credit
+                  $credit = new Credit();
+                  $credit->purpose = "Boost payment from " .'-'. $client->company_name  ;
+                  $credit->department = 'boost' ;
+                  $credit->amount = $data['paid'];
+                  $credit->comment = 'boost payment paid from '.$client->company_name ;
+                  $credit->date = date('Y-m-d');
+                  $credit->credit_in=$balance->id;
+                  $credit->insert_admin_id=session()->get('admin')['id'];
+                  $credit->save();
+                  //send message to reseller
+                  SmsService::sendPaymentMessage($client,$client->id,$credit->amount);
             }
+
+            DB::commit();
+            return response()->json([
+                'success'=> true ,
+                'message'=>'Added successfully'
+            ]);
+
+          }catch(Throwable $th){
+            DB::rollBack();
+            return response()->json([
+                'success'=> false ,
+                'message'=> $th->getMessage(),
+            ]);
+          }
+
+
     }
 
 
@@ -301,7 +330,7 @@ class BoostAgencyController extends Controller
 
     public function storeBoostResellerPayment(Request $request){
 
-              $validatedData = $request->validate([
+              $data = $request->validate([
                 'boost_agency_reseller_id' => 'required',
                 'amount' => 'required',
                 'credit_in' => 'required',
@@ -333,7 +362,7 @@ class BoostAgencyController extends Controller
                     'status'=>'OK',
                     'message'=>'Inserted  successfully'
                 ]);
-        }
+    }
 
 
 
@@ -354,6 +383,7 @@ class BoostAgencyController extends Controller
 
 
     public function resellerTransactions($id){
+
         $boost_agency_reseller=BoostAgencyReseller::with('accounts')->findOrFail($id);
         //payment history
         $payments=BoostAgencyResellerPayment::where('boost_agency_reseller_id',$id)->orderBy('id','desc')->paginate(10);
@@ -374,11 +404,12 @@ class BoostAgencyController extends Controller
 
 
    public function getBoostReseller($id){
-            $reseller = BoostAgencyReseller::findOrFail($id);
-            return response()->json([
-                'status'=>'OK',
-                'reseller'=> $reseller ,
-            ]);
+
+          $reseller = BoostAgencyReseller::findOrFail($id);
+          return response()->json([
+              'status'=>'OK',
+              'reseller'=> $reseller ,
+          ]);
     }
 
 
@@ -388,6 +419,7 @@ class BoostAgencyController extends Controller
             'boost_agency_reseller_id' => 'required',
             'name' => 'required|unique:boost_agency_reseller_ad_accounts',
             'page_name' => 'required',
+            'previous_dollar' => 'nullable|integer',
           ]);
 
           BoostAgencyResellerAdAccount::query()->create($data);
