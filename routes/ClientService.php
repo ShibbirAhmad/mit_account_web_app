@@ -23,10 +23,13 @@ Route::group([
     Route::get('api/get/service/client/{id}','ServiceController@getClient');
     Route::get('api/service/client/search/{phone}','ServiceController@searchClient');
     //package and bil
-    Route::post('/api/service/client/package/add','ServiceController@addClientServicePackage');
+    Route::post('api/service/client/contractual/package/add','ServiceController@addClientServiceContractualPackage');
+    Route::post('api/service/client/monthly/package/add','ServiceController@addClientServiceMonthlyPackage');
+    Route::post('api/client/monthly/service/charge/change','ServiceController@changeMonthlyCharge');
     Route::get('api/service/details/and/clients/{service_id}','ServiceController@serviceAndClients')->where('service_id','[0-9]+');
     //service client payment
     Route::post('api/store/client/payment','ServiceController@storeClientPayment');
+    Route::get('api/client/service/status/change/{service_id}','ServiceController@activeInactiveClientService');
     Route::get('api/client/service/details/and/payment/{client_id}','ServiceController@clientServiceAndPayment');
     //cron job api for due message to clients
     Route::get('api/send/contractual/service/due/notification','ServiceController@sendMessageToContractualDueClients');

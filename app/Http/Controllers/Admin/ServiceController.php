@@ -3,21 +3,22 @@
 namespace App\Http\Controllers\Admin;
 
 
+use Throwable;
 use App\Models\Credit;
 use App\Models\Balance;
 use App\Models\Service;
-use Illuminate\Http\Request;
-use App\Models\ServiceClient;
-use App\Models\MitMonthlyRecord;
-use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
-use App\Models\ServicePackage;
-use App\Models\ServicePackageBill;
-use App\Models\ServicePackagePayment;
 use App\Service\LogTracker;
 use App\Service\SmsService;
+use Illuminate\Http\Request;
+use App\Models\ServiceClient;
+use App\Models\ServicePackage;
+use App\Models\MitMonthlyRecord;
+use App\Service\AccountService;
+use App\Models\ServicePackageBill;
+use Illuminate\Support\Facades\DB;
 use Prophecy\Promise\ThrowPromise;
-use Throwable;
+use App\Http\Controllers\Controller;
+use App\Models\ServicePackagePayment;
 
 
 class ServiceController extends Controller
@@ -26,9 +27,14 @@ class ServiceController extends Controller
 
 
 
-   public function services(){
+   public function services(Request $request){
 
-         $services=Service::get();
+            if (!empty($request->type)) {
+                $services=Service::where('type',$request->type)->orderBy('name')->get()    ;
+            }else{
+                $services=Service::orderBy('name')->get()    ;
+            }
+
             return response()->json([
                    'services' => $services
             ]);
@@ -59,15 +65,47 @@ class ServiceController extends Controller
 
     }
 
+    public function changeMonthlyCharge(Request $request){
+
+            $service= ServicePackage::where('id',$request->service_id)->where('client_id',$request->client_id)->firstOrFail();
+            $service->monthly_charge = $request->monthly_charge  ;
+            $service->save();
+            return response()->json([
+                "success" => true,
+                "message" => 'charge updated' ,
+            ]);
+    }
+
+
+
+    public function activeInactiveClientService($id){
+
+            $service= ServicePackage::findOrFail($id);
+            $service->status = $service->status == 0 ? 1  : 0 ;
+            $service->save();
+            return response()->json([
+                "success" => true,
+                "message" => 'status changed' ,
+            ]);
+    }
+
+
+
+
 
     public function serviceAndClients($service_id){
 
          $service=Service::FindOrFail($service_id);
          $clients=ServicePackage::where('service_id',$service->id)
-                                    ->select(DB::raw('SUM(amount) as total_amount,SUM(paid) as total_paid, client_id'))
-                                    ->groupBy('client_id')->get()->each(function($item){
+                                    ->select(DB::raw('SUM(amount) as total_amount,SUM(paid) as total_paid, (SUM(amount) - SUM(paid)) as due_amount,id, client_id,monthly_charge,status'))
+                                    ->orderBy('due_amount' ,'desc')
+                                    ->groupBy('id')
+                                    ->groupBy('client_id')
+                                    ->groupBy('monthly_charge')
+                                    ->groupBy('status')
+                                    ->get()->each(function($item){
                                        $item->{'client_info'} = ServiceClient::where('id',$item->client_id)->select('id','name','company_name','phone')->first();
-                  });
+                                   });
 
          return response()->json([
                 'service' => $service,
@@ -80,7 +118,7 @@ class ServiceController extends Controller
 
     public function addService(Request $request){
 
-          $validatedData = $request->validate([
+          $data = $request->validate([
             'name' => 'required|unique:services',
           ]);
 
@@ -159,8 +197,6 @@ class ServiceController extends Controller
             ]);
         }
     }
-
-
 
 
 
@@ -274,8 +310,7 @@ class ServiceController extends Controller
 
 
 
-
-    public function addClientServicePackage(Request $request){
+    public function addClientServiceContractualPackage(Request $request){
 
           $data = $request->validate([
                 'client_id' => 'required',
@@ -287,10 +322,7 @@ class ServiceController extends Controller
                 'partials_paid_by' => 'nullable',
                 'partials_payment_amount' => 'nullable',
                 'is_monthly' => 'required',
-                'start_date' => 'nullable',
-                'end_date' => 'nullable',
                 'payment_date' => 'nullable',
-                'monthly_bill' => 'nullable',
           ]);
            DB::beginTransaction();
            try{
@@ -311,26 +343,6 @@ class ServiceController extends Controller
                     $service_package =  ServicePackage::query()->create($data);
                 }
 
-             }else{
-
-                    $data['is_paid'] =  $data['amount'] == $data['paid'] ? 1 : 0  ;
-                    $data['status'] = 1 ;
-                    $data['created_by'] = session()->get('admin')['id'] ;
-                    $service_package = ServicePackage::query()->create($data);
-                    //service package bill create according to service months
-
-                    for ($p=1; $p <= $this->dateDiffChecker($data['start_date'],$data['end_date']) ; $p++) {
-                         $data['service_package_id']= $service_package->id ;
-                         $data['month'] = date('m', strtotime($data['start_date'])) + $p - 1 ;
-                         $data['year'] =date('Y') <  date('Y', strtotime($data['end_date']))  ? date('Y') : date('Y', strtotime($data['end_date']))   ;
-                         $data['amount'] =  round($service_package->amount / $this->dateDiffChecker($data['start_date'],$data['end_date']),2)  ;
-                         //here we are checking if the paid amount is >= of total paid amount then inserting monthly bill and changing it's status as paid.
-                         // if the paid amount is less than of loop index then checking how much amount to be insert
-                         $data['paid'] =  $data['amount'] * $p  >= $request->paid   ?  $this->paymentInsertChecker($request->paid,$service_package->id)  :  $data['amount'];
-                         $data['status'] = $data['amount'] * $p  >= $request->paid   ? 0 : 1;
-                         ServicePackageBill::query()->create($data);
-                    }
-
              }
 
 
@@ -345,26 +357,10 @@ class ServiceController extends Controller
              if ($request->paid > 0) {
                     $balance=Balance::where('department','mit')->where('id',$data['credit_in'])->first();
                     $partial_balance=Balance::where('department','mit')->where('name',$data['partials_paid_by'])->first();
-                    $credit = new Credit();
-                    $credit->department = 'mit';
-                    $credit->purpose = 'service package sale'.$service->name .'('. $client->company_name .')' ;
-                    $credit->amount = $request->paid - $request->partials_payment_amount;
-                    $credit->credit_in=$balance->id;
-                    $credit->comment ='service package sale -'.$service->name  .'('. $client->company_name .')';
-                    $credit->date = date('Y-m-d');
-                    $credit->insert_admin_id=session()->get('admin')['id'];
-                    $credit->save();
+                    AccountService::creditStore ('service package sale'.$service->name .'('. $client->company_name .')',$request->paid - $request->partials_payment_amount,$balance->id,'service package sale -'.$service->name  .'('. $client->company_name .')');
                     //checking if partial payment receive
                     if($request->partials_payment_amount > 0){
-                        $credit = new Credit();
-                        $credit->department = 'mit';
-                        $credit->purpose = "service package sale ".$service->name .'('. $client->company_name .')' ;
-                        $credit->amount = $request->partials_payment_amount;
-                        $credit->credit_in=$partial_balance->id;
-                        $credit->comment ="service package sale, Partials Payment -".$service->name .'('. $client->company_name .')' ;
-                        $credit->date = date('Y-m-d');
-                        $credit->insert_admin_id=session()->get('admin')['id'];
-                        $credit->save();
+                       AccountService::creditStore ('service package sale'.$service->name .'('. $client->company_name .')',$request->partials_payment_amount,$partial_balance->id,"service package sale, Partials Payment -".$service->name .'('. $client->company_name .')');
                     }
                     //insert package payment.
                     $s_p_payment =  new ServicePackagePayment();
@@ -386,6 +382,65 @@ class ServiceController extends Controller
                 'message'=>'Added successfully'
              ]);
 
+           }catch(Throwable $e){
+                 LogTracker::failLog($e,session()->get('admin')['id']) ;
+                 DB::rollBack();
+                 return response()->json([
+                  'status'=>0,
+                  'message'=> $e->getMessage(),
+                 ]);
+           }
+
+
+    }
+
+
+
+
+    public function addClientServiceMonthlyPackage(Request $request){
+
+          $data = $request->validate([
+                'client_id' => 'required',
+                'service_id' => 'required',
+                'note' => 'nullable',
+                'is_monthly' => 'required',
+                'start_date' => 'nullable',
+                'end_date' => 'nullable',
+                'monthly_charge' => 'required|integer',
+          ]);
+           DB::beginTransaction();
+           try{
+                //if service package is contractual then service will be add,update in just service_packages table and if the service is monthly then record will insert in service package And also insert in service package bill according to service package months.
+                //firstly check if the same contractual service is taken.if taken by this client then just increase service amount otherwise, create a  new service record
+                $client=ServiceClient::findOrFail($data['client_id']);
+                $data['is_paid'] =  0  ;
+                $data['status'] = 1 ;
+                $data['amount'] = $data['monthly_charge'];
+                $data['created_by'] = session()->get('admin')['id'] ;
+                $service_package = ServicePackage::query()->create($data);
+                //service package bill create for first months
+                $data['service_package_id']= $service_package->id ;
+                $data['month'] = date('m', strtotime($data['start_date'])) ;
+                $data['year'] =date('Y');
+                $data['end_date'] = date('Y-m-d', strtotime($data['start_date']. ' +29 days'));  ;
+                $data['amount'] =  $data['monthly_charge']    ;
+                $data['paid'] =  0 ;
+                $data['status'] =  0 ;
+                ServicePackageBill::query()->create($data);
+                //increasing client total_money
+                $service= Service::findOrFail($data['service_id']);
+                $client=ServiceClient::findOrFail($data['client_id']);
+                $client->total_amount = round(floatval($client->total_amount),2) + round(floatval($data['monthly_charge']),2) ;
+                $client->save();
+                //send message to client
+                SmsService::sendNewServiceMessage($client,$service->name,$data['monthly_charge'],0);
+
+                DB::commit();
+                return response()->json([
+                    'status'=>1,
+                    'message'=>'Added successfully'
+                ]);
+
            }catch(\Throwable $e){
                  LogTracker::failLog($e,session()->get('admin')['id']) ;
                  DB::rollBack();
@@ -397,6 +452,9 @@ class ServiceController extends Controller
 
 
     }
+
+
+
 
     public function paymentInsertChecker($total_paid,$service_package_id){
 
@@ -437,7 +495,7 @@ class ServiceController extends Controller
                 'is_regular' => 'required',
                 'is_monthly' => 'required',
                 'amount' => 'required',
-                'credit_in' => 'required',
+                'credit_in' => 'nullable|integer',
               ]);
               DB::beginTransaction();
               try{
@@ -484,18 +542,20 @@ class ServiceController extends Controller
                   $client->total_paid_amount = floatval($client->total_paid_amount) + floatval($request->amount) ;
                   $client->save();
                   //insert credit
-                  $balance=Balance::findOrFail($request->credit_in);
-                  $service=Service::findOrFail($package->service_id);
-                  $credit = new Credit();
-                  $credit->purpose = "payment of ".$service->name." service  from " .'-'. $client->company_name  ;
-                  $credit->department = 'mit' ;
-                  $credit->amount = $request->amount ;
-                  $credit->comment = $request->comment ?? $service->name." service  from " .'-'. $client->company_name ;
-                  $credit->date = date('Y-m-d');
-                  $credit->credit_in=$balance->id;
-                  $credit->insert_admin_id=session()->get('admin')['id'];
-                  $credit->save();
-                SmsService::servicePaymentConfirmationMessage($client,$package);
+                if ($data['is_regular'] == 0) {
+                    $balance=Balance::findOrFail($request->credit_in);
+                    $service=Service::findOrFail($package->service_id);
+                    $credit = new Credit();
+                    $credit->purpose = "payment of ".$service->name." service  from " .'-'. $client->company_name  ;
+                    $credit->department = 'mit' ;
+                    $credit->amount = $request->amount ;
+                    $credit->comment = $request->comment ?? $service->name." service  from " .'-'. $client->company_name ;
+                    $credit->date = date('Y-m-d');
+                    $credit->credit_in=$balance->id;
+                    $credit->insert_admin_id=session()->get('admin')['id'];
+                    $credit->save();
+                    SmsService::servicePaymentConfirmationMessage($client,$package);
+                }
                 DB::commit();
                 return response()->json([
                     'status'=>'OK',
@@ -550,21 +610,15 @@ class ServiceController extends Controller
 
     public function storeMitMonthlyRecord(Request $request){
 
-              $validatedData = $request->validate([
+              $data = $request->validate([
                 'mit_id' => 'required',
                 'month' => 'required',
                 'received_amount' => 'required',
                 'cost_amount' => 'required',
+                'comment' => 'nullable',
               ]);
 
-                  $analysis= new MitMonthlyRecord();
-                  $analysis->mit_id=$request->mit_id;
-                  $analysis->month=$request->month;
-                  $analysis->received_amount=$request->received_amount;
-                  $analysis->cost_amount=$request->cost_amount;
-                  $analysis->comment=$request->comment ?? null;
-                  $analysis->save();
-
+                MitMonthlyRecord::query()->create($data);
                 return response()->json([
                     'status'=>'OK',
                     'message'=>'added  successfully'

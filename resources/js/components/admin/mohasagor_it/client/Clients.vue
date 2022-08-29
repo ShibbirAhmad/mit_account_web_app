@@ -17,7 +17,7 @@
         </ol>
       </section>
       <section class="content">
-        <div class="container">
+        <div class="container-fluid">
           <div class="row">
             <div class="col-lg-11 col-md-11 ">
               <div class="box box-primary">
@@ -60,16 +60,16 @@
                           </td>
                         <td>
 
-                         <router-link style="font-size:15px;color:blue" :to="{name:'service_client_and_payment',params:{client_id:item.id}}"> {{ item.company_name }} </router-link>
+                         <router-link style="font-size:15px;color:blue" :to="{name:'service_client_and_payment',params:{client_id:item.id},}"> {{ item.company_name }} </router-link>
 
                         </td>
                           <td>{{ item.phone }} </td>
 
-                          <td> <span class=""> <i class="fa fa-money"></i> {{ item.total_amount }}  </span> </td>
-                          <td> <span class=""> <i class="fa fa-money"></i> {{ item.total_paid_amount }}  </span> </td>
-                          <td> <span class=""> <i class="fa fa-money"></i> {{ item.total_amount - item.total_paid_amount   }}  </span> </td>
+                          <td> <span class="">  {{ item.total_amount }}  </span> </td>
+                          <td> <span class="">  {{ item.total_paid_amount }}  </span> </td>
+                          <td> <span v-if="(parseInt(item.total_amount) - parseInt(item.total_paid_amount) ) > 0" style="background:rgb(225 68 68);min-width:80px;" class="badge ">  {{ parseInt(item.total_amount) - parseInt(item.total_paid_amount)    }}  </span> </td>
                           <td>
-                           <router-link :to="{name:'service_client_edit',params:{id:item.id}}" class="btn btn-xs btn-success"  > <i class="fa fa-edit"></i> </router-link>
+                           <router-link :to="{name:'service_client_edit',params:{id:item.id},}" class="btn btn-xs btn-success"  > <i class="fa fa-edit"></i> </router-link>
                           </td>
                       </tr>
                       <tr>

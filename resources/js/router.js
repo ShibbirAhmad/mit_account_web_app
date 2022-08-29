@@ -1700,7 +1700,7 @@ const routes = [
 
 
     {
-        path: '/backend/service/package/add/',
+        path: '/backend/service/package/add/:client_phone?',
         name: 'service_package_add',
         component: () => import(/*webpackChunkName: "service_package_add" */'./components/admin/mohasagor_it/package/Add.vue'),
         meta: {

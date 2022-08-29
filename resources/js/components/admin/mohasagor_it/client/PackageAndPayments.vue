@@ -8,6 +8,10 @@
           <a @click="goBack" class="btn btn-primary">
             <i class="fa fa-arrow-left"></i>
           </a>
+          <router-link  :to="{name:'service_package_add',params:{client_phone:client.phone },}" class="btn btn-primary">
+            <i class="fa fa-plus"></i> add new service
+          </router-link>
+
         </h1>
         <ol class="breadcrumb">
           <li>
@@ -18,7 +22,7 @@
       </section>
       <section class="content">
         <h1 style="text-align:center" v-if="loading"> <i class="fa fa-spinner fa-spin"></i> </h1>
-        <div v-else class="container">
+        <div v-else class="container-fluid">
           <div class="row over_view_row">
             <div class="col-md-6 col-xs-12">
               <h5 class="heading">
@@ -62,7 +66,7 @@
             </div>
           </div>
           <div class="row data_table_row">
-            <div class="col-md-12 col-sm-12">
+            <div class="col-lg-12 col-xl-12 col-md-12 col-sm-12">
               <div class="box box-primary">
                 <div class="box-header with-border text-center">
                   <a
@@ -316,7 +320,7 @@
               <label for="credit_in"
                 >Credit In<b class="text-danger">*</b></label
               >
-              <select required class="form-control" v-model="form.credit_in">
+              <select  class="form-control" v-model="form.credit_in">
                 <option value="" disabled selected>Select Balance</option>
                 <option
                   v-for="(balance, index) in balance"
@@ -333,6 +337,7 @@
                 >Payment Type <b class="text-danger">*</b>
               </label>
               <select required class="form-control" v-model="form.is_regular">
+                <option disabled value="">select payment type</option>
                 <option value="0">Regular</option>
                 <option value="1">Discount/Loss Payment</option>
               </select>
@@ -403,7 +408,7 @@ export default {
         credit_in: "",
         amount: "",
         is_monthly: null,
-        is_regular: 0,
+        is_regular: '',
         comment: "",
         trx_id: "",
         due: "",
@@ -413,7 +418,8 @@ export default {
     };
   },
   methods: {
-    getClientsPayment() {
+  async  getClientsPayment() {
+
       if (this.form.amount > this.form.due) {
         alert(
           "Paid amount is grater than the due amount. maximum receive able amount is " +
@@ -423,7 +429,12 @@ export default {
         return;
       }
 
-      this.form
+      if(this.form.amount > 0 && this.form.is_regular == 0 && this.form.credit_in == '') {
+        alert('select balance');
+        return;
+      }
+
+   await   this.form
         .post("/api/store/client/payment", {
           transformRequest: [
             function (data, headers) {
@@ -449,16 +460,11 @@ export default {
             this.transactionDetails();
             this.$modal.hide("paid");
           } else {
-            this.$toasted.show(resp.data.message, {
-              type: "error",
-              position: "top-center",
-              duration: 4000,
-            });
+            this.$toastr.e(resp.data.message);
           }
         })
-        .catch((e) => {
-          this.errors = [];
-          this.errors.push(e.response.data.errors);
+        .catch((error) => {
+           this.$toastr.e(error.response.data.message);
         });
     },
 

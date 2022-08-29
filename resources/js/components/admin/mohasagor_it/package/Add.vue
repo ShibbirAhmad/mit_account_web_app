@@ -20,11 +20,27 @@
           <div class="col-lg-12 col-md-12 col-sm-12">
             <div class="row">
               <div class="service_container col-lg-7 col-md-7 col-xs-12">
-                <form
-                  @submit.prevent="addClientPackage"
-                  @keydown="form.onKeydown($event)"
-                  enctype="multipart/form-data"
-                >
+
+                    <div style="margin:30px 10px;">
+                      <a
+                    class="btn btn_conditional"
+                    @click="filterService(2) "
+                    :class="{ active_border:form.is_monthly == 2 }"
+                  >
+                    Contractual Service
+                  </a>
+
+                  <a
+                    class="btn btn_conditional"
+                    @click="filterService(1)"
+                   :class="{ active_border:form.is_monthly == 1 }"
+                  >
+                    Monthly Service
+                  </a>
+                    </div>
+
+                <form v-if="form.is_monthly==2 "
+                  @submit.prevent="addClientContractualPackage" >
                   <div class="alert-danger alert" v-if="error">
                     {{ error }}
                   </div>
@@ -35,7 +51,6 @@
                     <input
                       v-model="client_phone"
                       type="text"
-                      autofocus
                       name="phone"
                       placeholder="01xxxxxxxxx"
                       class="form-control"
@@ -68,58 +83,6 @@
                       <has-error :form="form" field="service_id"></has-error>
                     </div>
 
-                    <div class="form-group">
-                      <label> Service Type</label>
-                      <select
-                        required
-                        name="is_monthly"
-                        v-model="form.is_monthly"
-                        class="form-control"
-                        :class="{ 'is-invalid': form.errors.has('is_monthly') }"
-                      >
-                        <option value="2">Contractual</option>
-                        <option value="1">Monthly</option>
-                      </select>
-                      <has-error :form="form" field="is_monthly"></has-error>
-                    </div>
-
-                    <div v-show="form.is_monthly == 1" class="row">
-                      <div class="col-lg-6 col-md-6">
-                        <div class="form-group">
-                          <label>Start Date </label>
-                          <date-picker
-                            autocomplete="off"
-                            :class="{
-                              'is-invalid': form.errors.has('start_date'),
-                            }"
-                            v-model="form.start_date"
-                            :config="options"
-                          >
-                          </date-picker>
-                          <has-error
-                            :form="form"
-                            field="start_date"
-                          ></has-error>
-                        </div>
-                      </div>
-
-                      <div class="col-lg-6 col-md-6">
-                        <div class="form-group">
-                          <label>End Date </label>
-                          <date-picker
-                            autocomplete="off"
-                            :class="{
-                              'is-invalid': form.errors.has('end_date'),
-                            }"
-                            v-model="form.end_date"
-                            :config="options"
-                          >
-                          </date-picker>
-                          <has-error :form="form" field="end_date"></has-error>
-                        </div>
-                      </div>
-                    </div>
-
                     <div class="row">
                       <div class="col-lg-6 col-md-6">
                         <div class="form-group">
@@ -129,7 +92,6 @@
                             v-model="form.amount"
                             type="number"
                             name="amount"
-                            @keyup="dueCalculate"
                             class="form-control"
                             :class="{
                               'is-invalid': form.errors.has('amount'),
@@ -158,20 +120,7 @@
                         </div>
                       </div>
 
-                      <div
-                        v-show="this.form.is_monthly == 1"
-                        class="col-md-12 col-lg-12"
-                      >
-                        <div class="form-group">
-                          <label> Average bill of every month </label>
-                          <input
-                            v-model="form.monthly_bill"
-                            type="text"
-                            readonly
-                            class="form-control"
-                          />
-                        </div>
-                      </div>
+
                     </div>
 
                     <div class="row">
@@ -252,6 +201,122 @@
                     </div>
                   </div>
                 </form>
+
+
+
+                <form v-else
+                  @submit.prevent="addClientMonthlyPackage"
+                >
+                  <div class="alert-danger alert" v-if="error">
+                    {{ error }}
+                  </div>
+
+                  <div class="form-group">
+                    <label>Client Phone Number</label>
+
+                    <input
+                      v-model="client_phone"
+                      type="text"
+                      name="phone"
+                      placeholder="01xxxxxxxxx"
+                      class="form-control"
+                      maxlength="11"
+                      minlength="11"
+                      autocomplete="off"
+                      @keyup="searchClient"
+                    />
+                    <has-error :form="form" field="phone"></has-error>
+                  </div>
+                  <div v-if="client">
+                    <div class="form-group">
+                      <label> Select Service</label>
+                      <select
+                        name="service_id"
+                        v-model="form.service_id"
+                        required
+                        class="form-control"
+                        :class="{ 'is-invalid': form.errors.has('service_id') }"
+                      >
+                        <option value="" disabled>select one</option>
+                        <option
+                          v-for="(service, index) in services"
+                          :key="index"
+                          :value="service.id"
+                        >
+                          {{ service.name }}
+                        </option>
+                      </select>
+                      <has-error :form="form" field="service_id"></has-error>
+                    </div>
+
+
+
+                    <div  class="row">
+                      <div class="col-lg-6 col-md-6">
+                        <div class="form-group">
+                          <label>Start Date </label>
+                          <date-picker
+                            autocomplete="off"
+                            :class="{
+                              'is-invalid': form.errors.has('start_date'),
+                            }"
+                            v-model="form.start_date"
+                            :config="options"
+                          >
+                          </date-picker>
+                          <has-error
+                            :form="form"
+                            field="start_date"
+                          ></has-error>
+                        </div>
+                      </div>
+
+
+                    <div class="col-lg-6 col-md-6">
+                        <div class="form-group">
+                          <label>  Monthly Charge </label>
+                          <input
+                            v-model.number="form.monthly_charge"
+                            type="number"
+                            name="monthly_charge"
+                            class="form-control"
+                            required
+                            placeholder="0"
+                          />
+                        </div>
+                      </div>
+
+                    </div>
+
+
+
+
+                    <div class="form-group">
+                      <input
+                        v-model="form.note"
+                        type="text"
+                        name="note"
+                        class="form-control"
+                        placeholder="Write Comment/Note(if required)"
+                      />
+                    </div>
+
+
+                    <div class="form-group text-center">
+                      <button
+                        :disabled="form.busy"
+                        type="submit"
+                        class="btn btn-primary"
+                      >
+                        <i class="fa fa-spin fa-spinner" v-if="form.busy"></i
+                        >Submit
+                      </button>
+                    </div>
+                  </div>
+                </form>
+
+
+
               </div>
 
               <div class="service_container col-lg-4 col-md-4 col-xs-12">
@@ -299,13 +364,15 @@ import { Form, HasError, AlertError } from "vform";
 import datePicker from "vue-bootstrap-datetimepicker";
 Vue.component(HasError.name, HasError, datePicker);
 export default {
-  created() {
+  mounted() {
     this.getServices();
     this.balanceList();
     this.todayDate();
+    this.getClientInfo();
   },
   data() {
     return {
+
       form: new Form({
         client_id: null,
         service_id: "",
@@ -315,7 +382,7 @@ export default {
         due: null,
         is_monthly: 2,
         total_service_month: 0,
-        monthly_bill: 0,
+        monthly_charge: 0,
         note: "",
         start_date: null,
         end_date: null,
@@ -336,21 +403,34 @@ export default {
   },
 
   methods: {
-    async addClientPackage() {
-      //checking payment balance if paid
-      if (this.form.paid > 0 && this.form.credit_in == "") {
-        alert("select credit balance");
+
+    filterService(type){
+       this.form.is_monthly=type ;
+       this.getServices();
+    },
+
+    getClientInfo(){
+      if (this.$route.params.client_phone) {
+          this.client_phone = this.$route.params.client_phone ;
+          setTimeout(() => {
+            this.searchClient();
+          }, 1000);
+      }
+    },
+
+    async addClientMonthlyPackage() {
+
+      if (this.form.monthly_charge <= 0) {
+        alert("monthly charge cant be less than one ");
         return;
       }
-      //checking date if package is monthly
-      if (
-        (  this.form.is_monthly == 1 && this.form.start_date == null ) ||
-         ( this.form.is_monthly == 1 && this.form.end_date == null) ) {
-        alert("set date limit of service package");
+
+      if ((this.form.is_monthly == 1 && this.form.start_date == null )) {
+        alert("set start date of service package");
         return;
       }
       await this.form
-        .post("/api/service/client/package/add")
+        .post("/api/service/client/monthly/package/add")
         .then((resp) => {
           console.log(resp);
           if (resp.data.status == 1) {
@@ -358,19 +438,42 @@ export default {
               name: "service_details",
               params: { id: this.form.service_id },
             });
-            this.$toasted.show(resp.data.message, {
-              type: "success",
-              position: "top-right",
-              duration: 4000,
-            });
+            this.$toastr.s(resp.data.message);
           } else {
             this.error = resp.data.message;
           }
         })
         .catch((error) => {
-          console.log(error);
+            this.$toastr.e(error.response.data.message);
         });
     },
+
+    async addClientContractualPackage() {
+      //checking payment balance if paid
+      if (this.form.paid > 0 && this.form.credit_in == "") {
+        alert("select credit balance");
+        return;
+      }
+
+      await this.form
+        .post("/api/service/client/contractual/package/add")
+        .then((resp) => {
+          console.log(resp);
+          if (resp.data.status == 1) {
+            this.$router.push({
+              name: "service_details",
+              params: { id: this.form.service_id },
+            });
+            this.$toastr.s(resp.data.message);
+          } else {
+            this.error = resp.data.message;
+          }
+        })
+        .catch((error) => {
+          this.$toastr.e(error.response.data.message);
+        });
+    },
+
 
     monthDiff() {
       let months;
@@ -401,15 +504,6 @@ export default {
     },
 
     dueCalculate() {
-      //checking monthly condition
-      if (this.form.is_monthly == 1) {
-        if (this.form.end_date == null) {
-          alert("select end of the package date");
-          this.form.amount = 0;
-          return;
-        }
-        this.averageBillCalculate();
-      }
 
       let amount = this.form.amount.length <= 0 && this.form.amount <= 0 ? 0 : parseFloat(this.form.amount);
       let paid = this.form.paid.length <= 0 && this.form.paid <= 0 ? 0 : parseFloat(this.form.paid);
@@ -473,7 +567,13 @@ export default {
     },
 
     getServices() {
-      axios.get("/api/services").then((resp) => {
+      axios.get("/api/services",
+      {
+        params:{
+          type : this.form.is_monthly
+        }
+      })
+      .then((resp) => {
         console.log(resp);
         this.services = resp.data.services;
       });
@@ -515,18 +615,30 @@ export default {
 
   },
   computed:{
-      end_date: function (value) {
-      if (value.length > 1) {
-        console.log(value);
-        this.dueCalculate();
-      }
-    },
+
   }
 
 };
 </script>
 
 <style scoped>
+
+
+
+.active_border {
+  color: #000;
+  border-bottom: 2px dashed #000;
+}
+
+.btn_conditional {
+  box-shadow: 0 1pt 12pt rgb(150 165 237);
+  font-size: 16px;
+  font-weight: bold;
+  font-family: serif;
+  margin: 0px 20px;
+}
+
+
 .mb-2 {
   margin-bottom: 5px !important;
 }

@@ -6,10 +6,24 @@
 
      <link href="{{asset('logo.png') }}" rel="icon" />
 
-    <title>Mohasagor.com</title>
+    <title>MIT</title>
     @include('admin.partials.css')
 </head>
 <style>
+
+
+    @media only screen and (max-width:1200px) {
+        .col-lg-11 {
+            width: 100% !important;
+            overflow-x: auto;
+        }
+    }
+    @media only screen and (min-width:1200px) {
+        .col-lg-11 {
+            width: 100% !important;
+        }
+    }
+
 
 ::-webkit-scrollbar {
     width:10px;

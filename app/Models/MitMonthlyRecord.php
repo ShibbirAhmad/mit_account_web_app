@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class MitMonthlyRecord extends Model
 {
-    //
+     protected $guarded = [] ;
 }
