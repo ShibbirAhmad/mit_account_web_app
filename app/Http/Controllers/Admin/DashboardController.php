@@ -62,7 +62,7 @@ class DashboardController extends Controller
 
     public function DepartmentWiseAccounts(Request $request){
 
-        $balance=Balance::where('department',$request->department)->with('today_credit_balance','total_credit_balance','today_debit_balance','total_debit_balance')->get();
+        $balance=Balance::where('status',1)->where('department',$request->department)->with('today_credit_balance','total_credit_balance','today_debit_balance','total_debit_balance')->get();
         return response()->json([
             'balance' => $balance,
         ]);

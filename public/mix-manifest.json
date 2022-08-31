@@ -1,4 +1,6 @@
 {
+    "/chunks/vendors~SupplierAmount~accoun_purpose_edit~account_login~account_purpose_add~addCompany~addFabricsSu~fb72a5aa.js": "/chunks/vendors~SupplierAmount~accoun_purpose_edit~account_login~account_purpose_add~addCompany~addFabricsSu~fb72a5aa.js",
+    "/chunks/vendors~add_carrier~admin_note_add~company_assets_add~company_assets_edit~edit_carrier~generl settin~8b6b1f93.js": "/chunks/vendors~add_carrier~admin_note_add~company_assets_add~company_assets_edit~edit_carrier~generl settin~8b6b1f93.js",
     "/js/app.js": "/js/app.js",
     "/css/app.css": "/css/app.css",
     "/chunks/AccountReport.js": "/chunks/AccountReport.js",
@@ -166,13 +168,5 @@
     "/chunks/tourism_fund_transfer.js": "/chunks/tourism_fund_transfer.js",
     "/chunks/tourism_fund_transfer_add.js": "/chunks/tourism_fund_transfer_add.js",
     "/chunks/user.js": "/chunks/user.js",
-    "/chunks/variant.js": "/chunks/variant.js",
-    "/chunks/vendors~SupplierAmount~accoun_purpose_edit~account_login~account_purpose_add~addCompany~addFabricsSu~fb72a5aa.js": "/chunks/vendors~SupplierAmount~accoun_purpose_edit~account_login~account_purpose_add~addCompany~addFabricsSu~fb72a5aa.js",
-    "/chunks/vendors~add_carrier~admin_note_add~company_assets_add~company_assets_edit~edit_carrier~generl settin~8b6b1f93.js": "/chunks/vendors~add_carrier~admin_note_add~company_assets_add~company_assets_edit~edit_carrier~generl settin~8b6b1f93.js",
-    "/chunks/vendors~admin/director_payment_details~boost_agency~boost_agency_add~boost_agency_reseller_add~boost~62475b32.js": "/chunks/vendors~admin/director_payment_details~boost_agency~boost_agency_add~boost_agency_reseller_add~boost~62475b32.js",
-    "/chunks/vendors~adminProfile~boost_debit_add~debitAdd~mit_debit_add.js": "/chunks/vendors~adminProfile~boost_debit_add~debitAdd~mit_debit_add.js",
-    "/chunks/vendors~admin/director_payment_details~boost_agency~boost_agency_add~boost_agency_reseller_add~boost~0d85ceeb.js": "/chunks/vendors~admin/director_payment_details~boost_agency~boost_agency_add~boost_agency_reseller_add~boost~0d85ceeb.js",
-    "/chunks/vendors~SupplierAmount~accoun_purpose_edit~account_login~account_purpose_add~addCompany~addFabricsSu~2da03542.js": "/chunks/vendors~SupplierAmount~accoun_purpose_edit~account_login~account_purpose_add~addCompany~addFabricsSu~2da03542.js",
-    "/chunks/vendors~SupplierAmount~accoun_purpose_edit~account_login~account_purpose_add~addCompany~addFabricsSu~d8b46532.js": "/chunks/vendors~SupplierAmount~accoun_purpose_edit~account_login~account_purpose_add~addCompany~addFabricsSu~d8b46532.js",
-    "/chunks/vendors~admin/director_payment_details~boost_agency~boost_agency_add~boost_agency_reseller_add~boost~9c2f784f.js": "/chunks/vendors~admin/director_payment_details~boost_agency~boost_agency_add~boost_agency_reseller_add~boost~9c2f784f.js"
+    "/chunks/variant.js": "/chunks/variant.js"
 }

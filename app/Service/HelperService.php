@@ -47,6 +47,29 @@ class   HelperService{
 
 
 
+    public static function dateDiffCheckerMonth($start_date,$end_date){
+
+            $start = strtotime($start_date);
+            $end = strtotime($end_date);
+            $diff = ((date('Y', $end) - date('Y', $start)) * 12) + (date('m', $end) - date('m', $start));
+            return $diff ;
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
  }
 
 

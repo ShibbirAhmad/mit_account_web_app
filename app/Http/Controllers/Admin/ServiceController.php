@@ -65,6 +65,8 @@ class ServiceController extends Controller
 
     }
 
+
+
     public function changeMonthlyCharge(Request $request){
 
             $service= ServicePackage::where('id',$request->service_id)->where('client_id',$request->client_id)->firstOrFail();
@@ -335,6 +337,7 @@ class ServiceController extends Controller
                 if (!empty($service_package)) {
                     $service_package->amount = round(floatval($service_package->amount),2) + round(floatval($data['amount']),2);
                     $service_package->paid =  round(floatval($service_package->paid),2) + round(floatval($data['paid']),2);
+                    $service_package->is_paid =  $service_package->amount == $service_package->paid  ? 1 : 0 ;
                     $service_package->save();
                 }else{
                     $data['is_paid'] =  $data['amount'] == $data['paid'] ? 1 : 0  ;
@@ -422,7 +425,7 @@ class ServiceController extends Controller
                 $data['service_package_id']= $service_package->id ;
                 $data['month'] = date('m', strtotime($data['start_date'])) ;
                 $data['year'] =date('Y');
-                $data['end_date'] = date('Y-m-d', strtotime($data['start_date']. ' +29 days'));  ;
+                $data['end_date'] = date('Y-m-d', strtotime($data['start_date']. ' +29 days'));
                 $data['amount'] =  $data['monthly_charge']    ;
                 $data['paid'] =  0 ;
                 $data['status'] =  0 ;
@@ -465,26 +468,6 @@ class ServiceController extends Controller
 
 
 
-    public function dateDiffChecker($start_date,$end_date){
-
-            $start = strtotime($start_date);
-            $end = strtotime($end_date);
-            //difference of year
-            $year1 = date('Y', $start);
-            $year2 = date('Y', $end);
-            //difference of month
-            $month1 = date('m', $start);
-            $month2 = date('m', $end);
-
-            $diff = (($year2 - $year1) * 12) + ($month2 - $month1);
-            return $diff ;
-
-    }
-
-
-
-
-
     public function storeClientPayment(Request $request){
 
               $data = $request->validate([
@@ -517,21 +500,23 @@ class ServiceController extends Controller
                         for($b=0; $b < count($bills); $b++) {
                             //if parallel due amount is greater than the requested amount then insert full due amount and if not then insert acceptable amount.
                              $due_amount = ( floatval($bills[$b]->amount) - floatval($bills[$b]->paid) ) ;
-                             $is_true = (floatval($due_amount) * floatval( $b + 1 )) <= floatval($request->amount) ?  true : false ;
+                             $is_true = floatval($due_amount)  <= (floatval($request->amount) - floatval($paid_amount_inserted)) ?  true : false ;
                             if ($is_true==1) {
                                  $paid_amount_inserted += intval($due_amount);
                                  $bills[$b]->paid = floatval($bills[$b]->paid) + floatval($due_amount) ;
-                            } else {
+                                 $bills[$b]->status = floatval($bills[$b]->amount) == floatval($bills[$b]->paid) ? 1 : 0 ;
+                                 $bills[$b]->save();
+                            }else{
                                 //if the inserted amount is match/equal with requested amount then loop will exit
                                 if ($paid_amount_inserted == $request->amount) {
                                     break;
                                 }
-                              $insert_able_amount=(floatval($bills[$b]->paid) + floatval($request->amount)) - floatval($paid_amount_inserted) ;
-                              $bills[$b]->paid = $insert_able_amount ;
-                              $paid_amount_inserted += intval($insert_able_amount) ;
+                                 $last_insert_able_amount =  floatval($request->amount) - floatval($paid_amount_inserted) ;
+                                 $paid_amount_inserted += intval($last_insert_able_amount);
+                                 $bills[$b]->paid = floatval($bills[$b]->paid) + floatval($last_insert_able_amount) ;
+                                 $bills[$b]->status = floatval($bills[$b]->amount) == floatval($bills[$b]->paid) ? 1 : 0 ;
+                                 $bills[$b]->save();
                             }
-                            $bills[$b]->status = floatval($bills[$b]->amount) == floatval($bills[$b]->paid) ? 1 : 0 ;
-                            $bills[$b]->save();
                         }
                   }else{
                         $package->paid= floatval($package->paid) + floatval($request->amount) ;
@@ -545,15 +530,8 @@ class ServiceController extends Controller
                 if ($data['is_regular'] == 0) {
                     $balance=Balance::findOrFail($request->credit_in);
                     $service=Service::findOrFail($package->service_id);
-                    $credit = new Credit();
-                    $credit->purpose = "payment of ".$service->name." service  from " .'-'. $client->company_name  ;
-                    $credit->department = 'mit' ;
-                    $credit->amount = $request->amount ;
-                    $credit->comment = $request->comment ?? $service->name." service  from " .'-'. $client->company_name ;
-                    $credit->date = date('Y-m-d');
-                    $credit->credit_in=$balance->id;
-                    $credit->insert_admin_id=session()->get('admin')['id'];
-                    $credit->save();
+                    $comment = $request->comment ?? $service->name." service  from " .'-'. $client->company_name;
+                    AccountService::creditStore("payment of ".$service->name." service  from " .'-'. $client->company_name,$request->amount,$balance->id,$comment);
                     SmsService::servicePaymentConfirmationMessage($client,$package);
                 }
                 DB::commit();

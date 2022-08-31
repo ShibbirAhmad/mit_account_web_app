@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Console;
-
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -13,9 +12,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-       'App\Console\Commands\DatabaseBackUp',
-       'App\Console\Commands\ContractualServicePayment',
-       'App\Console\Commands\MonthlyServicePayment'
+
     ];
 
     /**
@@ -26,11 +23,11 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
-        $schedule->command('database:backup')->everyMinute();
-        $schedule->command('notify:contractualServicePayment ')->monthly();
+        // $schedule->command('inspire')->hourly();
+        $schedule->command('generate:newBillGenerate')->daily()->appendOutputTo('scheduler.log');
         $schedule->command('notify:monthlyServicePayment')->monthly();
+
+
     }
 
     /**

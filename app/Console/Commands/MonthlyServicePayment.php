@@ -40,15 +40,17 @@ class MonthlyServicePayment extends Command
      */
     public function handle()
     {
+
            //send message to monthly service clients
-           $clients= ServicePackage::where('is_monthly',1)->where('is_paid',0)->where('status',1)->with(['client:id,name,phone','service:id,name'])->get();
-           foreach ($clients as  $item) {
-               //checking is there  due amount of current month and current year
-               $bill= ServicePackageBill::where('service_package_id',$item->id)->where('month',intval(date('m')))->where('year',date('Y'))->where('status',0)->first();
-               if (!empty($bill)) {
-                   $due_amount = intval($bill->amount) - intval($bill->paid) ;
-                   SmsService::sendDueMessageToClient($item->client->phone,$item->client->name,$item->service->name,$due_amount);
-               }
-            }
+           ServicePackage::where('is_monthly',1)->where('is_paid',0)->where('status',1)->with(['client:id,name,phone','service:id,name'])->get()->each(function($item){
+                 $due_amount = intval($item->amount) - intval($item->paid);
+                 if ($due_amount > 0) {
+                    SmsService::sendDueMessageToClient($item->client->phone,$item->client->name,$item->service->name,$due_amount);
+                 }
+           });
+
+
+
+
     }
 }

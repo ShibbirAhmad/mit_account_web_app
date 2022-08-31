@@ -140,6 +140,16 @@ if (session()->has('admin')) {
 
 
             <li class="treeview">
+                <a to="/"><i class="fa fa-list"></i> <span>
+
+                        <router-link :to="{ name: 'bill_statement' }">Manage Bills
+                        </router-link>
+
+                    </span> </a>
+            </li>
+
+
+            <li class="treeview">
                 <a to="/"><i class="fa fa-user-secret"></i> <span>
                         <router-link :to="{ name: 'directors' }">Directors</router-link>
                     </span> </a>

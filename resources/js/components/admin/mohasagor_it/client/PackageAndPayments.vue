@@ -168,15 +168,12 @@
                     >
                       <tr>
                         <th width="5%">#</th>
-                        <!-- <th width="5%">Date</th> -->
                         <th width="10%">Name</th>
-                        <th width="43%">Bills</th>
-                        <th width="7%">Amount</th>
-                        <th width="7%">Paid</th>
-                        <th width="7%">Due</th>
+                        <th width="55%">Bills</th>
+                        <th width="10%">Amount</th>
                         <th width="5%">Status</th>
                         <th width="8%">Created By</th>
-                        <th width="8%">Action</th>
+                        <th width="7%">Action</th>
                       </tr>
                       <tbody>
                         <tr
@@ -184,7 +181,6 @@
                           :key="index"
                         >
                           <td>{{ index + 1 }}</td>
-                          <!-- <td>{{ new Date(item.created_at).toLocaleDateString()  }}</td> -->
                           <td>{{ item.service.name }}</td>
                           <td>
                             <table class="table table-hover table-bordered table-centered table-striped">
@@ -202,9 +198,9 @@
                                 <tr v-for="(bill,index) in item.bills" :key="index">
                                   <td>{{ bill.start_date }}</td>
                                   <td>{{ bill.end_date }}</td>
-                                  <td>{{ parseFloat(bill.amount).toFixed(2) }}</td>
-                                  <td>{{ parseFloat(bill.paid).toFixed(2) }}</td>
-                                  <td>{{ ( parseFloat(bill.amount) - parseFloat(bill.paid) ).toFixed(2) }}</td>
+                                  <td>{{ parseFloat(bill.amount).toFixed(0) }}</td>
+                                  <td>{{ parseFloat(bill.paid).toFixed(0) }}</td>
+                                  <td>{{ ( parseFloat(bill.amount) - parseFloat(bill.paid) ).toFixed(0) }}</td>
                                   <td>
                                    <span class="badge badge-success"  v-if="bill.status==1">Paid</span>
                                    <span  class="badge badge-warning" v-else>Due</span>
@@ -215,11 +211,14 @@
                               </tbody>
                             </table>
                           </td>
-                          <td>{{ item.amount }}</td>
-                          <td>{{ item.paid }}</td>
                           <td>
-                            {{ parseInt(item.amount) - parseInt(item.paid) }}
-                          </td>
+                            <div>
+                              <p> total : {{ parseInt(item.amount)  }} </p>
+                              <p> paid : {{ parseInt(item.paid)  }} </p>
+                              <p> due :  {{ parseInt(item.amount) - parseInt(item.paid) }} </p>
+                            </div>
+                            </td>
+
                           <td>
                             <span
                               v-if="item.is_paid == 1"
@@ -293,7 +292,7 @@
       <form @submit.prevent="getClientsPayment">
         <div class="card" style="padding: 20px">
           <div class="card-header text-center">
-            <div class="alert-danger alert" v-if="error">
+            <div class="alert-danger alert" v-if="errors">
                     {{ errors }}
              </div>
             <h4 style="font-weight: bold" class="card-title">

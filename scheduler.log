@@ -1,0 +1,46 @@
+
+   Illuminate\Database\QueryException  : SQLSTATE[HY000]: General error: 1364 Field 'client_id' doesn't have a default value (SQL: insert into `service_package_bills` (`service_package_id`, `month`, `year`, `start_date`, `end_date`, `amount`, `paid`, `status`, `updated_at`, `created_at`) values (4, 08, 2022, 2022-08-30, 2022-09-28, 0, 0, 0, 2022-08-30 16:58:26, 2022-08-30 16:58:26))
+
+  at D:\web applications\mit_account_web_app\vendor\laravel\framework\src\Illuminate\Database\Connection.php:664
+    660|         // If an exception occurs when attempting to run a query, we'll format the error
+    661|         // message to include the bindings with SQL, which will make this exception a
+    662|         // lot more helpful to the developer instead of just the database's errors.
+    663|         catch (Exception $e) {
+  > 664|             throw new QueryException(
+    665|                 $query, $this->prepareBindings($bindings), $e
+    666|             );
+    667|         }
+    668|
+
+  Exception trace:
+
+  1   PDOException::("SQLSTATE[HY000]: General error: 1364 Field 'client_id' doesn't have a default value")
+      D:\web applications\mit_account_web_app\vendor\laravel\framework\src\Illuminate\Database\Connection.php:458
+
+  2   PDOStatement::execute()
+      D:\web applications\mit_account_web_app\vendor\laravel\framework\src\Illuminate\Database\Connection.php:458
+
+  Please use the argument -v to see more details.
+
+   Illuminate\Database\QueryException  : SQLSTATE[HY000]: General error: 1364 Field 'created_by' doesn't have a default value (SQL: insert into `service_package_bills` (`service_package_id`, `client_id`, `service_id`, `month`, `year`, `start_date`, `end_date`, `amount`, `paid`, `status`, `updated_at`, `created_at`) values (4, 139, 8, 08, 2022, 2022-08-30, 2022-09-28, 0, 0, 0, 2022-08-30 17:03:54, 2022-08-30 17:03:54))
+
+  at D:\web applications\mit_account_web_app\vendor\laravel\framework\src\Illuminate\Database\Connection.php:664
+    660|         // If an exception occurs when attempting to run a query, we'll format the error
+    661|         // message to include the bindings with SQL, which will make this exception a
+    662|         // lot more helpful to the developer instead of just the database's errors.
+    663|         catch (Exception $e) {
+  > 664|             throw new QueryException(
+    665|                 $query, $this->prepareBindings($bindings), $e
+    666|             );
+    667|         }
+    668|
+
+  Exception trace:
+
+  1   PDOException::("SQLSTATE[HY000]: General error: 1364 Field 'created_by' doesn't have a default value")
+      D:\web applications\mit_account_web_app\vendor\laravel\framework\src\Illuminate\Database\Connection.php:458
+
+  2   PDOStatement::execute()
+      D:\web applications\mit_account_web_app\vendor\laravel\framework\src\Illuminate\Database\Connection.php:458
+
+  Please use the argument -v to see more details.

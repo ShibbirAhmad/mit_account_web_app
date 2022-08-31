@@ -29,7 +29,7 @@ class ServicePackage extends Model
 
     public function  bills(){
 
-         return $this->hasMany('App\Models\ServicePackageBill','service_package_id') ;
+         return $this->hasMany('App\Models\ServicePackageBill','service_package_id')->orderBy('id','desc') ;
     }
 
 
