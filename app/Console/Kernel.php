@@ -26,6 +26,7 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')->hourly();
         $schedule->command('generate:newBillGenerate')->daily()->appendOutputTo('scheduler.log');
         $schedule->command('notify:monthlyServicePayment')->monthly();
+        $schedule->command('notify:contractualServicePayment')->monthly();
 
 
     }
