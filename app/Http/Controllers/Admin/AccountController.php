@@ -79,18 +79,7 @@ class AccountController extends Controller
              }
              if($request->status=='filter'){
 
-                    if(!empty($request->start_date) && empty($request->end_date)){
-                        $credits=Credit::where('department',$request->department)->whereDate('date','=',$request->start_date)
-                                        ->orderBy('id','DESC')->with(['admin:id,name','balance'])
-                                        ->paginate($paginate);
-
-                            if(!empty($request->credit_in)){
-                                $credits=Credit::where('department',$request->department)->whereDate('date','=',$request->start_date)
-                                        ->where('credit_in',$request->credit_in)
-                                        ->orderBy('id','DESC')->with(['admin:id,name','balance'])
-                                        ->paginate($paginate);
-                            }
-                    } elseif (!empty($request->start_date) && !empty($request->end_date)){
+                  if (!empty($request->start_date) && !empty($request->end_date)){
                         $credits=Credit::where('department',$request->department)->whereDate('date','>=',$request->start_date)
                                         ->whereDate('date','<=',$request->end_date)
                                         ->orderBy('id','DESC')->with(['admin:id,name','balance'])
@@ -103,7 +92,17 @@ class AccountController extends Controller
                                     ->orderBy('id','DESC')->with(['admin:id,name','balance'])
                                     ->paginate($paginate);
                         }
+                    }else{
+                        if(!empty($request->credit_in)){
+                            $credits=Credit::where('department',$request->department)
+                                        ->where('credit_in',$request->credit_in)
+                                        ->orderBy('id','DESC')->with(['admin:id,name','balance'])
+                                        ->paginate($paginate);
+                            }
+
                     }
+
+                    
 
                     return response()->json($credits);
                 }
@@ -209,19 +208,15 @@ class AccountController extends Controller
                 return response()->json($debits);
          }
          if($request->status=='filter'){
-            if(!empty($request->start_date) && empty($request->end_date)){
-                $debits=Debit::where('department',$request->department)->whereDate('date','=',$request->start_date)
-                                ->orderBy('id','DESC')->with(['purpose','admin:id,name','balance'])
-                                ->paginate($paginate);
-            }else{
+            if(!empty($request->start_date) && !empty($request->end_date)){
+                
                 $debits=Debit::where('department',$request->department)->whereDate('date','>=',$request->start_date)
                                 ->whereDate('date','<=',$request->end_date)
                                 ->orderBy('id','DESC')->with(['purpose','admin:id,name','balance'])
                                 ->paginate($paginate);
             }
             if(!empty($request->debit_from)){
-                $debits=Debit::where('department',$request->department)->whereDate('date','>=',$request->start_date)
-                            ->whereDate('date','<=',$request->end_date)
+                $debits=Debit::where('department',$request->department)
                             ->where('debit_from',$request->debit_from)
                             ->orderBy('id','DESC')->with(['purpose','admin:id,name','balance'])
                             ->paginate($paginate);

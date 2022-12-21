@@ -10,4 +10,6 @@ class Loaner extends Model
     }
 
 
+    protected $fillable=[ 'id', 'name', 'mobile_no', 'address', 'created_at', 'updated_at'] ;
+
 }

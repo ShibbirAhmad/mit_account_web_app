@@ -19,7 +19,7 @@
         <div class="container">
 
           <div class="row justify-content-center">
-            <div class="col-lg-10 col-lg-offset-1">
+            <div class="col-lg-11 ">
               <div class="box box-primary">
                 <div class="box-header with-border text-center">
                   <h3 class="box-title heading">Loan Table</h3>
@@ -279,11 +279,6 @@ export default {
 
 <style scoped>
 
- .box-primary{
-
-    margin-left: -100px;
-    overflow-x: scroll;
- }
 
  .total_style{
 

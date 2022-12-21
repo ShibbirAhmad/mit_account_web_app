@@ -56,7 +56,7 @@
                     class="list-group-item"
                   >
                     account - {{ index + 1 }} :
-                    <strong> {{ account.name }} <sup style="font-size:13px;"  v-if="account.previous_dollar">(previous limit : {{ account.previous_dollar  }}  + current limit : {{ account.total_dollar  }} = {{ parseInt(account.previous_dollar) + parseInt(account.total_dollar )  }} )</sup></strong>
+                    <strong> {{ account.name }} <sup style="font-size:13px;" >(previous limit : {{ account.previous_dollar  }}  + current limit : {{ account.total_dollar  }} = {{ parseInt(account.previous_dollar) + parseInt(account.total_dollar )  }} )</sup></strong>
                   </li>
                 </ul>
               </div>

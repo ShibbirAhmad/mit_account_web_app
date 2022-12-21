@@ -4,9 +4,9 @@
     <div class="content-wrapper">
       <section class="content-header">
         <h1>
-          <a @click.prevent="addMore" class="btn btn-primary"
-            ><i class="fa fa-plus"></i
-          ></a>
+          <a @click="loanModal" class="btn btn-primary"
+            ><i class="fa fa-plus"></i> add loan
+          </a>
         </h1>
         <ol class="breadcrumb">
           <li>
@@ -41,10 +41,9 @@
                 {{ totalLoanAmount() - totalPaidAmount() }}
               </h4>
             </div>
-
           </div>
           <div class="row justify-content-center">
-            <div class="col-lg-8 col-lg-offset-1">
+            <div class="col-lg-11 ">
               <div class="box box-primary">
                 <div class="box-header with-border">
                   <div class="row">
@@ -56,7 +55,15 @@
                       >
                         Loan History
                       </h3>
-                      <a :href="'/api/loan/history/download/pdf/'+loaner_id" target="_blank" class="btn btn-success"> <i class="fa fa-download"> </i> </a>
+                      <a
+                        :href="
+                          '/api/loan/history/download/pdf/' + $route.params.id
+                        "
+                        target="_blank"
+                        class="btn btn-success"
+                      >
+                        <i class="fa fa-download"> </i>
+                      </a>
                     </div>
 
                     <div class="col-md-4">
@@ -67,7 +74,16 @@
                       >
                         Payment History
                       </h3>
-                       <a :href="'/api/loand/paid/history/download/pdf/'+loaner_id" target="_blank" class="btn btn-success"> <i class="fa fa-download"> </i> </a>
+                      <a
+                        :href="
+                          '/api/loand/paid/history/download/pdf/' +
+                            $route.params.id
+                        "
+                        target="_blank"
+                        class="btn btn-success"
+                      >
+                        <i class="fa fa-download"> </i>
+                      </a>
                     </div>
                   </div>
                 </div>
@@ -103,7 +119,6 @@
                   <table v-else class="table">
                     <thead>
                       <tr>
-                        <th scope="col">#</th>
                         <th scope="col">Date</th>
                         <th scope="col">Comment</th>
                         <th scope="col">Paid By</th>
@@ -115,17 +130,16 @@
                         <i class="fa fa-spin fa-spinner"></i>
                       </h1>
                       <tr
-                        v-for="(loanpaid, index) in loanpaids"
-                        v-bind:key="index"
+                        v-for="item in payment_records" :key="item.id"
+                                
                       >
-                        <td scope="row">{{ index + 1 }}</td>
-                        <td>{{ loanpaid.date }}</td>
-                        <td>{{ loanpaid.comment }}</td>
-                        <td>{{ loanpaid.paid_by }}</td>
-                        <td>{{ loanpaid.amount }}</td>
+                        <td>{{ item.date }}</td>
+                        <td>{{ item.comment }}</td>
+                        <td>{{ item.paid_by }}</td>
+                        <td>{{ item.amount }}</td>
                       </tr>
                       <tr>
-                        <td colspan="4"></td>
+                        <td colspan="3"></td>
                         <td>
                           <strong> ={{ totalPaidAmount() }}</strong>
                         </td>
@@ -139,16 +153,70 @@
         </div>
       </section>
     </div>
+    <modal name="loan_modal" :width="400" :height="300">
+      <div style="padding: 10px" class="card">
+        <div class="card-body">
+          <form @submit.prevent="storeLoan">
+            <div class="form-group ">
+              <label> Amount </label>
+              <input
+                v-model.number="form.amount"
+                required
+                type="number"
+                class="form-control"
+              />
+            </div>
+
+            <div class="form-group">
+              <label> purpose </label>
+              <input
+                required
+                v-model="form.purpose"
+                type="text"
+                class="form-control"
+              />
+            </div>
+
+            <div class="form-group">
+              <select required class="form-control" v-model="form.balance_id">
+                <option value="" disabled>Select Balance</option>
+                <option
+                  v-for="(balance, index) in balance"
+                  :key="index"
+                  :value="balance.id"
+                >
+                  {{ balance.name }}
+                </option>
+              </select>
+            </div>
+
+            <div class="form-group text-center">
+              <button type="submit" class="btn btn-success btn-block">
+                submit
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </modal>
   </div>
 </template>
 
 <script>
+import Form from "vform";
 export default {
   created() {
     this.getLoans();
   },
   data() {
     return {
+      form: new Form({
+        loaner_id: this.$route.params.id,
+        balance_id: "",
+        purpose: "",
+        amount: 0,
+      }),
+      balance: "",
       loan: "",
       loading: true,
       basePath: this.$store.getters.image_base_link,
@@ -156,8 +224,7 @@ export default {
       search: "",
       loanMode: true,
       loans: "",
-      loanpaids: "",
-      loaner_id:"",
+      payment_records: "",
     };
   },
   methods: {
@@ -167,58 +234,56 @@ export default {
         .then((resp) => {
           console.log(resp);
           this.loans = resp.data.loans;
-          this.loanpaids = resp.data.loanPaid;
-          this.loaner_id=this.$route.params.id ;
+          this.payment_records = resp.data.paid;
           this.loading = false;
         })
         .catch((error) => {
           console.log(error);
         });
     },
+
     totalLoanAmount() {
-      let total = 0;
+      if (this.loans) {
+        let total = 0;
+        this.loans.forEach((element) => {
+          total += parseInt(element.amount);
+        });
 
-      this.loans.forEach((element) => {
-        total += parseInt(element.amount);
-      });
-
-      return total;
+        return total;
+      }
     },
     totalPaidAmount() {
-      let total = 0;
+      if (this.payment_records) {
+        let total = 0;
 
-      this.loanpaids.forEach((element) => {
-        total += parseInt(element.amount);
-      });
+        this.payment_records.forEach((element) => {
+          total += parseInt(element.amount);
+        });
 
-      return total;
+        return total;
+      }
     },
 
-    addMore() {
-      let amount = prompt("Enter Amount: ");
+    loanModal() {
+      axios.get("/api/balance/list/mit").then((resp) => {
+        this.balance = resp.data.balance;
+        this.$modal.show("loan_modal");
+      });
+    },
 
-      if (parseInt(amount) > 0) {
-        let purpose = prompt("Enter purpose: ");
-
-        axios
-          .get("/api/loan/store/" + this.$route.params.id, {
-            params: {
-              amount,
-              purpose,
-            },
-          })
-          .then((resp) => {
-            if (resp.data.success == "OK") {
-              alert("Loan added successfully");
-              this.getLoans();
-            } else {
-              alert("Error Found");
-            }
-          })
-          .catch((e) => {
-            console.log(e);
-          });
-      }
+    async storeLoan() {
+      await this.form
+        .post("/api/loan/store")
+        .then((resp) => {
+          console.log(resp);
+          if (resp.data.success == true) {
+            this.$toastr.e(resp.data.message);
+            this.getLoans();
+          }
+        })
+        .catch((error) => {
+          this.$toastr.e(error.response.data.message);
+        });
     },
   },
 };

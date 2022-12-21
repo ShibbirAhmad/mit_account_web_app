@@ -149,6 +149,27 @@ if (session()->has('admin')) {
             </li>
 
 
+            
+
+            <li class="treeview">
+                <a to="/"><i class="fa fa-money"></i> <span>
+
+                        <router-link :to="{ name: 'loan' }">Manage Loan
+                        </router-link>
+
+                    </span> </a>
+            </li>
+
+            <li class="treeview">
+                <a to="/"><i class="fa fa-dollar"></i> <span>
+
+                        <router-link :to="{ name: 'investment' }">Manage Investment
+                        </router-link>
+
+                    </span> </a>
+            </li>
+
+
             <li class="treeview">
                 <a to="/"><i class="fa fa-user-secret"></i> <span>
                         <router-link :to="{ name: 'directors' }">Directors</router-link>

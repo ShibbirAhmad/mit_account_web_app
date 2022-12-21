@@ -476,9 +476,6 @@ span {
   font-size: 14px ;
 }
 
-.box-primary {
-  overflow-x: scroll;
-}
 
 .total_style {
   border: 2px solid #ddd;

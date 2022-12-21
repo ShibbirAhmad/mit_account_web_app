@@ -49,6 +49,7 @@
         "vue-signature": "^2.4.7",
         "vue-sweetalert2": "^5.0.2",
         "vue-toasted": "^1.1.28",
+        "vue-toastr": "^2.1.2",
         "vuejs-countdown": "^0.2.1",
         "vuex": "^3.5.1"
     }

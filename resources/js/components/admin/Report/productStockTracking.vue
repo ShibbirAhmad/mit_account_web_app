@@ -389,7 +389,5 @@ export default {
   border-bottom: 2px solid #000;
   margin-bottom: 10px;
 }
-.box-primary {
-  overflow-x: scroll;
-}
+
 </style>

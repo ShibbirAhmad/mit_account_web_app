@@ -233,9 +233,6 @@ export default {
 }
 
 
-.box-primary {
-  overflow-x: scroll;
-}
 
 .total_style {
   border: 2px solid #ddd;

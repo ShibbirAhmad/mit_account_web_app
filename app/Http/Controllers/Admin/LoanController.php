@@ -47,53 +47,29 @@ class LoanController extends Controller
     }
 
 
-
-    public function store(Request $request)
+    public function storeLoaner(Request $request)
     {
 
-        $validatedData = $request->validate([
-            'name' => 'required',
-            'address' => 'required|digits:11',
-            'date'=>"required",
-            'purpose'=>"required",
-            'amount'=>"required",
-            'address'=>"required",
-          ]);
-
-          //first find the loaner
-           $loaner=Loaner::where('mobile_no',$request->mobile_no)->first();
-          if(empty($loaner)){
-
-                $loaner=new Loaner();
-                $loaner->name=$request->name;
-                $loaner->mobile_no=$request->mobile_no;
-                $loaner->address=$request->address;
-                $loaner->save();
-          }
-
-          $loan=new Loan();
-          $loan->loaner_id=$loaner->id;
-          $loan->purpose=$request->purpose;
-          $loan->amount=$request->amount;
-          $loan->date=$request->date;
-          if( $loan->save()){
-
-            $credit = new Credit();
-            $credit->purpose = "Loan From ". $request->name;
-            $credit->amount = $request->amount;
-            $credit->comment = $request->purpose ?? null;
-            $credit->date = $request->date;
-            $credit->credit_in=1;
-            $credit->insert_admin_id=session()->get('admin')['id'];
-            $credit->save();
-              return \response()->json([
-
-                 'success'=>'OK',
-                 'message'=>'Loan Add Successfully'
-
+            $data = $request->validate([
+                'name' => 'required',
+                'mobile_no' => 'required|digits:11|unique:loaners',
+                'address' => 'required',
             ]);
-          }
+  
+            $loaner=new Loaner();
+            $loaner->name=$request->name;
+            $loaner->mobile_no=$request->mobile_no;
+            $loaner->address=$request->address;
+            $loaner->save();
+          
+            return response()->json([
+                 'success'=> true,
+                 'message'=>'added successfully'
+            ]);
+
     }
+
+
 
     /**
      * Display the specified resource.
@@ -146,37 +122,69 @@ class LoanController extends Controller
     }
 
     public function loanersdetails($id){
+
         $loans=Loan::where('loaner_id',$id)->orderBy('id','desc')->get();
-        $loanPaid=LoanPaid::where('loaner_id',$id)->orderBy('id','desc')->get();
+        $paid=LoanPaid::where('loaner_id',$id)->orderBy('id','desc')->get();
         return \response()->json([
             'loans'=>$loans,
-            'loanPaid'=>$loanPaid
+            'paid'=>$paid
         ]);
     }
 
-    public function storeloan(Request $request, $id){
 
 
-        $loaner=Loaner::find($id);
-        $loan=new Loan();
-        $loan->loaner_id=$loaner->id;
-        $loan->purpose=$request->purpose;
-        $loan->amount=$request->amount;
-        $loan->date=date('Y-m-d');
-        if( $loan->save()){
-        $credit = new Credit();
-          $credit->purpose = "Loan From ". $loaner->name;
-          $credit->amount = $request->amount;
-          $credit->comment = $request->purpose ?? null;
-          $credit->date = date('Y-m-d');
-          $credit->credit_in=1;
-          $credit->insert_admin_id=session()->get('admin')['id'];
-          $credit->save();
-            return \response()->json([
-              'success'=>'OK',
-              'message'=>'Loan Add Successfully'
-          ]);
-        }
+    
+    public function storeLoan(Request $request){
+        
+        $data= $request->validate([
+            'balance_id' => 'required',
+            'loaner_id' => 'required',
+            'purpose' => 'required',
+            'amount' => 'required|min:1'
+        ]);
+        $loaner=Loaner::findOrFail($data['loaner_id']);
 
+        DB::beginTransaction();
+        try {
+
+            $loan=new Loan();
+            $loan->loaner_id=$loaner->id;
+            $loan->purpose=$data['purpose'];
+            $loan->amount=$data['amount'];
+            $loan->date=date('Y-m-d');
+            $loan->save();
+            //store credit
+            $credit = new Credit();
+            $credit->purpose = "Loan from ". $loaner->name;
+            $credit->amount = $data['amount'];
+            $credit->comment =$data['purpose'] ?? null;
+            $credit->date = date('Y-m-d');
+            $credit->credit_in=$data['balance_id'];
+            $credit->insert_admin_id=session()->get('admin')['id'];
+            $credit->save();
+
+            DB::commit();
+            return response()->json([
+                'success' => true,
+                'message' => 'added ',
+            ]);
+
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return response()->json([
+                'success' => false,
+                'message' => $th->getMessage(),
+            ]);
+        }   
+
+        
     }
+
+
+
+
+
+
+
+
 }

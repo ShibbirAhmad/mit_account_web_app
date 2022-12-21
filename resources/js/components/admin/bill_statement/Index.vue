@@ -140,11 +140,6 @@ export default {
 </script>
 
 <style scoped>
-.box-primary {
-  margin-left: -100px;
-  overflow-x: scroll;
-}
-
 .total_style {
   border: 2px solid #ddd;
   padding: 4px 25px;

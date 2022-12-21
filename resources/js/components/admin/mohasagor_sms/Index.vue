@@ -190,9 +190,7 @@ export default {
 </script>
 
 <style scoped>
-.box-primary {
-  overflow-x: scroll;
-}
+
 
 .badge {
   font-size:14px !important ;

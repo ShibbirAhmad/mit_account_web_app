@@ -61,7 +61,7 @@
                        <div class="col-lg-2">
                       <select class="form-control" v-model="credit_in">
                         <option value="" selected disabled>Select One</option>
-                        <option  v-for="(balance,index) in balance" :value="balance.name" :key="index">{{balance.name}}</option>
+                        <option  v-for="(balance,index) in balance" :value="balance.id" :key="index">{{balance.name}}</option>
                       </select>
                     </div>
                     <div class="col-lg-1">

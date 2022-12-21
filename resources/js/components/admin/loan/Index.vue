@@ -17,8 +17,8 @@
       </section>
       <section class="content">
         <div class="container">
-          <div class="row justify-content-center">
-            <div class="col-lg-11 col-lg-offset-1">
+          <div class="row">
+            <div class="col-lg-11">
               <div class="box box-primary">
                 <div class="box-header with-border text-center">
                   <h3 class="box-title heading">Boost Agency</h3>
@@ -290,10 +290,6 @@ export default {
 </script>
 
 <style scoped>
-.box-primary {
-  margin-left: -100px;
-  overflow-x: scroll;
-}
 
 .badge {
   font-size:14px !important ;

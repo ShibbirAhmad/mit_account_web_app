@@ -5,7 +5,7 @@
       <section class="content-header">
         <h1>
           <router-link :to="{ name: 'loan' }" class="btn btn-primary"
-            ><i class="fa fa-arrow-right"></i
+            ><i class="fa fa-arrow-left"></i
           ></router-link>
         </h1>
         <ol class="breadcrumb">
@@ -19,8 +19,8 @@
         <div class="row justify-content-center">
           <div class="col-lg-6 col-lg-offset-2">
             <div class="box box-primary">
-              <div class="box-header with-border">
-                <h3 class="box-title">Add Loan</h3>
+              <div class="box-header with-border text-center">
+                <h3 class="box-title">Add Loaner</h3>
               </div>
               <div class="box-body">
                 <h1 v-if="loading"><i class="fa fa-spinner fa-spin"></i></h1>
@@ -34,108 +34,55 @@
                     {{ error }}
                   </div>
 
-                    <div class="form-group">
-                    <label>Date</label>
-
-                    <date-picker
-
-                      autocomplete="off"
-                      v-model="form.date"
-                      :config="options"
-                      :class="{ 'is-invalid': form.errors.has('date') }"
-                    ></date-picker>
-
-                    <has-error :form="form" field="date"></has-error>
-                  </div>
-
                   <div class="form-group">
                     <label>Name</label>
 
-                     <input
+                    <input
                       v-model="form.name"
                       type="text"
-                      name="name"
                       class="form-control"
-                      :class="{ 'is-invalid': form.errors.has('name') }"
-                      autofocus
-                      autocomplete="off"
+                      required
                       placeholder="phone"
                     />
-                    <has-error :form="form" field="name"></has-error>
                   </div>
 
-
                   <div class="form-group">
-                    <label>Mobile  Number</label>
+                    <label>Mobile Number</label>
 
-                           <input
+                    <input
                       v-model="form.mobile_no"
                       type="text"
                       name="mobile_no"
-                      class="form-control"
+                      maxlength="11"
                       :class="{ 'is-invalid': form.errors.has('mobile_no') }"
-                        autocomplete="off"
+                      class="form-control"
+                      required
                       placeholder="phone"
                     />
                     <has-error :form="form" field="mobile_no"></has-error>
                   </div>
-
 
                   <div class="form-group">
                     <label>Address</label>
                     <input
                       v-model="form.address"
                       type="text"
-                      name="email"
                       class="form-control"
-                      :class="{ 'is-invalid': form.errors.has('address') }"
-                      autocomplete="off"
+                      required
                       placeholder="address"
                     />
-                    <has-error :form="form" field="address"></has-error>
                   </div>
 
-
-                      <div class="form-group">
-                    <label>Purpose</label>
-
-                           <input
-                      v-model="form.purpose"
-                      type="text"
-                      name="purpose"
-                      class="form-control"
-                      :class="{ 'is-invalid': form.errors.has('purpose') }"
-                      autocomplete="purpose"
-                      placeholder="purpose"
-                    />
-                    <has-error :form="form" field="purpose"></has-error>
+                  <div class="form-group text-center">
+                    <button
+                      :disabled="form.busy"
+                      type="submit"
+                      class="btn btn-primary"
+                    >
+                      <i class="fa fa-spin fa-spinner" v-if="form.busy"></i
+                      >Submit
+                    </button>
                   </div>
-
-    <div class="form-group">
-                    <label>Amount</label>
-
-                           <input
-                      v-model="form.amount"
-                      type="text"
-                      name="amount"
-                      class="form-control"
-                      :class="{ 'is-invalid': form.errors.has('amount') }"
-                       autocomplete="off"
-                      placeholder="amount"
-                    />
-                    <has-error :form="form" field="amount"></has-error>
-                  </div>
-
-
-
-                  <br />
-                  <button
-                    :disabled="form.busy"
-                    type="submit"
-                    class="btn btn-primary"
-                  >
-                    <i class="fa fa-spin fa-spinner" v-if="form.busy"></i>Submit
-                  </button>
                 </form>
               </div>
             </div>
@@ -146,7 +93,6 @@
   </div>
 </template>
 
-
 <script>
 import Vue from "vue";
 import { Form, HasError, AlertError } from "vform";
@@ -155,59 +101,47 @@ Vue.component(HasError.name, HasError);
 export default {
   name: "Add",
   created() {
-
-   this.cDate();
+    this.cDate();
   },
   data() {
     return {
       form: new Form({
         name: "",
         mobile_no: "",
-        address:"",
-        date:"",
-        purpose:"",
-        amount:""
-
+        address: "",
+        date: "",
+        purpose: "",
+        amount: "",
       }),
 
-    loading: true,
-    error: "",
-     options: {
+      loading: true,
+      error: "",
+      options: {
         format: "YYYY-MM-DD",
         useCurrent: false,
       },
 
-    loaners:""
+      loaners: "",
     };
   },
 
   methods: {
     add() {
-      this.form.post("/api/loand/store")
+      this.form
+        .post("/api/loaner/store")
         .then((resp) => {
           console.log(resp);
-          if (resp.data.success == "OK") {
+          if (resp.data.success == true) {
             this.$router.push({ name: "loan" });
-            this.$toasted.show(resp.data.message, {
-              type: "success",
-              position: "top-right",
-              duration: 4000,
-            });
-          } else {
-            this.error = "something went to wrong";
+            this.$toastr.s(resp.data.message);
           }
         })
         .catch((error) => {
-          console.log(error);
-          this.error = "something went to wrong";
+          this.$toastr.e(error.response.data.message);
         });
     },
     cDate() {
-      //current date
       let d = new Date();
-
-      //current mount
-      //current day
       let month = d.getMonth() + 1;
       let day = d.getDate();
       let output =
@@ -220,7 +154,7 @@ export default {
         day;
       this.form.date = output;
 
-      this.loading=false;
+      this.loading = false;
     },
   },
 };
