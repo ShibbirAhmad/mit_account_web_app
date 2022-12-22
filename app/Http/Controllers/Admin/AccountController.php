@@ -234,7 +234,7 @@ class AccountController extends Controller
     public function StoreDebit(Request $request){
 
         // return $request->all();
-        $validatedData = $request->validate([
+        $data = $request->validate([
           'date'=>'required|before:tomorrow',
           'purpose' => 'required',
           'amount' => 'required',
@@ -279,7 +279,7 @@ class AccountController extends Controller
             }
            //loan paid
            if(!empty($request->loaner_id)){
-               $loaner=Loaner::where('id',$request->loaner_id)->first();
+               $loaner=Loaner::where('id',$request->loaner_id)->firstOrFail();
                $loan_paid=new LoanPaid();
                $loan_paid->loaner_id=$loaner->id;
                $loan_paid->amount=  $debit->amount;
@@ -288,7 +288,8 @@ class AccountController extends Controller
                $loan_paid->paid_by=$balance->name;
                $loan_paid->save();
                //debit comment update
-               $debit->comment = $debit->comment.'('. $loaner->name .')';
+               $debit->amount = 0;
+               $debit->comment = 'loan amount paid. for that reason it is not expense ';
                $debit->save();
                SmsService::SendMessageToLoaner($loaner,$loan_paid->amount);
             }

@@ -129,10 +129,7 @@
                       <h1 class="text-center" v-if="loading">
                         <i class="fa fa-spin fa-spinner"></i>
                       </h1>
-                      <tr
-                        v-for="item in payment_records" :key="item.id"
-                                
-                      >
+                      <tr v-for="item in payment_records" :key="item.id">
                         <td>{{ item.date }}</td>
                         <td>{{ item.comment }}</td>
                         <td>{{ item.paid_by }}</td>
@@ -277,8 +274,9 @@ export default {
         .then((resp) => {
           console.log(resp);
           if (resp.data.success == true) {
-            this.$toastr.e(resp.data.message);
+            this.$toastr.s(resp.data.message);
             this.getLoans();
+            this.$modal.hide("loan_modal");
           }
         })
         .catch((error) => {

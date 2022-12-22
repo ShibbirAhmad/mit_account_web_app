@@ -211,18 +211,12 @@ export default {
                             this.$router.push({
                                 name: "mit_debit"
                             });
-                            this.$toasted.show(resp.data.message, {
-                                type: "success",
-                                position: "top-center",
-                                duration: 2000,
-                            });
-                        } else {
-                            this.error = "something  went to wrong";
-                        }
+                            this.$toastr.s(resp.data.message);
+                        } 
                     })
                     .catch((error) => {
-                         console.log(error)
-                        this.error = "something  went to wrong";
+                       this.$toastr.e(error.response.data.message);
+
                     });
             },
 
