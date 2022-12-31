@@ -288,8 +288,7 @@ class AccountController extends Controller
                $loan_paid->paid_by=$balance->name;
                $loan_paid->save();
                //debit comment update
-               $debit->amount = 0;
-               $debit->comment = 'loan amount paid. for that reason it is not expense ';
+               $debit->comment = 'loan paid to '.$loaner->name;
                $debit->save();
                SmsService::SendMessageToLoaner($loaner,$loan_paid->amount);
             }
