@@ -185,25 +185,25 @@
             <label>Month</label>
             <select class="form-control" v-model="month">
               <option value="" disabled>Select A Month</option>
-              <option value="January-2022">January-2022</option>
-              <option value="February-2022">February-2022</option>
+              <option value="January">January</option>
+              <option value="February">February</option>
 
-              <option value="March-2022">March-2022</option>
+              <option value="March">March</option>
 
-              <option value="April-2022">April-2022</option>
+              <option value="April">April</option>
 
-              <option value="May-2022">May-2022</option>
+              <option value="May">May</option>
 
-              <option value="Jun-2022">Jun-2022</option>
+              <option value="Jun">Jun</option>
 
-              <option value="July-2022">July-2022</option>
+              <option value="July">July</option>
 
-              <option value="August-2022">August-2022</option>
+              <option value="August">August</option>
 
-              <option value="September-2022">September-2022</option>
-              <option value="October-2022">October-2022</option>
-              <option value="November-2022">November-2022</option>
-              <option value="December-2022">December-2022</option>
+              <option value="September">September</option>
+              <option value="October">October</option>
+              <option value="November">November</option>
+              <option value="December">December</option>
             </select>
           </div>
 
