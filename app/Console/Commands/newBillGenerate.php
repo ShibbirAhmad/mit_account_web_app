@@ -64,6 +64,7 @@ class newBillGenerate extends Command
                         $data['status'] =  0 ;
                         ServicePackageBill::query()->create($data);
                         $s_package->amount = $s_package->amount + $s_package->monthly_charge  ;
+                        $s_package->is_paid = 0  ;
                         $s_package->save();
                         //increasing client total_money
                         $client=ServiceClient::findOrFail($s_package->client_id);

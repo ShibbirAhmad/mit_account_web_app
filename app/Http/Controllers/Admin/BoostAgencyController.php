@@ -246,6 +246,7 @@ class BoostAgencyController extends Controller
             'name' => 'required',
             'address' => 'required',
             'dollar_rate' => 'required',
+            'status' => 'required',
             'company_name' => 'required|unique:boost_agency_resellers,company_name,'.$id,
             'phone' => 'required|digits:11|unique:boost_agency_resellers,phone,'.$id,
           ]);
