@@ -61,27 +61,23 @@
                   <div class="form-group">
                     <label>Amount</label>
                     <input
-                      type="text"
-                      name="amount"
+                      type="number"
                       v-model="form.amount"
                       class="form-control"
-                      :class="{ 'is-invalid': form.errors.has('amount') }"
-                      autocomplete="off"
+                     required
+                     min="1"
+                   
                     />
-                    <has-error :form="form" field="amount"></has-error>
                   </div>
 
                   <div class="form-group">
                     <label>Comment</label>
                     <input
                       type="text"
-                      name="comment"
                       class="form-control"
                       v-model="form.comment"
-                      :class="{ 'is-invalid': form.errors.has('comment') }"
-                      autocomplete="off"
+              
                     />
-                    <has-error :form="form" field="comment"></has-error>
                   </div>
 
                   <div class="form-group">
@@ -93,7 +89,7 @@
                       v-model="form.credit_in"
                       :class="{ 'is-invalid': form.errors.has('credit_in') }"
                     >
-                      <option value="" disabled selected>Select Balance</option>
+                      <option value="" disabled >Select Balance</option>
                       <option
                         v-for="(balance, index) in balance"
                         :value="balance.id"

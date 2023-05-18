@@ -61,27 +61,20 @@
                   <div class="form-group">
                     <label>Amount</label>
                     <input
-                      type="text"
-                      name="amount"
+                      type="number"
+                      required
                       v-model="form.amount"
                       class="form-control"
-                      :class="{ 'is-invalid': form.errors.has('amount') }"
-                      autocomplete="off"
                     />
-                    <has-error :form="form" field="amount"></has-error>
                   </div>
 
                   <div class="form-group">
                     <label>Comment</label>
                     <input
                       type="text"
-                      name="comment"
                       class="form-control"
                       v-model="form.comment"
-                      :class="{ 'is-invalid': form.errors.has('comment') }"
-                      autocomplete="off"
                     />
-                    <has-error :form="form" field="comment"></has-error>
                   </div>
 
                   <div class="form-group">
