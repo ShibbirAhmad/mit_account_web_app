@@ -33,7 +33,7 @@
                 </div>
                 <div class="box-body">
 
-                  <table class="table text-center  table-striped  table-bordered table-hover">
+                  <table class="table table-centered  table-striped  table-bordered table-hover">
                     <thead>
                       <tr>
                         <th >#</th>

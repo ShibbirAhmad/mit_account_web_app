@@ -459,32 +459,18 @@ Route::group([
     Route::post('company/store', 'CompanyController@store');
     Route::get('company/edit/{id}', 'CompanyController@edit');
     Route::post('company/update/{id}', 'CompanyController@update');
-
-   //start the report route
-   Route::get('api/order/report', 'ReportController@orderReport');
-   Route::get('api/sale/report/office', 'ReportController@officeSaleReport');
-   Route::get('api/get/office/sale/pdf/{start_date}/{end_date}', 'ReportController@office_sale_report_pdf');
-   Route::get('api/get/sale/order/pdf/{start_date}/{end_date}', 'ReportController@order_sale_report_pdf');
-   Route::get('api/get/purchase/pdf/{start_date}/{end_date}', 'ReportController@purchase_report_pdf');
-   Route::get('supplier/report', 'ReportController@supplierReport');
-   Route::get('account/report', 'ReportController@accountReport');
-   Route::get('purchase/report', 'ReportController@purchaseReport');
-   Route::get('profite/report', 'ReportController@profitReport');
-   Route::get('sale/profite/report', 'ReportController@saleProfite');
-   Route::get('order/profite/report', 'ReportController@orderProfite');
-
-
-  //start the admin reseller route
-  Route::resource('admin/reseller','ResellerController');
-  Route::post('/reseller/update/{id}','ResellerController@updateRseller');
-  Route::get('/admin/to/reseller/{id}','ResellerController@accountAccess');
-  Route::get('/api/active/reseller/{id}','ResellerController@active');
-  Route::get('/api/deactive/reseller/{id}','ResellerController@deActive');
-  Route::get('api/unpaid/payment/','ResellerController@unpaidPayment');
-  Route::get('api/paid/payment/','ResellerController@paidPayment');
-  Route::get('/api/reseller/to/paid','ResellerController@toPaid');
-  Route::get('api/payment/invoice','ResellerController@paymentInvoice');
-  Route::get('api/details/payment/invoice/{id}','ResellerController@paymentInvoiceDetails');
+    Route::get('api/profit/report', 'ReportController@profitReport');
+    //start the admin reseller route
+    Route::resource('admin/reseller','ResellerController');
+    Route::post('/reseller/update/{id}','ResellerController@updateRseller');
+    Route::get('/admin/to/reseller/{id}','ResellerController@accountAccess');
+    Route::get('/api/active/reseller/{id}','ResellerController@active');
+    Route::get('/api/deactive/reseller/{id}','ResellerController@deActive');
+    Route::get('api/unpaid/payment/','ResellerController@unpaidPayment');
+    Route::get('api/paid/payment/','ResellerController@paidPayment');
+    Route::get('/api/reseller/to/paid','ResellerController@toPaid');
+    Route::get('api/payment/invoice','ResellerController@paymentInvoice');
+    Route::get('api/details/payment/invoice/{id}','ResellerController@paymentInvoiceDetails');
 
 
 

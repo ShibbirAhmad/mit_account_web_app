@@ -21,29 +21,29 @@
           <div class="row">
             <div class="col-lg-11 col-md-11 ">
               <div class="box box-primary">
-                <div class="box-header with-border ">
+                <div class="box-header with-border">
                      <div class="row">
-                    <div class="col-md-6 text-center">
-                            <h3 class="box-title heading"> Clients Information</h3>
+                    <div class="col-md-4 text-right ">
+                            <h3 style="margin-top:10px;" class="box-title heading"> Total Due BDT {{ parseInt(total_due) }} </h3>
                     </div>
-                       <div class="col-md-6">
-                           <input type="text" v-model="search" v-on:keyup="searchClient" placeholder="search by name, phone or company-name" class="form-control">
+                       <div class="col-md-8">
+                           <input type="text" style="height:38px !important" v-model="search" v-on:keyup="searchClient" placeholder="search by name, phone or company-name" class="form-control">
                        </div>
                   </div>
                 </div>
                 <div class="box-body">
 
-                  <table class="table  table-striped  table-bordered table-hover">
+                  <table class="table  table-striped table-centered table-bordered table-hover">
                     <thead>
                       <tr>
-                        <th scope="col">#</th>
-                        <th scope="col"> Name </th>
-                        <th scope="col"> Company Name </th>
-                        <th scope="col"> Phone </th>
-                        <th scope="col"> Amount </th>
-                        <th scope="col"> Paid </th>
-                        <th scope="col"> Due </th>
-                        <th scope="col"> Action </th>
+                        <th width="5%">#</th>
+                        <th width="20%"> Name </th>
+                        <th width="15%"> Company Name </th>
+                        <th width="10%"> Phone </th>
+                        <th width="15%"> Amount </th>
+                        <th width="10%"> Paid </th>
+                        <th width="10%"> Due </th>
+                        <th width="15%"> Action </th>
                       </tr>
                     </thead>
                     <tbody>
@@ -112,6 +112,7 @@ export default {
     return {
       clients:{},
       search:"",
+      total_due:0,
       loading: true,
       basePath: this.$store.getters.image_base_link,
     };
@@ -131,6 +132,7 @@ export default {
           console.log(resp);
           if (resp.data.success == "OK") {
              this.clients = resp.data.service_clients;
+             this.total_due = resp.data.total_due;
              this.loading = false;
           }
         })

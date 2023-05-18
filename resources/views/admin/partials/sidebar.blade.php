@@ -131,6 +131,12 @@ if (session()->has('admin')) {
                     </span> </a>
             </li>
 
+            <li class="treeview">
+                <a to="/"><i class="fa fa-file-o"></i> <span>
+                        <router-link :to="{ name: 'profit_report' }">Profit Report</router-link>
+                    </span> </a>
+            </li>
+
 
             <li class="treeview">
                 <a to="/"><i class="fa fa-user-secret"></i> <span>

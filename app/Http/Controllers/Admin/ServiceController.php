@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 
 use Throwable;
-use App\Models\Credit;
 use App\Models\Balance;
 use App\Models\Service;
 use App\Service\LogTracker;
@@ -16,7 +15,6 @@ use App\Models\MitMonthlyRecord;
 use App\Service\AccountService;
 use App\Models\ServicePackageBill;
 use Illuminate\Support\Facades\DB;
-use Prophecy\Promise\ThrowPromise;
 use App\Http\Controllers\Controller;
 use App\Models\ServicePackagePayment;
 
@@ -154,7 +152,7 @@ class ServiceController extends Controller
 
     public function updateService(Request $request,$id){
 
-          $validatedData = $request->validate([
+          $data = $request->validate([
             'name' => 'required|unique:services,name,'.$id,
           ]);
 
@@ -175,36 +173,34 @@ class ServiceController extends Controller
 
     public function activeService($id){
 
-        $service= Service::find($id);
+        $service= Service::findOrFail($id);
         $service->status=1 ;
-        if ($service->save()) {
-
-            return response()->json([
-                "success" => "OK",
-                "message" => 'This service activated ' ,
-            ]);
-        }
+        $service->save();
+        return response()->json([
+            "success" => "OK",
+            "message" => 'This service activated ' ,
+        ]);
+    
     }
 
 
     public function inactiveService($id){
 
-        $service= Service::find($id);
+        $service= Service::findOrFail($id);
         $service->status=0 ;
-        if ($service->save()) {
-
-            return response()->json([
-                "success" => "OK",
-                "message" => 'This service de-activated ' ,
-            ]);
-        }
+        $service->save();
+        return response()->json([
+            "success" => "OK",
+            "message" => 'This service de-activated ' ,
+        ]);
+        
     }
 
 
 
     public function addClient(Request $request){
 
-        $validatedData = $request->validate([
+        $data = $request->validate([
             'name' => 'required',
             'company_name' => 'required|unique:service_clients',
             'phone' => 'required|digits:11|unique:service_clients',
@@ -212,13 +208,7 @@ class ServiceController extends Controller
             'address'=>"required",
           ]);
 
-            $client= new ServiceClient();
-            $client->name=$request->name;
-            $client->company_name=$request->company_name;
-            $client->phone=$request->phone;
-            $client->email=$request->email;
-            $client->address=$request->address;
-            $client->save();
+            ServiceClient::query()->create($data);
             return response()->json([
                 'status'=>'OK',
                 'message'=>'Added successfully'
@@ -251,7 +241,7 @@ class ServiceController extends Controller
 
     public function updateClient(Request $request,$id){
 
-            $validatedData = $request->validate([
+            $data = $request->validate([
             'name' => 'required',
             'company_name' => 'required|unique:service_clients,company_name,'.$id,
             'phone' => 'required|digits:11|unique:service_clients,phone,'.$id,
@@ -260,12 +250,7 @@ class ServiceController extends Controller
           ]);
 
             $client= ServiceClient::findOrFail($id);
-            $client->name=$request->name;
-            $client->company_name=$request->company_name;
-            $client->phone=$request->phone;
-            $client->email=$request->email;
-            $client->address=$request->address;
-            $client->save();
+            $client->update($data);
             return response()->json([
                 'status'=>'OK',
                 'message'=>'updated successfully'
@@ -296,17 +281,18 @@ class ServiceController extends Controller
                                     ->orWhere('company_name','like','%'.$request->search.'%')
                                     ->orderBy('id','desc')
                                     ->paginate(60);
-              return response()->json([
-                    'success' => 'OK',
-                    'service_clients' => $service_clients
-                  ]);
         }else{
            $service_clients=ServiceClient::select('*',DB::raw('total_amount - total_paid_amount as due_amount'))->orderBy('due_amount' ,'desc')->paginate(60);
-            return response()->json([
-                   'success' => 'OK',
-                   'service_clients' => $service_clients
-                ]);
+
         }
+        //total client due
+        $total_due = ServiceClient::sum('total_amount') - ServiceClient::sum('total_paid_amount'); 
+        return response()->json([
+            'success' => 'OK',
+            'service_clients' => $service_clients,
+            'total_due' => $total_due,
+         ]);
+
     }
 
 
@@ -332,20 +318,10 @@ class ServiceController extends Controller
              //firstly check if the same contractual service is taken.if taken by this client then just increase service amount otherwise, create a  new service record
              $client=ServiceClient::findOrFail($data['client_id']);
              if ($data['is_monthly']==2) {
-                //is taken or not
-                $service_package = ServicePackage::where('is_monthly',2)->where('service_id',$data['service_id'])->where('client_id',$client->id)->first();
-                if (!empty($service_package)) {
-                    $service_package->amount = round(floatval($service_package->amount),2) + round(floatval($data['amount']),2);
-                    $service_package->paid =  round(floatval($service_package->paid),2) + round(floatval($data['paid']),2);
-                    $service_package->is_paid =  $service_package->amount == $service_package->paid  ? 1 : 0 ;
-                    $service_package->save();
-                }else{
-                    $data['is_paid'] =  $data['amount'] == $data['paid'] ? 1 : 0  ;
-                    $data['status'] = 1 ;
-                    $data['created_by'] = session()->get('admin')['id'] ;
-                    $service_package =  ServicePackage::query()->create($data);
-                }
-
+                $data['is_paid'] =  $data['amount'] == $data['paid'] ? 1 : 0  ;
+                $data['status'] = 1 ;
+                $data['created_by'] = session()->get('admin')['id'] ;
+                $service_package =  ServicePackage::query()->create($data);
              }
 
 
@@ -360,17 +336,17 @@ class ServiceController extends Controller
              if ($request->paid > 0) {
                     $balance=Balance::where('department','mit')->where('id',$data['credit_in'])->first();
                     $partial_balance=Balance::where('department','mit')->where('name',$data['partials_paid_by'])->first();
-                    AccountService::creditStore ('service package sale'.$service->name .'('. $client->company_name .')',$request->paid - $request->partials_payment_amount,$balance->id,'service package sale -'.$service->name  .'('. $client->company_name .')');
+                    AccountService::creditStore ('service package sale'.$service->name .'('. $client->company_name .')',$request->paid - $request->partials_payment_amount,$balance->id,'service package sale -'.$service->name  .'('. $client->company_name .')',$service->id);
                     //checking if partial payment receive
                     if($request->partials_payment_amount > 0){
-                       AccountService::creditStore ('service package sale'.$service->name .'('. $client->company_name .')',$request->partials_payment_amount,$partial_balance->id,"service package sale, Partials Payment -".$service->name .'('. $client->company_name .')');
+                       AccountService::creditStore ('service package sale'.$service->name .'('. $client->company_name .')',$request->partials_payment_amount,$partial_balance->id,"service package sale, Partials Payment -".$service->name .'('. $client->company_name .')',$service->id);
                     }
                     //insert package payment.
                     $s_p_payment =  new ServicePackagePayment();
                     $s_p_payment->client_id =$client->id ;
                     $s_p_payment->service_package_id =$service_package->id ;
                     $s_p_payment->amount =$request->paid ;
-                    $s_p_payment->is_regular = 0 ;
+                    $s_p_payment->is_regular = 1 ;
                     $s_p_payment->payment_method_id = $balance->id ;
                     $s_p_payment->trx_id = null ;
                     $s_p_payment->comment = "service package sale".$service->name .'('. $client->company_name .')'   ;
@@ -495,7 +471,7 @@ class ServiceController extends Controller
                         $package->is_paid=$package->amount == $package->paid ? 1 : 0 ;
                         $package->save();
                         //updating package bills
-                        $bills=ServicePackageBill::where('service_package_id',$package->id)->where('status',0)->orderBy('month')->get();
+                        $bills=ServicePackageBill::where('service_package_id',$package->id)->where('status',0)->orderBy('month','asc')->get();
                         $paid_amount_inserted=0 ;
                         for($b=0; $b < count($bills); $b++) {
                             //if parallel due amount is greater than the requested amount then insert full due amount and if not then insert acceptable amount.
@@ -531,7 +507,7 @@ class ServiceController extends Controller
                     $balance=Balance::findOrFail($request->credit_in);
                     $service=Service::findOrFail($package->service_id);
                     $comment = $request->comment ?? $service->name." service  from " .'-'. $client->company_name;
-                    AccountService::creditStore("payment of ".$service->name." service  from " .'-'. $client->company_name,$request->amount,$balance->id,$comment);
+                    AccountService::creditStore("payment of ".$service->name." service  from " .'-'. $client->company_name,$request->amount,$balance->id,$comment,$service->id);
                     SmsService::servicePaymentConfirmationMessage($client,$package);
                 }
                 DB::commit();

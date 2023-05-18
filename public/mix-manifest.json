@@ -1,4 +1,6 @@
 {
+    "/chunks/vendors~LoanDetails~SupplierAmount~accoun_purpose_edit~account_login~account_purpose_add~addCompany~~46984972.js": "/chunks/vendors~LoanDetails~SupplierAmount~accoun_purpose_edit~account_login~account_purpose_add~addCompany~~46984972.js",
+    "/chunks/vendors~add_carrier~admin_note_add~company_assets_add~company_assets_edit~edit_carrier~generl settin~8b6b1f93.js": "/chunks/vendors~add_carrier~admin_note_add~company_assets_add~company_assets_edit~edit_carrier~generl settin~8b6b1f93.js",
     "/js/app.js": "/js/app.js",
     "/css/app.css": "/css/app.css",
     "/chunks/AccountReport.js": "/chunks/AccountReport.js",
@@ -123,6 +125,7 @@
     "/chunks/product_stock_tracking.js": "/chunks/product_stock_tracking.js",
     "/chunks/product_transfer.js": "/chunks/product_transfer.js",
     "/chunks/product_transfer_add.js": "/chunks/product_transfer_add.js",
+    "/chunks/profit_report.js": "/chunks/profit_report.js",
     "/chunks/prop_up_banner.js": "/chunks/prop_up_banner.js",
     "/chunks/properties_debit.js": "/chunks/properties_debit.js",
     "/chunks/properties_debit_add.js": "/chunks/properties_debit_add.js",
@@ -157,8 +160,8 @@
     "/chunks/supplier_note_add.js": "/chunks/supplier_note_add.js",
     "/chunks/supplier_purchase_add.js": "/chunks/supplier_purchase_add.js",
     "/chunks/supplier_purchase_from_us.js": "/chunks/supplier_purchase_from_us.js",
+    "/chunks/teamSalary.js": "/chunks/teamSalary.js",
     "/chunks/team_member.js": "/chunks/team_member.js",
-    "/chunks/teamsalary.js": "/chunks/teamsalary.js",
     "/chunks/tourism_credit.js": "/chunks/tourism_credit.js",
     "/chunks/tourism_credit_add.js": "/chunks/tourism_credit_add.js",
     "/chunks/tourism_debit.js": "/chunks/tourism_debit.js",
@@ -166,9 +169,5 @@
     "/chunks/tourism_fund_transfer.js": "/chunks/tourism_fund_transfer.js",
     "/chunks/tourism_fund_transfer_add.js": "/chunks/tourism_fund_transfer_add.js",
     "/chunks/user.js": "/chunks/user.js",
-    "/chunks/variant.js": "/chunks/variant.js",
-    "/chunks/vendors~LoanDetails~SupplierAmount~accoun_purpose_edit~account_login~account_purpose_add~addCompany~~46984972.js": "/chunks/vendors~LoanDetails~SupplierAmount~accoun_purpose_edit~account_login~account_purpose_add~addCompany~~46984972.js",
-    "/chunks/vendors~LoanDetails~admin/director_payment_details~boost_agency~boost_agency_add~boost_agency_resell~454f6d56.js": "/chunks/vendors~LoanDetails~admin/director_payment_details~boost_agency~boost_agency_add~boost_agency_resell~454f6d56.js",
-    "/chunks/vendors~add_carrier~admin_note_add~company_assets_add~company_assets_edit~edit_carrier~generl settin~8b6b1f93.js": "/chunks/vendors~add_carrier~admin_note_add~company_assets_add~company_assets_edit~edit_carrier~generl settin~8b6b1f93.js",
-    "/chunks/vendors~adminProfile~boost_debit_add~debitAdd~mit_debit_add.js": "/chunks/vendors~adminProfile~boost_debit_add~debitAdd~mit_debit_add.js"
+    "/chunks/variant.js": "/chunks/variant.js"
 }

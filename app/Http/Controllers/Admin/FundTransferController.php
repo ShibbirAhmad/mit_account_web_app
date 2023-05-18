@@ -85,7 +85,7 @@ class FundTransferController extends Controller
             $given = (new DepartmentLoanTransferService())->departmentLoanGiven($request);
             //saved taken amount
             $taken = (new DepartmentLoanTransferService())->departmentLoanTaken($request);
-           // store transactin
+           // store transaction
             $department_loan=DepartmentLoan::where('name',$request->department_from)->first();
             $department_loan_receive=DepartmentLoan::where('name',$request->department_to)->first();
             $transaction= new DepartmentLoanTransaction();
@@ -103,7 +103,7 @@ class FundTransferController extends Controller
 
         return response()->json([
             'status'=>"OK",
-            'message'=>'Transaction  Successfull'
+            'message'=>'Transaction  Successful'
         ]);
 
     }
@@ -149,6 +149,7 @@ class FundTransferController extends Controller
             $debit = new Debit();
             $debit->department =$request->department;
             $debit->purpose =27;
+            $debit->is_fund_transfer =1;
             $debit->debit_from=$request->from;
             $debit->amount = $request->amount;
             $debit->comment = "Fund Transfer ".$balance_from->name.'-'.$balance_to->name.'. Amount '. $request->amount;
@@ -160,8 +161,9 @@ class FundTransferController extends Controller
             $credit->department =$request->department;
             $credit->purpose = "Fund Transfer";
             $credit->amount =$request->transfer_amount;
+            $credit->is_fund_transfer =1;
             $credit->credit_in=$request->to;
-            $credit->comment ="Fund In ". $balance_from->name.' from '.$balance_to->name.'. Amount '.($request->transfer_amount). '. And Transfer Cost '.($request->amount-$request->transfer_amount);
+            $credit->comment ="Fund In ". $balance_to->name.' from '.$balance_from->name.'. Amount '.($request->transfer_amount). '. And Transfer Cost '.($request->amount-$request->transfer_amount);
             $credit->date = date('Y-m-d');
             $credit->insert_admin_id=session()->get('admin')['id'];
             $credit->save();
@@ -170,7 +172,7 @@ class FundTransferController extends Controller
 
         return response()->json([
             'status'=>"OK",
-            'message'=>'Transfered Successfully'
+            'message'=>'Transferred Successfully'
         ]);
 
     }

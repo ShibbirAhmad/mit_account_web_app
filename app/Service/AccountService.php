@@ -7,13 +7,14 @@ class AccountService
 {
 
 
-    public static  function  creditStore($purpose,$amount,$balance_id,$comment=null){
+    public static  function  creditStore($purpose,$amount,$balance_id,$comment=null,$service_id =null){
 
             $credit = new Credit();
             $credit->department = 'mit';
             $credit->purpose = $purpose;
             $credit->amount = $amount;
             $credit->comment = $comment ;
+            $credit->service_id = $service_id ;
             $credit->date = $date ?? date('Y-m-d') ;
             $credit->credit_in=$balance_id;
             $credit->insert_admin_id=session()->get('admin')['id'];

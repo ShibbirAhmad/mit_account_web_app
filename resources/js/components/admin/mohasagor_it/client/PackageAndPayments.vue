@@ -99,21 +99,24 @@
                     <table
                       class="
                         table table-hover table-striped
-                        text-center
+                       
                         table-bordered
+                        table-centered
                       "
                     >
+                     <thead>
                       <tr>
-                        <th>#</th>
-                        <th>Date</th>
-                        <th>Name</th>
-                        <th>Amount</th>
-                        <th>Paid</th>
-                        <th>Due</th>
-                        <th>Status</th>
-                        <th>Created By</th>
-                        <th>Action</th>
+                        <th width="5%">#</th>
+                        <th width="10%">Date</th>
+                        <th width="25%">Service Name</th>
+                        <th width="10%">Amount</th>
+                        <th width="10%">Paid</th>
+                        <th width="10%">Due</th>
+                        <th width="10%">Status</th>
+                        <th width="10%">Created By</th>
+                        <th width="10%">Action</th>
                       </tr>
+                     </thead>
                       <tbody>
                         <tr
                           v-for="(item, index) in contractual_packages"
@@ -121,7 +124,9 @@
                         >
                           <td>{{ index + 1 }}</td>
                           <td>{{ new Date(item.created_at).toLocaleDateString()  }}</td>
-                          <td>{{ item.service.name }}</td>
+                          <td> <p>{{ item.service.name }} </p> 
+                               <span>{{ item.note }}</span>
+                          </td>
                           <td>{{ item.amount }}</td>
                           <td>{{ item.paid }}</td>
                           <td>
@@ -164,6 +169,7 @@
                         table table-hover table-striped
                         text-center
                         table-bordered
+                        table-centered
                       "
                     >
                       <tr>

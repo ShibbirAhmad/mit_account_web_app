@@ -1094,11 +1094,21 @@ const routes = [
     {
         path: '/backend/team/salary/:id',
         component: () =>
-            import( /* webpackChunkName: "teamsalary" */ './components/admin/team/Salary'),
+            import( /* webpackChunkName: "teamSalary" */ './components/admin/team/Salary'),
         name: 'teamSalary',
         meta: {
             title: 'Team| Salary',
             requiresAuthAdmin: true,
+        }
+    },
+    {
+        path: '/backend/profit/report',
+        component: () =>
+            import( /* webpackChunkName: "profit_report" */ './components/admin/Report/Profit.vue'),
+        name: 'profit_report',
+        meta: {
+            requiresAuthAdmin: true,
+            title: 'Profit Report'
         }
     },
 
