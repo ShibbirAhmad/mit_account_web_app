@@ -13,14 +13,14 @@
               params: { id: this.$route.params.id },
             }"
             class="btn btn-primary"
-            ><i class="fa fa-plus"></i>Add Reseller</router-link
+            ><i class="fa fa-plus"></i>Add User</router-link
           >
         </h1>
         <ol class="breadcrumb">
           <li>
             <a href="#"><i class="fa fa-dashboard"></i>Dashboard</a>
           </li>
-          <li class="active">boost reseller</li>
+          <li class="active">boost users</li>
         </ol>
       </section>
       <section class="content">
@@ -56,7 +56,7 @@
                     </div>
                     <div class="col-md-5">
                       <h3 style="margin-top: 10px" class="box-title heading">
-                        Boost Agency Resellers
+                        Advertise account users
                       </h3>
                     </div>
                     <div class="col-md-4">
@@ -78,7 +78,7 @@
                     v-else
                     class="
                       table
-                      text-center
+                      table-centered
                       table-striped table-bordered table-hover
                     "
                   >
@@ -267,7 +267,7 @@
           </div>
 
           <!-- start dollar store modal  -->
-          <modal name="store" :width="400" :height="550">
+          <modal name="store" :width="400" :height="600">
             <form @submit.prevent="insertResellerDollar">
               <div class="card" style="padding: 20px">
                 <div class="card-header text-center">
@@ -285,7 +285,9 @@
                         dollar_store_form.boost_agency_reseller_ad_account_id
                       "
                     >
-                      <option value="" disabled> select advertise account</option>
+                      <option value="" disabled>
+                        select advertise account</option
+                      >
                       <option
                         v-for="(account, index) in advertise_accounts"
                         :value="account.id"
@@ -294,6 +296,18 @@
                         {{ account.name }}
                       </option>
                     </select>
+                  </div>
+            
+
+                  <div class="form-group">
+                    <label>supplier rate</label>
+                    <input
+                      type="number"
+                      required
+                      v-model="dollar_store_form.supplier_rate"
+                      class="form-control"
+                      placeholder="125"
+                    />
                   </div>
 
                   <div class="form-group">
@@ -331,7 +345,7 @@
                     </has-error>
                   </div>
 
-                 <div class="form-group">
+                  <div class="form-group">
                     <label>Paid Amount</label>
                     <input
                       type="number"
@@ -340,7 +354,6 @@
                       class="form-control"
                       placeholder="0"
                     />
-
                   </div>
 
                   <div class="form-group">
@@ -359,7 +372,6 @@
                       </option>
                     </select>
                   </div>
-
 
                   <br />
                   <div class="form-group text-center">
@@ -554,7 +566,6 @@
 </template>
 
 <script>
-
 import { Form, HasError, AlertError } from "vform";
 
 export default {
@@ -582,6 +593,7 @@ export default {
         paid: "",
         credit_in: "",
         rate: "",
+        supplier_rate: "",
       }),
       payment_paid_form: new Form({
         boost_agency_reseller_id: "",
@@ -713,17 +725,19 @@ export default {
       this.$modal.show("pdf_form");
     },
 
-  async  insertResellerDollar() {
-
-   if (this.dollar_store_form.paid > 0 && this.dollar_store_form.credit_in == '') {
-       alert('select payment balance');
-       return ;
-   }
-   this.loading = true ;
-   await   this.dollar_store_form
+    async insertResellerDollar() {
+      if (
+        this.dollar_store_form.paid > 0 &&
+        this.dollar_store_form.credit_in == ""
+      ) {
+        alert("select payment balance");
+        return;
+      }
+      this.loading = true;
+      await this.dollar_store_form
         .post("/api/store/boost/reseller/dollar", {
           transformRequest: [
-            function (data, headers) {
+            function(data, headers) {
               return objectToFormData(data);
             },
           ],
@@ -746,23 +760,22 @@ export default {
             this.getBoostAgencyResellers();
             this.$modal.hide("store");
           }
-
         })
         .catch((error) => {
-           this.$toasted.show(error.response.data.message, {
-              type: "error",
-              position: "top-right",
-              duration: 4000,
-            });
-        })
+          this.$toasted.show(error.response.data.message, {
+            type: "error",
+            position: "top-right",
+            duration: 4000,
+          });
+        });
     },
 
-   async  getResellerPayment() {
-     this.loading = true ;
-     await this.payment_paid_form
+    async getResellerPayment() {
+      this.loading = true;
+      await this.payment_paid_form
         .post("/api/store/boost/reseller/payment", {
           transformRequest: [
-            function (data, headers) {
+            function(data, headers) {
               return objectToFormData(data);
             },
           ],
@@ -770,7 +783,6 @@ export default {
         .then((resp) => {
           console.log(resp);
           if (resp.data.status == "OK") {
-
             this.reseller_company_name = "";
             this.payment_paid_form.amount = "";
             this.payment_paid_form.comment = "";
@@ -778,7 +790,7 @@ export default {
             this.payment_paid_form.credit_in = "";
             this.getBoostAgencyResellers();
             this.$modal.hide("paid");
-              this.$toasted.show(resp.data.message, {
+            this.$toasted.show(resp.data.message, {
               type: "success",
               position: "top-center",
               duration: 4000,
@@ -786,11 +798,11 @@ export default {
           }
         })
         .catch((error) => {
-           this.$toasted.show(error.response.data.message, {
-              type: "error",
-              position: "top-center",
-              duration: 4000,
-            });
+          this.$toasted.show(error.response.data.message, {
+            type: "error",
+            position: "top-center",
+            duration: 4000,
+          });
         });
     },
 

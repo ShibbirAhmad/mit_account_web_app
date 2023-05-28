@@ -692,8 +692,8 @@ const routes = [
 
         {
             path: '/backend/boost/agency/payment/details/:id',
-            name: 'boost_agency_payment_details',
-            component: () => import( /*webpackChunkName:"boost_agency_payment_details"*/ './components/admin/boost_agency/AgencyPaymentDetails.vue'),
+            name: 'boost_agency_details',
+            component: () => import( /*webpackChunkName:"boost_agency_details"*/ './components/admin/boost_agency/AgencyDollarAndPayment.vue'),
             meta: {
                 requiresAuthAdmin: true,
                 title: 'boost agency payment details'

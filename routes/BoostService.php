@@ -8,8 +8,6 @@ Route::group([
     //'prefix' => 'backend/'
 ], function () {
 
-
-
     //company boost and reseller route is here
     Route::get('api/boost/agency/list','BoostAgencyController@agency_list');
     Route::get('api/boost/reseller/just/list','BoostAgencyController@ResellersList');
@@ -20,7 +18,7 @@ Route::group([
     Route::post('api/boost/agency/add','BoostAgencyController@store');
     Route::post('api/pay/boost/agency/payment','BoostAgencyController@storeAgencyPayment');
     Route::get('api/boost/reseller/transaction/details/{id}','BoostAgencyController@resellerTransactions');
-    Route::get('api/boost/agency/payment/details/{id}','BoostAgencyController@boostAgencyPayments');
+    Route::post('api/boost/agency/dollar/and/payment/details','BoostAgencyController@boostAgencyDollarAndPaymentDetails');
     Route::get('api/get/boost/agency/reseller/{id}','BoostAgencyController@getBoostReseller');
     Route::post('api/get/boost/agency/reseller/edit/{id}','BoostAgencyController@updateBoostReseller');
     Route::post('api/boost/reseller/advertise/account/add','BoostAgencyController@boostResellerAccountAdd');
@@ -29,8 +27,5 @@ Route::group([
     Route::get('api/download/pdf/boost/reseller/account/all/{id}','BoostAgencyController@downloadAllAccountPdf');
     Route::get('api/download/pdf/boost/reseller/account/date-wise/{start_date}/{end_date}/{id}','BoostAgencyController@downloadAccountPdfWithFilter');
     Route::get('api/download/pdf/boost/agency/resellers/date-wise/{start_date}/{end_date}/{id}','BoostAgencyController@downloadPdfAllReseller');
-
-
-
 
 });

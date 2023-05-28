@@ -17,7 +17,7 @@
           <li>
             <a href="#"><i class="fa fa-dashboard"></i>Dashboard</a>
           </li>
-          <li class="active">boost reseller</li>
+          <li class="active">boost user</li>
         </ol>
       </section>
       <section class="content">
@@ -25,7 +25,7 @@
           <div class="col-lg-11">
             <div class="box box-primary">
               <div class="box-header with-border text-center">
-                <h3 class="box-title">Add Boost Reseller</h3>
+                <h3 class="box-title">Add Boost client</h3>
               </div>
               <div class="box-body">
                 <form
@@ -136,7 +136,7 @@
                   </div>
 
                   <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-2">
                       <div class="form-group">
                         <label>Dollar Rate </label>
 
@@ -146,10 +146,25 @@
                           @keyup="amount"
                           class="form-control"
                           required
-                          placeholder="100"
+                          placeholder="00"
                         />
                       </div>
                     </div>
+                    <div class="col-md-2">
+                      <div class="form-group">
+                        <label>Supplier Dollar Rate </label>
+
+                        <input
+                          v-model.number="form.supplier_dollar_rate"
+                          type="number"
+                          @keyup="amount"
+                          class="form-control"
+                          required
+                          placeholder="00"
+                        />
+                      </div>
+                    </div>
+
                     <div class="col-md-4">
                        <div class="form-group">
                         <label>Dollars </label>
@@ -269,6 +284,7 @@ export default {
         company_name: "",
         address: "",
         phone: "",
+        supplier_dollar_rate: "",
         dollar_rate: "",
         dollar: "",
         paid: "",

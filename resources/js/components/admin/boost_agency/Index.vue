@@ -29,13 +29,11 @@
                     <thead>
                       <tr>
                         <th >#</th>
-                        <th > Company Name </th>
-                        <th >Dollar</th>
-                        <th > Clients & Accounts </th>
-                        <th > Amount </th>
-                        <th > Paid </th>
-                        <th > Due </th>
-                        <th > Action </th>
+                        <th > Supplier Company </th>
+                        <th > Phone </th>
+                        <th > Dollar Rate </th>
+                        <th > Ads Account Users </th>
+                       
                       </tr>
                     </thead>
                     <tbody>
@@ -47,41 +45,36 @@
                         v-bind:key="index"
                       >
                         <td scope="row">{{ index + 1 }}</td>
+                       
                         <td>
                           <router-link style="color:blue;font-size:16px"
                             :to="{
-                              name: 'boost_agency_reselllers',
+                              name: 'boost_agency_details',
                               params: { id: item.id },
                             }"
                             >{{ item.name }}
                           </router-link>
 
                           </td>
-                        <td>
-                         <span class="badge badge-success"> <i class="fa fa-dollar"></i>  {{ totalDistibutedDollar(item.resellers) }} </span>
-                        </td>
-                          <td>   <span class="badge badge-success"> <i class="fa fa-user-circle"></i>   <router-link style="color:#fff;font-size:16px"
+                          <td>
+                             {{  item.phone }}
+                          </td>
+                          <td>
+                            BDT {{  item.rate }}
+                          </td>
+              
+                          <td>
+                            <router-link class="btn btn-success btn-xs" 
                             :to="{
                               name: 'boost_agency_reselllers',
                               params: { id: item.id },
                             }"
-                            >{{ item.resellers.length }}
-                          </router-link> </span> </td>
-                          <td>
-                                <span class="badge badge-warning"> <i class="fa fa-money"></i>  {{ totalDistibutedAmount(item.resellers) }} </span>
-                         </td>
+                            >
+                            <i class="fa fa-users"></i>   </router-link>  </td>
+                  
 
-                         <td>
-                             <span class="badge badge-warning"> <i class="fa fa-money"></i>  {{ totalPaymentPaid(item.payments) }} </span>
-                        </td>
-                         <td>
-                           <span class="badge badge-danger"> <i class="fa fa-money"></i>  {{ totalDueAmount(item.resellers,item.payments) }} </span>
-                         </td>
+                  
 
-                          <td>
-                              <button class="btn btn-sm btn-success" @click="showMoneyPaidModal(item.name,item.id)" > Make Payment </button>
-                              <router-link class="btn btn-sm btn-success" :to="{name:'boost_agency_payment_details',params:{id:item.id}}" > <i class="fa fa-eye"></i> </router-link>
-                          </td>
                       </tr>
                     </tbody>
                   </table>
@@ -149,7 +142,6 @@
 </template>
 
 <script>
-import Vue from "vue";
 import { Form, HasError, AlertError } from "vform";
 export default {
   created() {
@@ -183,47 +175,6 @@ export default {
             this.balance = resp.data.balance;
         })
     },
-     showMoneyPaidModal(name,id) {
-      this.agency_name = name ;
-      this.payment_paid_form.boost_agency_id = id ;
-      this.$modal.show("paid");
-    },
-
-    async BoostAgencyPayment(){
-    await   this.payment_paid_form
-        .post("/api/pay/boost/agency/payment", {
-          transformRequest: [
-            function (data, headers) {
-              return objectToFormData(data);
-            },
-          ],
-        })
-        .then((resp) => {
-          console.log(resp);
-          if (resp.data.status == "OK") {
-            this.$toasted.show(resp.data.message, {
-              type: "success",
-              position: "top-center",
-              duration: 4000,
-            });
-            this.agency_name='';
-            this.payment_paid_form.amount='';
-            this.payment_paid_form.comment='';
-            this.payment_paid_form.boost_agency_id='';
-            this.payment_paid_form.paid_by='Cash';
-            this.getBoostAgencys();
-            this.$modal.hide('paid');
-          }
-        })
-        .catch((error) => {
-         this.$toasted.show(error.response.data.message,{
-                type: "error",
-                position: "top-center",
-                duration: 4000,
-            });
-        });
-
-    },
 
     getBoostAgencys() {
       axios
@@ -240,48 +191,7 @@ export default {
           console.log(error);
         });
     },
-    totalDistibutedDollar(resellers) {
-      let total = 0;
-      resellers.forEach(reseller => {
-            reseller.transactions.forEach(item => {
-                total += parseFloat(item.dollar);
-            });
-      });
-        return this.formatToCurrency(total);
-    },
 
-    totalDistibutedAmount(resellers) {
-          let total = 0;
-          resellers.forEach(reseller => {
-                reseller.transactions.forEach(item => {
-                    total += parseFloat(item.amount);
-                });
-          });
-         return this.formatToCurrency(total);
-    },
-
-    totalPaymentPaid($payments){
-          let  x= 0 ;
-          $payments.forEach(payment=>{
-              x += parseFloat(payment.amount );
-          });
-          return this.formatToCurrency(x) ;
-    },
-
-  totalDueAmount(resellers,$payments){
-          let  x= 0 ;
-          let  y= 0 ;
-          resellers.forEach(reseller => {
-                reseller.transactions.forEach(item => {
-                    y += parseFloat(item.amount) ;
-                });
-          });
-          $payments.forEach(payment=>{
-              x += parseFloat(payment.amount) ;
-          });
-          let due = y - x ;
-          return this.formatToCurrency(due) ;
-    },
 
   formatToCurrency(amount){
     return amount.toFixed(2);
