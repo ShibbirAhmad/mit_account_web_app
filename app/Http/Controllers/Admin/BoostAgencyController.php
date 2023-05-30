@@ -89,6 +89,40 @@ class BoostAgencyController extends Controller
 
 
 
+  public function getAgency($id)
+  {
+
+    $agency = BoostAgency::findOrFail($id);
+    return response()->json([
+      'status' => 'OK',
+      'agency' => $agency,
+      'message' => 'updated successfully'
+    ]);
+    
+  }
+
+
+
+
+  public function update(Request $request,$id)
+  {
+
+    $data = $request->validate([
+      'name' => 'required',
+      'rate' => 'required',
+      'phone' => 'required|digits:11|unique:boost_agencies,phone,'.$id,
+    ]);
+   
+    $agency = BoostAgency::findOrFail($id);
+    $agency->update($data);
+    return response()->json([
+      'status' => 'OK',
+      'message' => 'updated successfully'
+    ]);
+  }
+
+
+
 
   public function storeAgencyPayment(Request $request)
   {
@@ -174,6 +208,7 @@ class BoostAgencyController extends Controller
     try {
 
       $client = BoostAgencyReseller::query()->create($data);
+      $agency = BoostAgency::findOrFail($data['boost_agency_id']);
       //create advertise account
       if (!empty($data['add_account_name'])) {
         $ad_account =  new BoostAgencyResellerAdAccount();
@@ -189,7 +224,7 @@ class BoostAgencyController extends Controller
           $transaction->boost_agency_reseller_id = $client->id;
           $transaction->boost_agency_reseller_ad_account_id = $ad_account->id;
           $transaction->dollar = $data['dollar'];
-          $transaction->supplier_rate = $data['supplier_dollar_rate'];
+          $transaction->supplier_rate =  $agency->rate ;
           $transaction->rate = $data['dollar_rate'];
           $transaction->amount = $data['amount'];
           $transaction->save();
@@ -271,7 +306,6 @@ class BoostAgencyController extends Controller
       'boost_agency_reseller_id' => 'required',
       'boost_agency_reseller_ad_account_id' => 'required',
       'amount' => 'required',
-      'supplier_rate' => 'required',
       'rate' => 'required',
       'dollar' => 'required',
       'paid' => 'nullable|integer',
@@ -281,7 +315,9 @@ class BoostAgencyController extends Controller
     DB::beginTransaction();
     try {
       $client = BoostAgencyReseller::findOrFail($data['boost_agency_reseller_id']);
-      $data['boost_agency_id'] = $client->boost_agency_id ;
+      $agency = BoostAgency::findOrFail($client->boost_agency_id);
+      $data['boost_agency_id'] = $agency->id ;
+      $data['supplier_rate'] = $agency->rate ;
       $transaction = BoostAgencyResellerDollarTransaction::query()->create($data);
       //send message to reseller
       SmsService::sendDollarConfirmationMessage($transaction);

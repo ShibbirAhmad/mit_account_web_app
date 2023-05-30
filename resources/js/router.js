@@ -651,6 +651,16 @@ const routes = [
         },
 
         {
+            path: '/backend/boost/agency/edit/:id',
+            name: 'boost_agency_edit',
+            component: () => import( /*webpackChunkName: "boost_agency_edit" */ './components/admin/boost_agency/Edit.vue'),
+            meta: {
+                requiresAuthAdmin: true,
+                title: 'edit agency'
+            }
+        },
+
+        {
             path: '/backend/boost/agency/reseller/add/:id',
             name: 'boost_agency_reseller_add',
             component: () => import( /*webpackChunkName: "boost_agency_reseller_add" */ './components/admin/boost_agency/BoostResellerAdd.vue'),

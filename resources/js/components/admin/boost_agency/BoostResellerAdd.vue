@@ -136,7 +136,7 @@
                   </div>
 
                   <div class="row">
-                <div class="col-md-2">
+                <div class="col-md-4">
                       <div class="form-group">
                         <label>Dollar Rate </label>
 
@@ -150,21 +150,7 @@
                         />
                       </div>
                     </div>
-                    <div class="col-md-2">
-                      <div class="form-group">
-                        <label>Supplier Dollar Rate </label>
-
-                        <input
-                          v-model.number="form.supplier_dollar_rate"
-                          type="number"
-                          @keyup="amount"
-                          class="form-control"
-                          required
-                          placeholder="00"
-                        />
-                      </div>
-                    </div>
-
+     
                     <div class="col-md-4">
                        <div class="form-group">
                         <label>Dollars </label>
@@ -284,7 +270,6 @@ export default {
         company_name: "",
         address: "",
         phone: "",
-        supplier_dollar_rate: "",
         dollar_rate: "",
         dollar: "",
         paid: "",

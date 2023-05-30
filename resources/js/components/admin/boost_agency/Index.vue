@@ -64,13 +64,25 @@
                           </td>
               
                           <td>
+
                             <router-link class="btn btn-success btn-xs" 
                             :to="{
                               name: 'boost_agency_reselllers',
                               params: { id: item.id },
                             }"
                             >
-                            <i class="fa fa-users"></i>   </router-link>  </td>
+                            <i class="fa fa-users"></i>   </router-link>
+                          
+
+                            <router-link class="btn btn-success btn-xs" 
+                            :to="{
+                              name: 'boost_agency_edit',
+                              params: { id: item.id },
+                            }"
+                            >
+                            <i class="fa fa-edit"></i>   </router-link>
+
+                          </td>
                   
 
                   

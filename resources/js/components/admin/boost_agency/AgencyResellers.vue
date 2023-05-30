@@ -298,18 +298,6 @@
                     </select>
                   </div>
             
-
-                  <div class="form-group">
-                    <label>supplier rate</label>
-                    <input
-                      type="number"
-                      required
-                      v-model="dollar_store_form.supplier_rate"
-                      class="form-control"
-                      placeholder="125"
-                    />
-                  </div>
-
                   <div class="form-group">
                     <label>Dollar</label>
                     <input
@@ -593,7 +581,6 @@ export default {
         paid: "",
         credit_in: "",
         rate: "",
-        supplier_rate: "",
       }),
       payment_paid_form: new Form({
         boost_agency_reseller_id: "",

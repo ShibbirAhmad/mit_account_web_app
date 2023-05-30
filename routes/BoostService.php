@@ -16,6 +16,8 @@ Route::group([
     Route::post('api/store/boost/reseller/dollar','BoostAgencyController@storeBoostResellerDollar');
     Route::post('api/store/boost/reseller/payment','BoostAgencyController@storeBoostResellerPayment');
     Route::post('api/boost/agency/add','BoostAgencyController@store');
+    Route::get('api/boost/agency/edit/{id}','BoostAgencyController@getAgency');
+    Route::post('api/boost/agency/update/{id}','BoostAgencyController@update');
     Route::post('api/pay/boost/agency/payment','BoostAgencyController@storeAgencyPayment');
     Route::get('api/boost/reseller/transaction/details/{id}','BoostAgencyController@resellerTransactions');
     Route::post('api/boost/agency/dollar/and/payment/details','BoostAgencyController@boostAgencyDollarAndPaymentDetails');
