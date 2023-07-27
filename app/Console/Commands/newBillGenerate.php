@@ -72,6 +72,9 @@ class newBillGenerate extends Command
                         $client->save();
                     }
                 });
+
+                DB::commit();
+               
             }catch(Throwable $th){
                DB::rollBack();
                LogTracker::failLog($th,null) ;

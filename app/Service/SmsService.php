@@ -287,16 +287,16 @@ class SmsService{
 
     public  static function   smsApi($contacts,$sms){
 
-        $url = "https://mshastra.com/sendurl.aspx?user=mit22&pwd=m91y91j9&senderid=8809617611150&CountryCode=880&mobileno=".$contacts."&msgtext=". urlencode($sms) .'"';
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        try {
-            $curl_scraped_page = curl_exec($ch);
-            curl_close($ch);
-            return $curl_scraped_page;
-        }catch (Exception $e) {
-            return $e->getMessage();
-        }
+        // $url = "https://mshastra.com/sendurl.aspx?user=mit22&pwd=m91y91j9&senderid=8809617611150&CountryCode=880&mobileno=".$contacts."&msgtext=". urlencode($sms) .'"';
+        // $ch = curl_init($url);
+        // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        // try {
+        //     $curl_scraped_page = curl_exec($ch);
+        //     curl_close($ch);
+        //     return $curl_scraped_page;
+        // }catch (Exception $e) {
+        //     return $e->getMessage();
+        // }
 
 
     }
