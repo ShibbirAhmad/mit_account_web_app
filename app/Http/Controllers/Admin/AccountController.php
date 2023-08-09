@@ -243,6 +243,7 @@ class AccountController extends Controller
             'amount' => 'required',
             'debit_from' => 'required',
             'department' => 'required',
+            'comment' => 'nullable',
         ]);
 
         $balance = Balance::findOrFail($request->debit_from);
