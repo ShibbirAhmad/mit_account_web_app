@@ -17,7 +17,7 @@
       </h1>
       <section v-else class="content">
 
-         <!-- <mitAccounts  /> -->
+         <mitAccounts  />
 
          <boostAccounts  />
 
@@ -29,7 +29,7 @@
 
 <script>
 import boostAccounts from "../account/BoostAccounts.vue" ;
-// import mitAccounts from "../account/MitAccounts.vue" ;
+import mitAccounts from "../account/MitAccounts.vue" ;
 export default {
   mounted(){
     window.scrollTo(0,0);
@@ -42,7 +42,7 @@ export default {
     };
   },
   components:{
-    // mitAccounts,
+    mitAccounts,
     boostAccounts
   },
   created() {
