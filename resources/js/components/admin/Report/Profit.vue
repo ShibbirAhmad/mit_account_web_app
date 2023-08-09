@@ -143,7 +143,7 @@
                           <h4>Actual Expense  <b>  {{ actual_expense }} </b></h4>
                           <small v-for="item in expense_list" :key="item.id" > <span v-if="item.is_expense ==1" > {{ item.text }}, </span> </small>
 
-                          <h4>Other Expense <b>{{ actual_expense }} </b>  </h4>
+                          <h4>Other Expense <b>{{ other_expense }} </b>  </h4>
                        
                             <small v-for="item in expense_list" :key="item.id" > <span v-if="item.is_expense ==0" > {{ item.text }}, </span> </small>
                           

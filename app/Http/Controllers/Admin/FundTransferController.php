@@ -150,6 +150,7 @@ class FundTransferController extends Controller
             $debit->department =$request->department;
             $debit->purpose =27;
             $debit->is_fund_transfer =1;
+            $debit->is_expense =0;
             $debit->debit_from=$request->from;
             $debit->amount = $request->amount;
             $debit->comment = "Fund Transfer ".$balance_from->name.'-'.$balance_to->name.'. Amount '. $request->amount;

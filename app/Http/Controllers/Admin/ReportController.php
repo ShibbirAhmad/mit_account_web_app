@@ -29,17 +29,17 @@ class ReportController extends Controller
           //expense records
           $expense_list = Account_purpose::where('id','!=',27)->select('id','text','is_expense')->get() ;
           foreach ($expense_list as $key => $item) {
-              $item->{'amount'} = DB::table('debits')->whereDate('created_at','>=',$request->start_date)->whereDate('created_at','<=',$request->end_date)->where('purpose',$item->id)->sum('amount');
+              $item->{'amount'} = DB::table('debits')->where('department','mit')->whereDate('created_at','>=',$request->start_date)->whereDate('created_at','<=',$request->end_date)->where('purpose',$item->id)->sum('amount');
           }
           //income records
           $income_list = Service::select('id','name','type')->get() ;
           foreach ($income_list as $key => $item) {
-              $item->{'amount'} = DB::table('credits')->where('service_id',$item->id)->whereDate('created_at','>=',$request->start_date)->whereDate('created_at','<=',$request->end_date)->sum('amount');
+              $item->{'amount'} = DB::table('credits')->where('department','mit')->where('service_id',$item->id)->whereDate('created_at','>=',$request->start_date)->whereDate('created_at','<=',$request->end_date)->sum('amount');
           }
          
-          $total_income = Credit::where('is_fund_transfer',0)->whereDate('created_at','>=',$request->start_date)->whereDate('created_at','<=',$request->end_date)->sum('amount') ;
-          $other_expense = Debit::where('is_fund_transfer',0)->where('is_expense',0)->whereDate('created_at','>=',$request->start_date)->whereDate('created_at','<=',$request->end_date)->sum('amount') ;
-          $actual_expense = Debit::where('is_fund_transfer',0)->where('is_expense',1)->whereDate('created_at','>=',$request->start_date)->whereDate('created_at','<=',$request->end_date)->sum('amount') ;
+          $total_income = Credit::where('department','mit')->where('is_fund_transfer',0)->whereDate('created_at','>=',$request->start_date)->whereDate('created_at','<=',$request->end_date)->sum('amount') ;
+          $other_expense = Debit::where('department','mit')->where('is_fund_transfer',0)->where('is_expense',0)->whereDate('created_at','>=',$request->start_date)->whereDate('created_at','<=',$request->end_date)->sum('amount') ;
+          $actual_expense = Debit::where('department','mit')->where('is_fund_transfer',0)->where('is_expense',1)->whereDate('created_at','>=',$request->start_date)->whereDate('created_at','<=',$request->end_date)->sum('amount') ;
 
 
           
