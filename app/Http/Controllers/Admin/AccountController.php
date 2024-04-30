@@ -11,7 +11,6 @@ use App\Models\Investor;
 use App\Models\LoanPaid;
 use App\Models\Supplier;
 use App\Models\PrintHouse;
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Exports\DebitExport;
 use App\Models\BillStatement;
@@ -26,9 +25,8 @@ use App\Models\InvestorProfitPaid;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Service\SmsService;
-use Intervention\Image\Facades\Image;
 use Maatwebsite\Excel\Facades\Excel;
-use PhpParser\Node\Stmt\TryCatch;
+
 
 class AccountController extends Controller
 {
@@ -116,7 +114,7 @@ class AccountController extends Controller
     {
 
         //  return $request->all();
-        $validatedData = $request->validate([
+        $data = $request->validate([
             'date' => 'required|before:tomorrow',
             'purpose' => 'required',
             'amount' => 'required|numeric',
@@ -153,7 +151,7 @@ class AccountController extends Controller
     public function update_credit(Request $request, $id)
     {
 
-        $validatedData = $request->validate([
+        $data = $request->validate([
             'date' => 'required|before:tomorrow',
             'purpose' => 'required',
             'amount' => 'required',
@@ -385,7 +383,7 @@ class AccountController extends Controller
     public function update_debit(Request $request, $id)
     {
 
-        $validatedData = $request->validate([
+        $data = $request->validate([
             'date' => 'required|before:tomorrow',
             'purpose' => 'required',
             'amount' => 'required',

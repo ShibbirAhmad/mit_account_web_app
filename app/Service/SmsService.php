@@ -54,9 +54,9 @@ class SmsService{
     }
 
 
-    public static function servicePaymentConfirmationMessage($client,$package){
+    public static function servicePaymentConfirmationMessage($amount,$client,$package){
 
-        $sms =  'Assalamualaikum, Dear '.$client->name. ' You have total paid BDT '.number_format($package->paid).',  and total  due amount is '.number_format($package->amount - $package->paid).'. Thanks from mohasagorit.solutions ' ;
+        $sms =  'Assalamualaikum, Dear '.$client->name. ' You have recently paid BDT '.number_format($amount).',  and total  due amount is '.number_format($package->amount - $package->paid).'. Thanks from mohasagorit.solutions ' ;
         return self::smsApi($client->phone,$sms);
 
     }
