@@ -33,29 +33,27 @@
                         class="form-control"
                         v-model="search"
                         @keyup="searchCredit"
-                        placeholder="purpose,commens...."
+                        placeholder="purpose,comments...."
                       />
                     </div>
                     <div class="col-lg-4">
                       <div class="row">
                         <div class="col-lg-6">
-                          <date-picker
-                            autocomplete="off"
-                            v-model="start_date"
-                            :config="options"
-                            placeholder="start_date"
+                          <input
+                            class="form-control"
+                            type="date"
                             @change="filter"
-                          ></date-picker>
+                            v-model="start_date"
+                          />
                         </div>
                         <div class="col-lg-6">
-                          <date-picker
-                            autocomplete="off"
+                          <input
+                            class="form-control"
+                            type="date"
+                            @change="filter"
                             v-model="end_date"
-                            :config="options"
-                            placeholder="end_date"
-                          ></date-picker>
+                          />
                         </div>
-
                       </div>
                     </div>
                      <div class="col-lg-2">
@@ -89,14 +87,14 @@
                       <tr>
                         <th width="5%">#</th>
                          <th width="10%">Date</th>
-                        <th width="10%">Invoice_no</th>
+                        <th width="10%">Invoice</th>
                          <th width="15%">Purpose</th>
                           <th width="10%">Debit From</th>
                         <th width="10%">Amount</th>
                         <th width="30%">Comment</th>
-                        <!-- <th scope="col">Signature</th> -->
+          
                         <th width="10%">Insert</th>
-                        <!-- <th>Action</th> -->
+               
                       </tr>
                     </thead>
                     <tbody>
@@ -112,35 +110,9 @@
                           <td>{{ debit.balance.name }}</td>
                         <td>{{ debit.amount }}</td>
                         <td>{{ debit.comment }}</td>
-                        <!-- <td>
-                         <a target="_blank"   v-if="debit.signature" :href="basePath+debit.signature">
-                             <img
-                            v-if="debit.signature"
-                            :src="basePath + debit.signature"
-                            style="width:100px;height:40px;"
-
-                          />
-                         </a>
-                        </td> -->
+           
                         <td>{{ debit.admin.name }}</td>
-                    <!-- <td>
-                          <router-link
-                          v-if="$can('edit debit')"
-                            :to="{
-                              name: 'debitEdit',
-                              params: { id: debit.id },
-                            }"
-                            class="btn btn-success btn-sm"
-                            ><i class="fa fa-edit"></i
-                          ></router-link>
-
-                          <a
-                            v-if="current_date == debit.date && $can('delete debit')"
-                            class="btn btn-sm btn-danger"
-                            @click="trash(debit.id, index)"
-                            ><i class="fa fa-trash"></i
-                          ></a>
-                        </td> -->
+                   
                       </tr>
                     </tbody>
                   </table>
@@ -192,11 +164,6 @@ export default {
       item: 20,
       search: "",
       status: "all",
-      //for date picker
-      options: {
-        format: "YYYY-MM-DD",
-        useCurrent: false,
-      },
       balance:"",
       start_date: "",
       end_date: "",

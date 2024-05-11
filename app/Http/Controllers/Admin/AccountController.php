@@ -188,12 +188,7 @@ class AccountController extends Controller
     {
 
         $paginate = $request->item ?? 20;
-        if (!empty($request->accuount_purpose)) {
-            $debits = Debit::where('department', $request->department)->where('purpose', $request->accuount_purpose)
-                ->orderBy('id', 'DESC')->with(['admin:id,name', 'purpose'])
-                ->paginate($paginate);
-            return response()->json($debits);
-        }
+
         if ($request->status == 'all') {
             $debits = Debit::where('department', $request->department)->orderBy('id', 'DESC')
                 ->with(['purpose', 'admin:id,name', 'balance'])->paginate($paginate);
@@ -216,11 +211,13 @@ class AccountController extends Controller
                     ->orderBy('id', 'DESC')->with(['purpose', 'admin:id,name', 'balance'])
                     ->paginate($paginate);
             }
-            if (!empty($request->debit_from)) {
+            if (!empty($request->debit_from) && !empty($request->start_date) && !empty($request->end_date)   ) {
                 $debits = Debit::where('department', $request->department)
-                    ->where('debit_from', $request->debit_from)
-                    ->orderBy('id', 'DESC')->with(['purpose', 'admin:id,name', 'balance'])
-                    ->paginate($paginate);
+                                ->whereDate('date', '>=', $request->start_date)
+                                ->whereDate('date', '<=', $request->end_date)
+                                ->where('debit_from', $request->debit_from)
+                                ->orderBy('id', 'desc')->with(['purpose', 'admin:id,name', 'balance'])
+                                ->paginate($paginate);
             }
             return response()->json($debits);
         }
@@ -432,7 +429,7 @@ class AccountController extends Controller
     public  function add_purpose(Request $request)
     {
 
-        $validatedData = $request->validate([
+        $data = $request->validate([
             'text' => 'required|unique:account_purposes',
         ]);
         $purpose = new Account_purpose();
@@ -460,7 +457,7 @@ class AccountController extends Controller
     public function update_purpose(Request $request, $id)
     {
 
-        $validatedData = $request->validate([
+        $data = $request->validate([
             'text' => 'required|unique:account_purposes,text,' . $id,
         ]);
         $purpose = Account_purpose::find($id);
@@ -484,26 +481,6 @@ class AccountController extends Controller
         $employeies = Team::where('status', 1)->orderBy('position', 'ASC')->get();
         return response()->json($employeies);
     }
-
-
-
-    public   function export_credit()
-    {
-
-        return   Excel::download(new CreditExport(), 'credit.xlsx');
-    }
-
-    public   function export_debit()
-    {
-
-        return Excel::download(new DebitExport(), 'debit.xlsx');
-    }
-
-
-
-
-
-
 
 
 

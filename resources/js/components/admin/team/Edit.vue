@@ -19,27 +19,25 @@
         <div class="row justify-content-center">
           <div class="col-lg-6 col-lg-offset-2">
             <div class="box box-primary">
-              <div class="box-header with-border">
-                <h3 class="box-title">Edit member Information</h3>
+              <div class="box-header with-border text-center">
+                <h3 class="box-title">Edit Information</h3>
               </div>
               <div class="box-body">
                 <h1 v-if="loading"><i class="fa fa-spinner fa-spin"></i></h1>
                 <form
                   v-else
                   @submit.prevent="updateMember"
-                  @keydown="form.onKeydown($event)"
+     
                   enctype="multipart/form-data"
                 >
-                  <div class="form-group">
+                <div class="form-group">
                     <label>Joining Date</label>
-                    <date-picker
-                      autocomplete="off"
-                      :class="{ 'is-invaid': form.errors.has('joining_date') }"
+
+                    <input
+                      class="form-control"
+                      type="date"
                       v-model="form.joining_date"
-                      :config="options"
-                    >
-                    </date-picker>
-                    <has-error :form="form" field="joining_date"></has-error>
+                    />
                   </div>
                   <div class="form-group">
                     <label>Name</label>
@@ -49,33 +47,13 @@
                       type="text"
                       name="name"
                       class="form-control"
-                      :class="{ 'is-invalid': form.errors.has('name') }"
-                      autofocus
-                      autocomplete="off"
-                      placeholder="name"
+                      required
                     />
 
-                    <has-error :form="form" field="name"></has-error>
+                   
                   </div>
 
-                  <div class="form-group">
-                    <label for="">Position</label>
-                    <select
-                      v-model="form.position"
-                      class="form-control"
-                      :class="{ 'is-invalid': form.errors.has('designation') }"
-                      name="designation"
-                    >
-                      <option value="">Select position</option>
-                      <option value="1">Top Managemnt</option>
-                      <option value="2">Manager</option>
-                      <option value="3">Technical Team</option>
-                      <option value="4">Business Team</option>
-                      <option value="5">Office Assistant</option>
-                    </select>
-                    <has-error :form="form" field="designation"> </has-error>
-                  </div>
-
+    
                   <div class="form-group">
                     <label>Email</label>
                     <input
@@ -101,41 +79,20 @@
                       autofocus
                       v-model="form.phone"
                       name="phone"
-                      id=""
+                 
                     />
                     <has-error :form="form" field="phone"> </has-error>
                   </div>
 
                   <div class="form-group">
-                    <label for="phone_office">Office phone</label>
+                    <label for="designation">Designation</label>
+
                     <input
                       type="text"
                       class="form-control"
-                      :class="{ 'is-invalid': form.errors.has('phone_office') }"
-                      autocomplete="off"
-                      autofocus
-                      v-model="form.phone_office"
-                      name="phone_office"
-                      id=""
-                    />
-                    <has-error :form="form" field="phone_office"> </has-error>
-                  </div>
-
-                  <div class="form-group">
-                    <label for="designation">Designation</label>
-
-                    <textarea
-                      placeholder="write title about this member"
                       v-model="form.designation"
-                      class="form-control"
-                      :class="{ 'is-invalid': form.errors.has('designation') }"
-                      name="designation"
-                      id=""
-                      rows="3"
-                    ></textarea>
-                     <has-error :form="form" field="designation"> </has-error>
+                    />
                   </div>
-                 
 
                   <div class="form-group text-center">
                     <img
@@ -172,9 +129,11 @@
                     <has-error :form="form" field="resume"></has-error>
                   </div>
 
+                 <div class="form-group text-center">
                   <button :disabled="form.busy" type="submit" class="btn btn-primary">
                     <i class="fa fa-spin fa-spinner" v-if="form.busy"></i>Update
                   </button>
+                 </div>
                 </form>
               </div>
             </div>
@@ -188,7 +147,7 @@
 <script>
 import Vue from "vue";
 import { Form, HasError, AlertError } from "vform";
-import datePicker from "vue-bootstrap-datetimepicker";
+
 
 Vue.component(HasError.name, HasError);
 
@@ -198,7 +157,7 @@ export default {
       this.loading = false;
     }, 500);
 
-    this.getmember();
+    this.getMember();
   },
   data() {
     return {
@@ -207,8 +166,6 @@ export default {
         designation: "",
         email: "",
         phone: "",
-        phone_office: "",
-        position: "",
         image: "",
         resume: "",
         joining_date: "",
@@ -251,7 +208,7 @@ export default {
         });
     },
 
-    getmember() {
+    getMember() {
       axios.get("/team/members/edit/" + this.$route.params.id).then((resp) => {
         if (resp.data.success == "OK") {
           
@@ -260,8 +217,6 @@ export default {
           this.form.email = resp.data.member.email;
           this.form.phone = resp.data.member.phone;
           this.form.joining_date = resp.data.member.joining_date;
-          this.form.position = resp.data.member.position;
-          this.form.phone_office = resp.data.member.phone_office;
           this.form.designation = resp.data.member.designation;
           this.form.image = resp.data.member.avator;
           console.log(resp.data.member.basic_salary)

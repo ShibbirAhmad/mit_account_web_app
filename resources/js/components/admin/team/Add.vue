@@ -19,15 +19,14 @@
         <div class="row justify-content-center">
           <div class="col-lg-6 col-lg-offset-2">
             <div class="box box-primary">
-              <div class="box-header with-border">
-                <h3 class="box-title">Add member</h3>
+              <div class="box-header with-border text-center">
+                <h3 class="box-title">Add Employee</h3>
               </div>
               <div class="box-body">
                 <h1 v-if="loading"><i class="fa fa-spinner fa-spin"></i></h1>
                 <form
                   v-else
-                  @submit.prevent="addmember"
-                  @keydown="form.onKeydown($event)"
+                  @submit.prevent="addMember"
                   enctype="multipart/form-data"
                 >
                   <ul class="list-group" v-if="errors">
@@ -39,14 +38,16 @@
                       {{ error.name }}
                     </li>
                   </ul>
-                  
-                    <div class="form-group">
+
+                  <div class="form-group">
                     <label>Joining Date</label>
 
-                    <date-picker autocomplete="off" :class="{'is-invaid' : form.errors.has('joining_date')}"  v-model="form.joining_date" :config="options" > </date-picker>
-                    <has-error :form="form" field="joining_date"></has-error>
-                    
-                    </div>
+                    <input
+                      class="form-control"
+                      type="date"
+                      v-model="form.joining_date"
+                    />
+                  </div>
 
                   <div class="form-group">
                     <label>Name</label>
@@ -56,32 +57,9 @@
                       type="text"
                       name="name"
                       class="form-control"
-                      :class="{ 'is-invalid': form.errors.has('name') }"
-                      autofocus
-                      autocomplete="off"
+                      required
                       placeholder="name"
                     />
-
-                    <has-error :form="form" field="name"></has-error>
-                  </div>
-    
-                  <div class="form-group">
-                    <label for="">Position</label>
-                    <select
-                      v-model="form.position"
-                      class="form-control"
-                      :class="{ 'is-invalid': form.errors.has('designation') }"
-                      name="designation"
-                      id=""
-                    >
-                    <option value="">Select position</option>
-                      <option value="1">Top Managemnt</option>
-                       <option value="2">Manager</option>
-                      <option value="3">Technical Team</option>
-                     <option value="4">Business Team</option>
-                      <option value="5">Office Assistant</option>
-                    </select>
-                    <has-error :form="form" field="designation"> </has-error>
                   </div>
 
                   <div class="form-group">
@@ -92,8 +70,6 @@
                       name="email"
                       class="form-control"
                       :class="{ 'is-invalid': form.errors.has('email') }"
-                      autofocus
-                      autocomplete="off"
                       placeholder="email"
                     />
                     <has-error :form="form" field="email"></has-error>
@@ -101,47 +77,33 @@
 
                   <div class="form-group">
                     <label for="phone">Phone</label>
-                    <input type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('phone') }"
+                    <input
+                      type="text"
+                      class="form-control"
+                      :class="{ 'is-invalid': form.errors.has('phone') }"
                       autocomplete="off"
                       autofocus
                       v-model="form.phone"
                       name="phone"
-                      id=""
                     />
                     <has-error :form="form" field="phone"> </has-error>
                   </div>
 
                   <div class="form-group">
-                    <label for="phone_office">Office phone</label>
+                    <label for="designation">Designation</label>
+
                     <input
                       type="text"
                       class="form-control"
-                      :class="{ 'is-invalid': form.errors.has('phone_office') }"
-                      autocomplete="off"
-                      autofocus
-                      v-model="form.phone_office"
-                      name="phone_office"
-                      id=""
-                    />
-                    <has-error :form="form" field="phone_office"> </has-error>
-                  </div>
-
-                  <div class="form-group">
-                    <label for="designation">Designation</label>
-
-                    <textarea placeholder="write title about this member"
                       v-model="form.designation"
-                      class="form-control"
-                      :class="{ 'is-invalid': form.errors.has('designation') }"
-                      name="designation"
-                      id=""
-                      rows="3"
-                    ></textarea>
-
-                    <has-error :form="form" field="designation"> </has-error>
+                    />
                   </div>
                   <div v-show="preview_image" class="form-group  text-center">
-                    <img :src="preview_image" style="width:200px;height:210px" class="image-responsive"  />
+                    <img
+                      :src="preview_image"
+                      style="width:200px;height:210px"
+                      class="image-responsive"
+                    />
                   </div>
                   <div class="form-group">
                     <label>Image</label>
@@ -166,7 +128,7 @@
                     />
                     <has-error :form="form" field="resume"></has-error>
                   </div>
-                  <br/>
+                  <br />
                   <button
                     :disabled="form.busy"
                     type="submit"
@@ -178,23 +140,19 @@
               </div>
             </div>
           </div>
-
         </div>
       </section>
     </div>
   </div>
 </template>
 
-
 <script>
 import Vue from "vue";
 import { Form, HasError, AlertError } from "vform";
-import datePicker from 'vue-bootstrap-datetimepicker';
 
 Vue.component(HasError.name, HasError);
 
 export default {
-  
   created() {
     setTimeout(() => {
       this.loading = false;
@@ -203,22 +161,14 @@ export default {
   data() {
     return {
       form: new Form({
-       
         name: "",
         designation: "",
         email: "",
         phone: "",
-        phone_office: "",
-        position: "",
         image: "",
-        resume:"",
-        joining_date:"",
-
+        resume: "",
+        joining_date: "",
       }),
-      options:{
-              format:"DD-MM-YYYY",
-              useCurrent: false ,
-          },
 
       loading: true,
       errors: [],
@@ -227,11 +177,11 @@ export default {
   },
 
   methods: {
-    addmember() {
+    addMember() {
       this.form
         .post("/team/members/add", {
           transformRequest: [
-            function (data, headers) {
+            function(data, headers) {
               return objectToFormData(data);
             },
           ],
@@ -273,10 +223,10 @@ export default {
       };
     },
 
-    uploadResume(e){
-      const file = e.target.files[0] ;
-      this.form.resume = file ;
-    }
+    uploadResume(e) {
+      const file = e.target.files[0];
+      this.form.resume = file;
+    },
   },
   computed: {},
 };

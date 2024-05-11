@@ -106,6 +106,34 @@
                           </ul>
                         </div>
 
+
+                        <div class="debit_lists">
+                      
+                      <ul
+                        style="margin-left:-40px;margin-top:50px;"
+                        class="list"
+                      >
+                      <li>
+                        <h4>Bill Details</h4>
+                      </li>
+                        <li
+                          class="list-group-item"
+                          v-for="bill in bills"
+                          :key="bill.id"
+                        >
+                          <div class="row">
+                            <div class="col-md-4">{{ bill.name }} - <small> 
+                              <span>actual expense</span>
+                           
+                            </small>
+                             </div>
+                            <div class="col-md-8">
+                              <strong> {{ bill.amount }} </strong>
+                            </div>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
                       
                       </div>
 
@@ -181,8 +209,9 @@ export default {
     return {
       loading: true,
       display: false,
-      income_list: 0,
-      expense_list: 0,
+      income_list: '',
+      expense_list: '',
+      bills: '',
       filtering_date_value: "",
       start_date: "",
       end_date: "",
@@ -210,6 +239,7 @@ export default {
           console.log(resp);
           if (resp.data.success == true) {
             this.income_list = resp.data.income_list;
+            this.bills = resp.data.bills;
             this.expense_list = resp.data.expense_list;
             this.other_expense = resp.data.other_expense;
             this.actual_expense = resp.data.actual_expense;

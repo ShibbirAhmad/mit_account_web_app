@@ -27,7 +27,7 @@
                   <div style="margin-bottom:20px;" class="row">
                     <div class="col-md-2">
                       <select
-                        @change="getmemberList"
+                        @change="getMemberList"
                         v-model="item"
                         class="form-control"
                         id=""
@@ -54,7 +54,7 @@
                     </div>
                     <div class="col-lg-2">
                       <div class="form-group">
-                        <select @change="getmemberList"  v-model="status" class="form-control">
+                        <select @change="getMemberList"  v-model="status" class="form-control">
                           <option  value="1">Active</option>
                           <option value="0">De-Active</option>
                         </select>
@@ -70,7 +70,7 @@
                         <th scope="col">Email</th>
                         <th scope="col">Phone</th>
                         <th scope="col">Image</th>
-                        <th scope="col">Phone Office</th>
+             
                         <th scope="col">CV/Resume</th>
                         <th scope="col">Status</th>
                         <th scope="col">Action</th>
@@ -104,7 +104,7 @@
                             style="width: 40px; height: 40px"
                           />
                         </td>
-                        <td>{{ member.phone_office }}</td>
+           
                         <td>
                           <a
                             class="btn btn-sm btn-success"
@@ -144,13 +144,7 @@
                           <button v-else class="btn btn-xs  btn-success">
                             <i class="fa fa-check" @click="active(member)"> </i>
                           </button>
-<!-- 
-                          <a class="btn btn-xs  btn-danger">
-                            <i
-                              @click="trash_member(member.id, index)"
-                              class="fa fa-trash"
-                            ></i>
-                          </a> -->
+
                         </td>
                       </tr>
                     </tbody>
@@ -159,7 +153,7 @@
                     <div class="col-md-6">
                       <pagination
                         :data="memberList"
-                        @pagination-change-page="getmemberList"
+                        @pagination-change-page="getMemberList"
                       >
                         <span slot="prev-nav">&lt; Previous</span>
                         <span slot="next-nav">Next &gt;</span>
@@ -197,7 +191,7 @@ export default {
     setTimeout(() => {
       this.loading = false;
     }, 500);
-    this.getmemberList();
+    this.getMemberList();
   },
 
   data() {
@@ -221,7 +215,7 @@ export default {
             this.memberList = resp.data.members;
           });
       } else {
-        this.getmemberList();
+        this.getMemberList();
       }
     },
 
@@ -240,7 +234,7 @@ export default {
             .get("/team/members/deactive/" + member.id)
             .then((resp) => {
               if (resp.data.success == "OK") {
-                this.getmemberList();
+                this.getMemberList();
                 this.$toasted.show(resp.data.message, {
                   position: "top-center",
                   type: "success",
@@ -285,7 +279,7 @@ export default {
             .get("/team/members/active/" + member.id)
             .then((resp) => {
               if (resp.data.success == "OK") {
-                this.getmemberList();
+                this.getMemberList();
                 this.$toasted.show(resp.data.message, {
                   position: "top-center",
                   type: "success",
@@ -316,7 +310,7 @@ export default {
       });
     },
 
-    getmemberList(page = 1) {
+    getMemberList(page = 1) {
       axios
         .get("/team/members/list?page=" + page, {
           params: { item: this.item,status:this.status },

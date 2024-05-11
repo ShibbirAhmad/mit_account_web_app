@@ -7,9 +7,12 @@
           <router-link :to="{ name: 'debitAdd' }" class="btn btn-primary"
             ><i class="fa fa-plus"></i
           ></router-link>
-            <router-link :to="{ name: 'credit' }" class="btn btn-info"
-            >Credit</router-link>
-             <button @click="exportDebit" class="btn btn-success"> <i class="fa fa-download"></i> Exprot Debit</button>
+          <router-link :to="{ name: 'credit' }" class="btn btn-info"
+            >Credit</router-link
+          >
+          <button @click="exportDebit" class="btn btn-success">
+            <i class="fa fa-download"></i> Exprot Debit
+          </button>
         </h1>
         <ol class="breadcrumb">
           <li>
@@ -33,35 +36,40 @@
                         class="form-control"
                         v-model="search"
                         @keyup="searchCredit"
-                        placeholder="purpose,commens...."
+                        placeholder="purpose,comments"
                       />
                     </div>
                     <div class="col-lg-4">
                       <div class="row">
                         <div class="col-lg-6">
-                          <date-picker
-                            autocomplete="off"
-                            v-model="start_date"
-                            :config="options"
-                            placeholder="start_date"
+                          <input
+                            class="form-control"
+                            type="date"
                             @change="filter"
-                          ></date-picker>
+                            v-model="start_date"
+                          />
                         </div>
                         <div class="col-lg-6">
-                          <date-picker
-                            autocomplete="off"
+                          <input
+                            class="form-control"
+                            type="date"
+                            @change="filter"
                             v-model="end_date"
-                            :config="options"
-                            placeholder="end_date"
-                          ></date-picker>
+                          />
                         </div>
-
                       </div>
                     </div>
-                     <div class="col-lg-2">
+                    <div class="col-lg-2">
                       <select class="form-control" v-model="debit_from">
-                         <option value="" selected disabled>Select Balance</option>
-                         <option  v-for="(balance,index) in balance" :value="balance.id" :key="index">{{balance.name}}</option>
+                        <option value="" selected disabled
+                          >Select Balance</option
+                        >
+                        <option
+                          v-for="(balance, index) in balance"
+                          :value="balance.id"
+                          :key="index"
+                          >{{ balance.name }}</option
+                        >
                       </select>
                     </div>
                     <div class="col-lg-1">
@@ -84,14 +92,16 @@
                   </div>
                 </div>
                 <div class="box-body">
-                  <table class="table table-bordered table-striped table-hover ">
+                  <table
+                    class="table table-bordered table-striped table-hover "
+                  >
                     <thead>
                       <tr>
                         <th width="5%">#</th>
-                         <th width="10%">Date</th>
+                        <th width="10%">Date</th>
                         <th width="10%">Invoice</th>
-                         <th width="15%">Purpose</th>
-                          <th width="10%">Debit From</th>
+                        <th width="15%">Purpose</th>
+                        <th width="10%">Debit From</th>
                         <th width="10%">Amount</th>
                         <th width="30%">Comment</th>
                         <!-- <th scope="col">Signature</th> -->
@@ -104,13 +114,17 @@
                         <i class="fa fa-spin fa-spinner"></i>
                       </h1>
                       <tr v-for="(debit, index) in debits.data" :key="index">
-                          <td scope="row">{{ index + 1 }}</td>
-                          <td style="width:90px;">{{  debit.created_at }}</td>
-                          <td>{{"DB-"+debit.id }}</td>
-                          <td> <strong v-if="debit.purpose">{{ debit.purpose.text }}</strong> </td>
-                          <td>{{ debit.balance.name }}</td>
-                          <td>{{ debit.amount }}</td>
-                          <td>{{ debit.comment }}</td>
+                        <td scope="row">{{ index + 1 }}</td>
+                        <td style="width:90px;">{{ debit.created_at }}</td>
+                        <td>{{ "DB-" + debit.id }}</td>
+                        <td>
+                          <strong v-if="debit.purpose">{{
+                            debit.purpose.text
+                          }}</strong>
+                        </td>
+                        <td>{{ debit.balance.name }}</td>
+                        <td>{{ debit.amount }}</td>
+                        <td>{{ debit.comment }}</td>
                         <!-- <td>
                          <a target="_blank"   v-if="debit.signature" :href="basePath+debit.signature">
                              <img
@@ -122,7 +136,7 @@
                          </a>
                         </td> -->
                         <td>{{ debit.admin.name }}</td>
-                    <!-- <td>
+                        <!-- <td>
                           <router-link
                           v-if="$can('edit debit')"
                             :to="{
@@ -181,7 +195,7 @@ export default {
     setTimeout(() => {
       this.debitList();
     }, 100);
-     this.balanceList();
+    this.balanceList();
   },
   data() {
     return {
@@ -196,20 +210,18 @@ export default {
         format: "YYYY-MM-DD",
         useCurrent: false,
       },
-      balance:"",
+      balance: "",
       start_date: "",
       end_date: "",
-      debit_from:"",
+      debit_from: "",
       basePath: this.$store.getters.image_base_link,
     };
   },
   methods: {
-
     balanceList() {
-      axios.get("/api/balance/list")
-        .then((resp) => {
-            this.balance = resp.data.balance;
-        })
+      axios.get("/api/balance/list").then((resp) => {
+        this.balance = resp.data.balance;
+      });
     },
 
     debitList(page = 1) {
@@ -217,13 +229,13 @@ export default {
       axios
         .get("/api/debits?page=" + page, {
           params: {
-            department:'mohasagor.com',
+            department: "mohasagor.com",
             item: this.item,
             status: this.status,
             search: this.search,
             start_date: this.start_date,
             end_date: this.end_date,
-            debit_from:this.debit_from,
+            debit_from: this.debit_from,
           },
         })
         .then((resp) => {
@@ -246,7 +258,7 @@ export default {
       }).then((result) => {
         if (result.value) {
           axios
-            .get("/debit/destroy/"+debitId)
+            .get("/debit/destroy/" + debitId)
             .then((resp) => {
               console.log(resp);
               if (resp.data.status == "SUCCESS") {
@@ -295,16 +307,16 @@ export default {
       this.status = "filter";
       this.debitList();
     },
-    clearAll(){
-        this.$Progress.start()
-        this.status="all";
-        this.search='',
-        this.start_date='',
-        this.end_date='',
+    clearAll() {
+      this.$Progress.start();
+      this.status = "all";
+      (this.search = ""),
+        (this.start_date = ""),
+        (this.end_date = ""),
         this.debitList();
-         this.$Progress.finish()
+      this.$Progress.finish();
     },
-     //method initial for  get current date
+    //method initial for  get current date
     pDate() {
       //current date
       let d = new Date();
@@ -323,35 +335,34 @@ export default {
       this.current_date = output;
     },
 
-    exportDebit(){
-       window.open('/api/export/debit','_blank');
+    exportDebit() {
+      window.open("/api/export/debit", "_blank");
     },
 
-     formatDate(date) {
+    formatDate(date) {
       let origina_date = date.split("-");
       return `${origina_date[2]}-${origina_date[1]}-${origina_date[0]}`;
     },
   },
 
   watch: {
-    start_date: function () {
+    start_date: function() {
       this.status = "filter";
       this.debitList();
     },
-    end_date: function () {
+    end_date: function() {
       this.status = "filter";
       this.debitList();
     },
-    debit_from: function () {
+    debit_from: function() {
       this.status = "filter";
       this.debitList();
     },
   },
   mounted() {
-      this.pDate();
+    this.pDate();
   },
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>
