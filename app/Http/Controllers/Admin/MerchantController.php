@@ -17,7 +17,7 @@ class MerchantController extends Controller
 
 
 
-    //function for admin to merchan access
+    //function for admin to merchant access
     public function adminAccessMerchant($id){
 
           $merchant = Merchant::find($id);

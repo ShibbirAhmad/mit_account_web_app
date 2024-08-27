@@ -12,10 +12,8 @@
           <li class="active">Dashboard</li>
         </ol>
       </section>
-      <h1 v-if="loading" style="text-align: center; font-size: 50px">
-        <i class="fa fa-spinner fa-spin"></i>
-      </h1>
-      <section v-else class="content">
+  
+      <section  class="content">
 
          <mitAccounts  />
 
@@ -34,34 +32,13 @@ export default {
   mounted(){
     window.scrollTo(0,0);
   },
-  data() {
-    return {
-      orders: {},
-      loading: true,
-      more_accounts:false,
-    };
-  },
+
   components:{
     mitAccounts,
     boostAccounts
   },
   created() {
     this.$store.dispatch("admin");
-    this.dashboardHome();
-  },
-  methods: {
-    dashboardHome() {
-      axios.get("/dashboard/welcome")
-      .then((resp) => {
-        console.log(resp);
-        this.orders = resp.data.orders;
-        this.loading = false;
-      });
-    },
-    displayMoreAccount(){
-       this.more_accounts=true ;
-    }
-
   },
 
   computed: {
