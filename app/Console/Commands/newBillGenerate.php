@@ -50,7 +50,7 @@ class newBillGenerate extends Command
                 ServicePackage::where('is_monthly',1)->where('status',1)->with(['client:id,name,phone','service:id,name'])->each(function($s_package){
                    // if one month completed then generate new bill
                     $bill= ServicePackageBill::where('service_package_id',$s_package->id)->orderBy('created_at','desc')->first();
-                    if(!empty($bill) && HelperService::dateDiffCheckerMonth($bill->end_date,date('Y-m-d')) == 1 ) {
+                    if(!empty($bill) && HelperService::dateDiffCheckerMonth($bill->end_date,date('Y-m-d')) >= 1 ) {
                         //service package bill create for first months
                         $data['service_package_id']= $s_package->id ;
                         $data['client_id']= $s_package->client_id ;
