@@ -121,7 +121,14 @@ if (session()->has('admin')) {
 
 
 
+        <li class="treeview">
+                <a to="/"><i class="fa fa-users"></i> <span>
 
+                        <router-link :to="{ name: 'merchant' }">Manage Merchant
+                        </router-link>
+
+                    </span> </a>
+            </li>
             <li class="treeview">
                 <a to="/"><i class="fa fa-users"></i> <span>
 

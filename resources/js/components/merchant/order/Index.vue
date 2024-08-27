@@ -39,7 +39,7 @@
                     <thead>
                       <tr>
                         <th scope="col">#</th>
-                        <th scope="col">Customer_Name</th>
+                        <th scope="col">name</th>
                         <th scope="col">C_phone</th>
                         <th scope="col">C_address</th>
                         <th scope="col">Invoice</th>
@@ -62,7 +62,7 @@
                         <td scope="row">{{ index + 1 }}</td>
 
                         <td scope="row">{{ order.customer.name }}</td>
-                        <td scope="row">{{ order.cutomer_phone }}</td>
+                        <td scope="row">{{ order.customer_phone }}</td>
                         <td scope="row">
                           {{ order.customer ? order.customer.address : "" }}
                         </td>

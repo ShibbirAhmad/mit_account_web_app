@@ -28,7 +28,7 @@
                   <div class="row">
                     <div class="col-lg-4 invoice-body" style="margin-left:27px;">
                       <p class="text-bold">Name: {{order.customer.name}}</p>
-                      <p class="text-bold">Phone: {{order.cutomer_phone}}</p>
+                      <p class="text-bold">Phone: {{order.customer_phone}}</p>
                       <p
                         class="text-bold"
                       >Address: {{order.customer.address +', ' + order.city.name}}</p>

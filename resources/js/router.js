@@ -6,15 +6,76 @@ Vue.use(VueRouter)
 const routes = [
 
     {
-        path: '/',
+        path: "/merchant/backend/login",
         component: () =>
-            import( /* webpackChunkName: "account_login" */ './components/admin/AccountLogin.vue'),
-        name: 'account_login',
+          import(
+            /* webpackChunkName: "merchant_login" */ "./components/merchant/Login"
+          ),
+        name: "merchant_login",
         meta: {
-            title: 'Login || Panel'
-        }
-
-    },
+          title: "Merchant | Login",
+        },
+      },
+    
+      {
+        path: "/merchant/password/reset",
+        component: () =>
+          import(
+            /* webpackChunkName: "merchant_password_reset" */ "./components/merchant/PasswordReset"
+          ),
+        name: "merchant_password_reset",
+        meta: {
+          title: "Merchant Password Reset",
+        },
+      },
+      {
+        path: "/merchant/code/verify/:phone",
+        component: () =>
+          import(
+            /* webpackChunkName: "merchant_code_verified" */ "./components/merchant/CodeVerified"
+          ),
+        name: "merchant_code_verified",
+        meta: {
+          title: "Merchant Password Reset",
+        },
+      },
+    
+      {
+        path: "/merchant/reset/new/password/:phone",
+        component: () =>
+          import(
+            /* webpackChunkName: "new_password_merchant" */ "./components/merchant/NewPassword"
+          ),
+        name: "new_password_merchant",
+        meta: {
+          title: "Update Merchant Password",
+        },
+      },
+    
+      {
+        path: "/merchant/register",
+        component: () =>
+          import(
+            /* webpackChunkName: "merchant_register" */ "./components/merchant/Register"
+          ),
+        name: "merchant_register",
+        meta: {
+          title: "Merchant | Register ",
+        },
+      },
+    
+      {
+        path: "/merchant/backend/home",
+        component: () =>
+          import(
+            /* webpackChunkName: "merchant_dashboard" */ "./components/merchant/Dashboard"
+          ),
+        name: "merchant_dashboard",
+        meta: {
+          title: "Merchant|Dashboard",
+        },
+      },
+    
 
      {
          path: '/backend/dashboard',
@@ -1108,6 +1169,44 @@ const routes = [
         }
     },
 
+
+
+    {
+        path: "/backend/merchant",
+        component: () =>
+          import(
+            /* webpackChunkName: "merchant" */ "./components/admin/merchant/index"
+          ),
+        name: "merchant",
+        meta: {
+          title: "Merchant ",
+          requiresAuthAdmin: true,
+        },
+      },
+      {
+        path: "/backend/merchant/add",
+        component: () =>
+          import(
+            /* webpackChunkName: "add_merchant" */ "./components/admin/merchant/Add"
+          ),
+        name: "add_merchant",
+        meta: {
+          title: "Merchant | Add ",
+          requiresAuthAdmin: true,
+        },
+      },
+      {
+        path: "/backend/merchant/edit/:id",
+        component: () =>
+          import(
+            /* webpackChunkName: "edit_merchant" */ "./components/admin/merchant/Edit"
+          ),
+        name: "edit_merchant",
+        meta: {
+          title: "Merchant | edit ",
+          requiresAuthAdmin: true,
+        },
+      },
 
 
 

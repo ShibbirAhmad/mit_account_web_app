@@ -369,7 +369,8 @@ Vue.component(HasError.name, HasError);
 export default {
   name: "Add",
   created() {
-    this.others();
+    this.getCategories();
+    this.getAttributes();
     this.get_edit_product_data();
     setTimeout(() => {
       this.loading = false;
@@ -496,22 +497,34 @@ export default {
           this.error = "some thing want to wrong";
         });
     },
-    others() {
+
+    getAttributes() {
       axios
-        .get("/api/product/others")
-        .then((resp) => {
-          // console.log(resp)
-          if (resp.data.status == "SUCCESS") {
-            this.categories = resp.data.categories;
-            this.merchants = resp.data.merchants;
-            this.attributes = resp.data.attributes;
-          } else {
-            this.error = "some thing want to wrong";
-          }
+        .get("/api/common/data/fetch", {
+          params: {
+            type: 1,
+            table: "attributes",
+          },
         })
-        .catch((error) => {
-          // console.log(error)
-          this.error = "some thing want to wrong";
+        .then((resp) => {
+          if (resp.data.success == true) {
+            this.attributes = resp.data.data;
+          }
+        });
+    },
+
+    getCategories() {
+      axios
+        .get("/api/common/data/fetch", {
+          params: {
+            type: 1,
+            table: "categories",
+          },
+        })
+        .then((resp) => {
+          if (resp.data.success == true) {
+            this.categories = resp.data.data;
+          }
         });
     },
     categoryWiseSubCategory() {

@@ -70,7 +70,7 @@
                         :key="index"
                       >
                         <td>{{ index }}</td>
-                        <td> <a  @click.prevent="merchantDashboard(merchant.id,index)" href="#">{{ merchant.name }} </a> </td>
+                        <td> <a  @click.prevent="merchantDashboard(merchant.id,index)" >{{ merchant.name }} </a> </td>
                         <td>{{ merchant.email }}</td>
                         <td>{{ merchant.phone }}</td>
                         <td>{{ merchant.company_name }}</td>
@@ -315,8 +315,7 @@ export default {
          localStorage.setItem("merchant_token", resp.data.token);
             this.$store.commit("merchant", resp.data.merchant);
             window.open('/merchant/backend/home','_blank');
-           // this.$router.push({ name: "merchant_dashboard" });
-           // location.reload();
+           
         }
       })
     },

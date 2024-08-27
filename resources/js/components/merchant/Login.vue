@@ -58,7 +58,6 @@
 <script>
 import Vue from "vue";
 import { Form, HasError } from "vform";
-import LoginVue from "../public/Login.vue";
 
 Vue.component(HasError.name, HasError);
 export default {
