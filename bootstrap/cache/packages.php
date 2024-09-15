@@ -17,17 +17,6 @@
       0 => 'BeyondCode\\DumpServer\\DumpServerServiceProvider',
     ),
   ),
-  'bumbummen99/shoppingcart' => 
-  array (
-    'providers' => 
-    array (
-      0 => 'Gloudemans\\Shoppingcart\\ShoppingcartServiceProvider',
-    ),
-    'aliases' => 
-    array (
-      'Cart' => 'Gloudemans\\Shoppingcart\\Facades\\Cart',
-    ),
-  ),
   'fideloper/proxy' => 
   array (
     'providers' => 
@@ -51,6 +40,13 @@
     'aliases' => 
     array (
       'Image' => 'Intervention\\Image\\Facades\\Image',
+    ),
+  ),
+  'laravel/legacy-factories' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Illuminate\\Database\\Eloquent\\LegacyFactoryServiceProvider',
     ),
   ),
   'laravel/socialite' => 
