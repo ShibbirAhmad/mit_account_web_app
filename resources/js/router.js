@@ -470,22 +470,22 @@ const routes = [
         },
 
         {
-            path: '/backend/boost/agency/reseller/add/:id',
+            path: '/backend/boost/agency/reseller/add',
             name: 'boost_agency_reseller_add',
             component: () => import( /*webpackChunkName: "boost_agency_reseller_add" */ './components/admin/boost_agency/BoostResellerAdd.vue'),
             meta: {
                 requiresAuthAdmin: true,
-                title: 'add boost reseller '
+                title: 'add user '
             }
         },
 
         {
-            path: '/backend/boost/agency/resellers/:id',
-            name: 'boost_agency_reselllers',
-            component: () => import( /*webpackChunkName:"boost_agency_reselllers"*/ './components/admin/boost_agency/AgencyResellers.vue'),
+            path: '/backend/boost/agency/resellers',
+            name: 'boost_agency_resellers',
+            component: () => import( /*webpackChunkName:"boost_agency_resellers"*/ './components/admin/boost_agency/AgencyResellers.vue'),
             meta: {
                 requiresAuthAdmin: true,
-                title: 'boost agency resellers'
+                title: 'users'
             }
         },
 

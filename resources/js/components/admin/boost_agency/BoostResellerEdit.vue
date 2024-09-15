@@ -6,7 +6,7 @@
         <h1>
           <router-link
             :to="{
-              name: 'boost_agency_reselllers',
+              name: 'boost_agency_resellers',
               params: { id: this.$route.params.id },
             }"
             class="btn btn-primary"
@@ -99,19 +99,20 @@
                   </div>
 
                   <div class="form-group">
-                    <label>Dollar Rate </label>
+                    <div class="form-group">
+                        <label>Password </label>
 
-                    <input
-                      v-model="form.dollar_rate"
-                      type="number"
-                      name="dollar_rate"
-                      class="form-control"
-                      :class="{
-                        'is-invalid': form.errors.has('dollar_rate'),
-                      }"
-                    />
-                    <has-error :form="form" field="dollar_rate"></has-error>
+                        <input
+                          v-model="form.password"
+                          type="password"
+                          autocomplete="off"
+                          class="form-control"
+                       
+                 
+                        />
+                      </div>
                   </div>
+
 
                   <div class="form-group">
                     <label> Status </label>
@@ -148,7 +149,7 @@
 
 <script>
 import Vue from "vue";
-import { Form, HasError, AlertError } from "vform";
+import { Form, HasError } from "vform";
 Vue.component(HasError.name, HasError);
 export default {
   created() {
@@ -157,19 +158,19 @@ export default {
   data() {
     return {
       form: new Form({
-        boost_agency_id: this.$route.params.id,
         name: "",
         company_name: "",
         address: "",
         phone: "",
-        dollar_rate: "",
         status: "",
+        password: "",
       }),
       error: "",
     };
   },
 
   methods: {
+
     getReseller() {
       axios
         .get("/api/get/boost/agency/reseller/" + this.$route.params.id)
@@ -179,11 +180,12 @@ export default {
             this.form.company_name = resp.data.reseller.company_name;
             this.form.phone = resp.data.reseller.phone;
             this.form.address = resp.data.reseller.address;
-            this.form.dollar_rate = resp.data.reseller.dollar_rate;
             this.form.status = resp.data.reseller.status;
           }
         });
     },
+
+
     async boostResellerUpdate() {
       await this.form
         .post("/api/get/boost/agency/reseller/edit/" + this.$route.params.id)
@@ -206,6 +208,8 @@ export default {
           });
         });
     },
+
+    
   },
 };
 </script>

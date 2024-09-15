@@ -262,10 +262,23 @@
     <!-- end payment store modal  -->
 
     <!-- start payment store modal  -->
-    <modal name="add_account_modal" :width="350" :height="250">
+    <modal name="add_account_modal" :width="450" :height="550">
       <form @submit.prevent="addResellerAdAccount">
         <div class="card" style="padding: 20px">
           <div class="card-body">
+
+            <div class="form-group">
+              <label>Agency </label>
+               <select  required
+                v-model="accountForm.boost_agency_id"
+                class="form-control" >
+                <option  value="">select one </option>
+                <option    v-for="(agency, index) in boost_agency"
+                v-bind:key="index" :value="agency.id">{{ agency.name }}</option>
+               </select>
+
+            </div>
+
             <div class="form-group">
               <label>Advertise Account Name</label>
               <input
@@ -274,7 +287,7 @@
                 required
                 v-model="accountForm.name"
                 class="form-control"
-                placeholder="abc"
+                placeholder="FPL_MIT_xxxx"
               />
 
             </div>
@@ -283,13 +296,25 @@
               <label>Page Name</label>
               <input
                 type="text"
-                name="page_name"
                 v-model="accountForm.page_name"
                 class="form-control"
-                placeholder="xyz"
+                placeholder="fashion xyz"
+
+              />
+            </div>
+
+            <div class="form-group">
+              <label>per dollar rate</label>
+              <input
+                type="number"
+            
+                v-model="accountForm.dollar_rate"
+                class="form-control"
+                placeholder="130"
                 required
               />
             </div>
+
 
            <div class="form-group">
               <label>Previous Limit (optional)</label>
@@ -298,17 +323,18 @@
                 name="page_name"
                 v-model="accountForm.previous_dollar"
                 class="form-control"
-                placeholder="0000"
-                required
+                placeholder="000"
+           
               />
             </div>
-            <br />
+
+         
             <div class="form-group text-center">
               <button type="submit" class="btn btn-sm btn-success">
                 Submit
               </button>
             </div>
-            <br />
+            
           </div>
         </div>
       </form>
@@ -412,7 +438,7 @@
 
 <script>
 
-import { Form, HasError, AlertError } from "vform";
+import { Form, HasError } from "vform";
 
 export default {
   created() {
@@ -432,11 +458,14 @@ export default {
       payments: {},
       payment_total: "",
       loading: true,
+      boost_agency: "",
       accountForm: new Form({
         boost_agency_reseller_id: this.$route.params.id,
+        boost_agency_id: "",
         name: "",
         page_name: "",
-        previous_dollar: "",
+        dollar_rate : "",
+        previous_dollar: 0,
       }),
       DollarTransferForm: new Form({
         boost_agency_reseller_id: "",
@@ -449,6 +478,19 @@ export default {
   },
   methods: {
 
+    getAgency() {
+      axios
+        .get("/api/boost/agency/list")
+        .then((resp) => {
+          console.log(resp);
+          if (resp.data.success == "OK") {
+            this.boost_agency = resp.data.agency;
+            this.total_ad_accounts = resp.data.total_ad_accounts;
+            this.loading = false;
+          }
+        })
+
+    },
 
   async addResellerAdAccount() {
 
@@ -459,7 +501,9 @@ export default {
           if (resp.data.success == true ) {
             this.accountForm.name = "";
             this.accountForm.page_name = "";
-            this.accountForm.previous_dollar = "";
+            this.accountForm.boost_agency_id = "";
+            this.accountForm.dollar_rate = "";
+            this.accountForm.previous_dollar = 0;
             this.transactionDetails();
             this.$modal.hide("add_account_modal");
             this.$toasted.show(resp.data.message, {
@@ -541,6 +585,7 @@ export default {
 
 
     showModal() {
+      this.getAgency();
       this.$modal.show("add_account_modal");
     },
 

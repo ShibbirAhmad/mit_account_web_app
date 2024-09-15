@@ -16,7 +16,6 @@ use App\Models\BoostAgencyResellerPayment;
 use App\Models\BoostAgencyResellerAdAccount;
 use App\Models\BoostAgencyResellerDollarTransaction;
 use App\Service\SmsService;
-use Illuminate\Support\Facades\Hash;
 use Throwable;
 
 class BoostAgencyController extends Controller
@@ -42,16 +41,19 @@ class BoostAgencyController extends Controller
     if (!empty($request->search)) {
 
       $agency_resellers = BoostAgencyReseller::where('status', 1)->where('company_name', 'like', '%' . $request->search . '%')
-        ->with('transactions', 'payments', 'accounts')->paginate(100);
+        ->with('transactions', 'payments', 'accounts')->paginate(30);
 
       return response()->json([
         'success' => 'OK',
         'agency_resellers' => $agency_resellers
       ]);
 
+
     } else {
 
-      $agency_resellers = BoostAgencyReseller::where('status', $request->status)->with('transactions', 'payments', 'accounts')->paginate(200);
+      $agency_resellers = BoostAgencyReseller::where('status', $request->status)
+        ->with('transactions', 'payments', 'accounts')->paginate(30);
+
 
       return response()->json([
         'success' => 'OK',
@@ -190,24 +192,83 @@ class BoostAgencyController extends Controller
   {
 
     $data = $request->validate([
-
+      'boost_agency_id' => 'required',
       'name' => 'required',
       'address' => 'required',
       'company_name' => 'required',
-      'password' => 'required|min:6',
+      'add_account_name' => 'nullable',
+      'page_name' => 'nullable',
+      'dollar' => 'integer|nullable',
+      'paid' => 'integer|nullable',
+      'amount' => 'integer|nullable',
+      'balance_id' => 'integer|nullable',
+      'dollar_rate' => 'integer|required',
+      'supplier_dollar_rate' => 'integer|required',
       'phone' => 'required|digits:11|unique:boost_agency_resellers',
-
     ]);
 
+    DB::beginTransaction();
     try {
 
-      $data['password'] = Hash::make($data['password']);
-      BoostAgencyReseller::create($data);
+      $client = BoostAgencyReseller::query()->create($data);
+      $agency = BoostAgency::findOrFail($data['boost_agency_id']);
+      //create advertise account
+      if (!empty($data['add_account_name'])) {
+        $ad_account =  new BoostAgencyResellerAdAccount();
+        $ad_account->boost_agency_reseller_id = $client->id;
+        $ad_account->name = $data['add_account_name'];
+        $ad_account->page_name = $data['page_name'] ?? $data['add_account_name'];
+        $ad_account->rate = $data['dollar_rate'];
+        $ad_account->save();
+        //store dollar
+        if (!empty($data['dollar']) && $data['dollar'] > 0) {
+
+          $transaction = new BoostAgencyResellerDollarTransaction();
+          $transaction->boost_agency_id = $data['boost_agency_id'];
+          $transaction->boost_agency_reseller_id = $client->id;
+          $transaction->boost_agency_reseller_ad_account_id = $ad_account->id;
+          $transaction->dollar = $data['dollar'];
+          $transaction->supplier_rate =  $agency->rate;
+       
+          $transaction->amount = $data['amount'];
+          $transaction->save();
+          SmsService::sendDollarConfirmationMessage($transaction);
+          //update total dollar and payment
+          $ad_account->total_dollar = $transaction->dollar;
+          $ad_account->total_amount = $transaction->amount;
+          $ad_account->save();
+          //insert paid transaction
+          if (!empty($data['paid'] && $data['paid'] > 0)) {
+            $balance = Balance::findOrFail($data['balance_id']);
+            $transaction = new BoostAgencyResellerPayment();
+            $transaction->boost_agency_reseller_id = $client->id;
+            $transaction->paid_by = $balance->name;
+            $transaction->comment = 'paid at the time of account creation ';
+            $transaction->amount = $data['paid'];
+            $transaction->save();
+            //insert credit
+            $credit = new Credit();
+            $credit->purpose = "Boost payment from " . '-' . $client->company_name;
+            $credit->department = 'boost';
+            $credit->amount = $data['paid'];
+            $credit->comment = 'boost payment paid from ' . $client->company_name;
+            $credit->date = date('Y-m-d');
+            $credit->credit_in = $balance->id;
+            $credit->insert_admin_id = session()->get('admin')['id'];
+            $credit->save();
+            //send message to reseller
+            SmsService::sendPaymentMessage($client, $client->id, $credit->amount);
+          }
+        }
+      }
+
+      DB::commit();
       return response()->json([
         'success' => true,
         'message' => 'Added successfully'
       ]);
     } catch (Throwable $th) {
+      DB::rollBack();
       return response()->json([
         'success' => false,
         'message' => $th->getMessage(),
@@ -231,9 +292,6 @@ class BoostAgencyController extends Controller
     ]);
 
     $client = BoostAgencyReseller::findOrFail($id);
-    if (!empty($request->password)) {
-      $data['password'] = Hash::make($request->password);
-    }
     $client->update($data);
 
     return response()->json([
@@ -359,25 +417,25 @@ class BoostAgencyController extends Controller
     $boost_agency = BoostAgency::findOrFail($id);
     if (!empty($request->start_date)  &&  !empty($request->end_date)) {
 
-      $payments = BoostAgencyPayment::whereDate('created_at', '>=', $request->start_date)->whereDate('created_at', '<=', $request->end_date)->where('boost_agency_id', $id)->with('balance:id,name')->orderBy('id', 'desc')->paginate(100);
+      $payments = BoostAgencyPayment::whereDate('created_at', '>=', $request->start_date)->whereDate('created_at', '<=', $request->end_date)->where('boost_agency_id', $id)->with('balance:id,name')->orderBy('id', 'desc')->paginate(50);
       $payment_total = BoostAgencyPayment::where('boost_agency_id', $id)->whereDate('created_at', '>=', $request->start_date)->whereDate('created_at', '<=', $request->end_date)->sum('amount');
-      $dollar_transactions = BoostAgencyResellerDollarTransaction::where('status', 1)->where('boost_agency_id', $id)->whereDate('created_at', '>=', $request->start_date)->whereDate('created_at', '<=', $request->end_date)->with(['account:id,name'])->orderBy('id', 'desc')->paginate(100);
-      $total_dollars = BoostAgencyResellerDollarTransaction::where('status', 1)->where('boost_agency_id', $id)->whereDate('created_at', '>=', $request->start_date)->whereDate('created_at', '<=', $request->end_date)->sum('dollar');
-      $total_dollar_amount = BoostAgencyResellerDollarTransaction::where('status', 1)->where('boost_agency_id', $id)->whereDate('created_at', '>=', $request->start_date)->whereDate('created_at', '<=', $request->end_date)->sum('amount');
+      $dollar_transactions = BoostAgencyResellerDollarTransaction::where('boost_agency_id', $id)->whereDate('created_at', '>=', $request->start_date)->whereDate('created_at', '<=', $request->end_date)->orderBy('id', 'desc')->with(['reseller:id,company_name,phone'])->paginate(50);
+      $total_dollars = BoostAgencyResellerDollarTransaction::where('boost_agency_id', $id)->whereDate('created_at', '>=', $request->start_date)->whereDate('created_at', '<=', $request->end_date)->sum('dollar');
+      $total_dollar_amount = BoostAgencyResellerDollarTransaction::where('boost_agency_id', $id)->whereDate('created_at', '>=', $request->start_date)->whereDate('created_at', '<=', $request->end_date)->sum('amount');
       $supplier_dollar_amount_total = 0;
-      $all_dollars = BoostAgencyResellerDollarTransaction::where('status', 1)->where('boost_agency_id', $id)->whereDate('created_at', '>=', $request->start_date)->whereDate('created_at', '<=', $request->end_date)->get();
+      $all_dollars = BoostAgencyResellerDollarTransaction::where('boost_agency_id', $id)->whereDate('created_at', '>=', $request->start_date)->whereDate('created_at', '<=', $request->end_date)->get();
       foreach ($all_dollars as $key => $item) {
         $supplier_dollar_amount_total += $item->supplier_rate * $item->dollar;
       }
     } else {
 
-      $payments = BoostAgencyPayment::where('boost_agency_id', $id)->with('balance:id,name')->orderBy('id', 'desc')->paginate(100);
+      $payments = BoostAgencyPayment::where('boost_agency_id', $id)->with('balance:id,name')->orderBy('id', 'desc')->paginate(50);
       $payment_total = BoostAgencyPayment::where('boost_agency_id', $id)->sum('amount');
-      $dollar_transactions = BoostAgencyResellerDollarTransaction::where('status', 1)->where('boost_agency_id', $id)->with(['account:id,name'])->orderBy('id', 'desc')->paginate(100);
-      $total_dollars = BoostAgencyResellerDollarTransaction::where('status', 1)->where('boost_agency_id', $id)->sum('dollar');
-      $total_dollar_amount = BoostAgencyResellerDollarTransaction::where('status', 1)->where('boost_agency_id', $id)->sum('amount');
+      $dollar_transactions = BoostAgencyResellerDollarTransaction::where('boost_agency_id', $id)->orderBy('id', 'desc')->with(['reseller:id,company_name,phone'])->paginate(50);
+      $total_dollars = BoostAgencyResellerDollarTransaction::where('boost_agency_id', $id)->sum('dollar');
+      $total_dollar_amount = BoostAgencyResellerDollarTransaction::where('boost_agency_id', $id)->sum('amount');
       $supplier_dollar_amount_total = 0;
-      $all_dollars = BoostAgencyResellerDollarTransaction::where('status', 1)->where('boost_agency_id', $id)->get();
+      $all_dollars = BoostAgencyResellerDollarTransaction::where('boost_agency_id', $id)->get();
       foreach ($all_dollars as $key => $item) {
         $supplier_dollar_amount_total += $item->supplier_rate * $item->dollar;
       }
@@ -400,7 +458,7 @@ class BoostAgencyController extends Controller
 
     $boost_agency_reseller = BoostAgencyReseller::with('accounts')->findOrFail($id);
     //payment history
-    $payments = BoostAgencyResellerPayment::where('boost_agency_reseller_id', $id)->orderBy('id', 'desc')->paginate(100);
+    $payments = BoostAgencyResellerPayment::where('boost_agency_reseller_id', $id)->orderBy('id', 'desc')->paginate(10);
     $payment_total = BoostAgencyResellerPayment::where('boost_agency_reseller_id', $id)->sum('amount');
     //dollar history
     $accounts = BoostAgencyResellerAdAccount::where('boost_agency_reseller_id', $id)->with('transactions')->get();
@@ -431,14 +489,13 @@ class BoostAgencyController extends Controller
   {
 
     $data = $request->validate([
-      'boost_agency_id' => 'required',
       'boost_agency_reseller_id' => 'required',
       'name' => 'required|unique:boost_agency_reseller_ad_accounts',
-      'page_name' => 'nullable',
-      'dollar_rate' => 'required|integer',
+      'page_name' => 'required',
       'previous_dollar' => 'nullable|integer',
     ]);
-    BoostAgencyResellerAdAccount::create($data);
+
+    BoostAgencyResellerAdAccount::query()->create($data);
     return response()->json([
       'success' => true,
       'message' => 'Added successfully'

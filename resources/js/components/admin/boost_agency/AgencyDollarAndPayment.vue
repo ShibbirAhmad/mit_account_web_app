@@ -9,7 +9,7 @@
           </a>
 
 
-          <a @click="$modal.show('payment_modal')" class="btn btn-success">
+          <a @click="$modal.show('payment_modal')" class="btn btn-suc cess">
             <i class="fa fa-plus"></i> Add Payment
           </a>
         </h1>
@@ -123,9 +123,9 @@
                       <tr>
                         <th>#</th>
                         <th>Date</th>
-                        <th>User</th>
+                        <th>Account</th>
                         <th>Supplier Rate</th>
-                        <th>Rate</th>
+                        <th>Sale Rate</th>
                         <th>Dollar</th>
                         <th>Amount</th>
                       
@@ -139,8 +139,8 @@
                           <td>{{ index + 1 }}</td>
                           <td>{{ item.created_at }}</td>
                           <td>
-                            <p>{{ item.reseller.company_name }}</p>
-                            <p>{{ item.reseller.phone }}</p>
+                            <p>{{ item.account.name }}</p>
+            
                           </td>
                           <td>{{ item.supplier_rate }}</td>
                           <td>{{ item.rate }}</td>

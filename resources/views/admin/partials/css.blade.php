@@ -45,7 +45,11 @@
         width: 10px;
         height: 10px;
     }
-    
+
+    input,select{
+    height: 44px !important;
+    }
+        
     .combo_p_list{
        list-style-type: disc;
        display: flex;

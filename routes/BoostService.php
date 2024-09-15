@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 Route::group([
     'middleware' => 'admin',
     'namespace' => 'Admin',
-    //'prefix' => 'backend/'
+ 
 ], function () {
 
     //company boost and reseller route is here

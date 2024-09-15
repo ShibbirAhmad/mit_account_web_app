@@ -4,13 +4,10 @@
     <div class="content-wrapper">
       <section class="content-header">
         <h1>
-          <router-link :to="{ name: 'boost_agency' }" class="btn btn-primary"
-            ><i class="fa fa-arrow-left"></i
-          ></router-link>
+
           <router-link
             :to="{
-              name: 'boost_agency_reseller_add',
-              params: { id: this.$route.params.id },
+              name: 'boost_agency_reseller_add'
             }"
             class="btn btn-primary"
             ><i class="fa fa-plus"></i>Add User</router-link
@@ -87,9 +84,8 @@
                         <th scope="col">#</th>
                         <th scope="col">Name</th>
                         <th scope="col">Company Name</th>
-                        <th scope="col">Phone</th>
+      
                         <th scope="col">Dollar</th>
-                        <th scope="col">BDT(rate)</th>
                         <th scope="col">Amount</th>
                         <th scope="col">Paid</th>
                         <th scope="col">Due</th>
@@ -123,18 +119,14 @@
                             </sup>
                           </router-link>
                         </td>
-                        <td>{{ item.phone }}</td>
+                        
                         <td>
                           <span>
                             <i class="fa fa-dollar"></i>
                             {{ resellerTotalDollar(item.transactions) }}
                           </span>
                         </td>
-                        <td>
-                          <span>
-                            <i class="fa fa-money"></i> {{ item.dollar_rate }}
-                          </span>
-                        </td>
+        
                         <td>
                           <span>
                             <i class="fa fa-money"></i>
@@ -169,6 +161,7 @@
                             :id="'boost_action_' + item.id"
                             class="action_container"
                           >
+                          <br>
                             <button
                               class="btn btn-xs btn-primary"
                               @click="
@@ -182,6 +175,7 @@
                             >
                               Add Dollar
                             </button>
+                            <br>
                             <button
                               style="width: 65px; margin-top: 5px"
                               class="btn btn-xs btn-success"
@@ -191,6 +185,7 @@
                             >
                               Get Paid
                             </button>
+                            <br>
                             <router-link
                               style="width: 65px; margin-top: 5px"
                               class="btn btn-xs btn-success"
@@ -200,6 +195,7 @@
                               }"
                               ><i class="fa fa-edit"></i>Edit</router-link
                             >
+                            <br>
                             <a
                               style="width: 65px; margin-top: 5px"
                               target="_blank"
@@ -212,14 +208,14 @@
                         </td>
                       </tr>
                       <tr>
-                        <td colspan="4">Total Distributed Dollar</td>
+                        <td colspan="3">Total Distributed Dollar</td>
                         <td>
                           <span class="badge badge-success">
                             <i class="fa fa-dollar"></i>
                             {{ totalDollarDistributed() }}
                           </span>
                         </td>
-                        <td colspan="1">Total Amount</td>
+                      
                         <td>
                           <span class="badge badge-success">
                             <i class="fa fa-money"></i>
@@ -554,7 +550,7 @@
 </template>
 
 <script>
-import { Form, HasError, AlertError } from "vform";
+import { Form, HasError } from "vform";
 
 export default {
   mounted() {
@@ -932,6 +928,12 @@ export default {
 </script>
 
 <style scoped>
+
+
+
+
+
+
 .badge {
   padding: 6px 15px !important;
 }

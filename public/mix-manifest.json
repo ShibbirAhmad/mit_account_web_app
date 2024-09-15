@@ -35,7 +35,7 @@
     "/chunks/boost_agency_edit.js": "/chunks/boost_agency_edit.js",
     "/chunks/boost_agency_reseller_add.js": "/chunks/boost_agency_reseller_add.js",
     "/chunks/boost_agency_reseller_edit.js": "/chunks/boost_agency_reseller_edit.js",
-    "/chunks/boost_agency_reselllers.js": "/chunks/boost_agency_reselllers.js",
+    "/chunks/boost_agency_resellers.js": "/chunks/boost_agency_resellers.js",
     "/chunks/boost_credit.js": "/chunks/boost_credit.js",
     "/chunks/boost_credit_add.js": "/chunks/boost_credit_add.js",
     "/chunks/boost_debit.js": "/chunks/boost_debit.js",
@@ -110,8 +110,8 @@
     "/chunks/tourism_debit_add.js": "/chunks/tourism_debit_add.js",
     "/chunks/tourism_fund_transfer.js": "/chunks/tourism_fund_transfer.js",
     "/chunks/tourism_fund_transfer_add.js": "/chunks/tourism_fund_transfer_add.js",
-    "/chunks/vendors~AssignRoleAdmin~LoanDetails~account_purpose_add~account_purpose_edit~addLoan~add_merchant~ad~e073c29a.js": "/chunks/vendors~AssignRoleAdmin~LoanDetails~account_purpose_add~account_purpose_edit~addLoan~add_merchant~ad~e073c29a.js",
-    "/chunks/vendors~LoanDetails~admin/director_payment_details~boost_agency_add~boost_agency_edit~boost_agency_r~a5d5a42b.js": "/chunks/vendors~LoanDetails~admin/director_payment_details~boost_agency_add~boost_agency_edit~boost_agency_r~a5d5a42b.js",
+    "/chunks/vendors~AssignRoleAdmin~LoanDetails~account_purpose_add~account_purpose_edit~addLoan~add_merchant~ad~32e63321.js": "/chunks/vendors~AssignRoleAdmin~LoanDetails~account_purpose_add~account_purpose_edit~addLoan~add_merchant~ad~32e63321.js",
+    "/chunks/vendors~LoanDetails~admin/director_payment_details~boost_agency_add~boost_agency_edit~boost_agency_r~4dd92fc0.js": "/chunks/vendors~LoanDetails~admin/director_payment_details~boost_agency_add~boost_agency_edit~boost_agency_r~4dd92fc0.js",
     "/chunks/vendors~adminProfile~boost_debit_add~debitAdd~mit_debit_add.js": "/chunks/vendors~adminProfile~boost_debit_add~debitAdd~mit_debit_add.js",
     "/chunks/vendors~admin_note_add~company_assets_add~company_assets_edit~general_setting.js": "/chunks/vendors~admin_note_add~company_assets_add~company_assets_edit~general_setting.js"
 }

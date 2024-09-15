@@ -97,9 +97,15 @@ if (session()->has('admin')) {
                     <ul class="treeview-menu">
 
                         <li>
-                            <router-link :to="{ name: 'boost_agency'}"><i class="fa fa-eye"></i> Manage
+                            <router-link :to="{ name: 'boost_agency'}"><i class="fa fa-eye"></i> Manage Agency
                             </router-link>
                         </li>
+
+                         <li>
+                            <router-link :to="{ name: 'boost_agency_resellers'}"><i class="fa fa-users"></i> Manage Clients
+                            </router-link>
+                        </li>
+
                         <li>
                             <router-link :to="{ name: 'boost_credit'}"><i class="fa fa-eye"></i> Credit
                             </router-link>
