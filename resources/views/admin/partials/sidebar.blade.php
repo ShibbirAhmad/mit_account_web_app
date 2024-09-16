@@ -100,9 +100,15 @@ if (session()->has('admin')) {
                             <router-link :to="{ name: 'boost_agency'}"><i class="fa fa-eye"></i> Manage Agency
                             </router-link>
                         </li>
+                        
 
                          <li>
                             <router-link :to="{ name: 'boost_agency_resellers'}"><i class="fa fa-users"></i> Manage Clients
+                            </router-link>
+                        </li>
+
+                        <li>
+                            <router-link :to="{ name: 'dollar_request'}"><i class="fa fa-exchange"></i> Dollar Request
                             </router-link>
                         </li>
 

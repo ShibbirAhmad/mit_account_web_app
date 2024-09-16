@@ -98,7 +98,7 @@
                       </h1>
                       <tr
                         v-else
-                        v-for="(item, index) in resellers.data"
+                        v-for="(item, index) in resellers"
                         v-bind:key="index"
                       >
                         <td scope="row">{{ index + 1 }}</td>
@@ -114,7 +114,7 @@
                             }"
                           >
                             {{ item.company_name }}
-                            <sup style="color: black; font-weight: bold">
+                            <sup style="color: black; ">
                               {{ item.accounts.length }}
                             </sup>
                           </router-link>
@@ -123,20 +123,20 @@
                         <td>
                           <span>
                             <i class="fa fa-dollar"></i>
-                            {{ resellerTotalDollar(item.transactions) }}
+                            {{ item.total_dollar }}
                           </span>
                         </td>
         
                         <td>
                           <span>
                             <i class="fa fa-money"></i>
-                            {{ resellerTotalAmount(item.transactions) }}
+                            {{ item.total_amount }}
                           </span>
                         </td>
                         <td>
                           <span>
                             <i class="fa fa-money"></i>
-                            {{ resellerTotalPayment(item.payments) }}
+                            {{ item.total_paid }}
                           </span>
                         </td>
                         <td>
@@ -146,7 +146,7 @@
                           >
                             <i class="fa fa-money"></i>
                             {{
-                              resellerTotalDue(item.transactions, item.payments)
+                              parseInt(item.total_amount) - parseInt(item.total_paid)
                             }}
                           </span>
                         </td>
@@ -167,7 +167,6 @@
                               @click="
                                 showDollarStoreModal(
                                   item.company_name,
-                                  item.dollar_rate,
                                   item.id,
                                   item.accounts
                                 )
@@ -212,52 +211,36 @@
                         <td>
                           <span class="badge badge-success">
                             <i class="fa fa-dollar"></i>
-                            {{ totalDollarDistributed() }}
+                             {{ total_dollar }}
                           </span>
                         </td>
                       
                         <td>
                           <span class="badge badge-success">
                             <i class="fa fa-money"></i>
-                            {{ totalAmountDistributed() }}
+                            {{ total_amount }}
                           </span>
                         </td>
                         <td>
                           <span class="badge badge-success">
                             <i class="fa fa-money"></i>
-                            {{ totalAmountPaidFromAll() }}
+                            {{ total_paid }}
                           </span>
                         </td>
                         <td>
                           <span class="badge badge-danger">
                             <i class="fa fa-money"></i>
-                            {{ totalAmountDueFromAll() }}
+                            {{ 
+                            parseInt(total_amount) - parseInt(total_paid)
+
+                            }}
                           </span>
                         </td>
                       </tr>
                     </tbody>
                   </table>
                 </div>
-                <div class="box-footer">
-                  <div class="row">
-                    <div class="col-lg-6">
-                      <pagination
-                        :data="resellers"
-                        @pagination-change-page="getBoostAgencyResellers"
-                      ></pagination>
-                    </div>
-                    <div
-                      class="col-lg-6 mt-1"
-                      style="margin-top: 25px; text-align: right"
-                    >
-                      <p>
-                        Showing <strong>{{ resellers.from }}</strong> to
-                        <strong>{{ resellers.to }}</strong> of total
-                        <strong>{{ resellers.total }}</strong> entries
-                      </p>
-                    </div>
-                  </div>
-                </div>
+       
               </div>
             </div>
           </div>
@@ -277,6 +260,7 @@
                     <select
                       required
                       class="form-control"
+                      @change="selectRate()"
                       v-model="
                         dollar_store_form.boost_agency_reseller_ad_account_id
                       "
@@ -496,6 +480,7 @@
           <!-- end pdf download modal  -->
         </div>
       </section>
+
     </div>
 
     <!-- start filtering and pdf   -->
@@ -560,15 +545,14 @@ export default {
   data() {
     return {
       loading: true,
-      resellers: {},
+      resellers: '',
       advertise_accounts: "",
       search: null,
       reseller_company_name: "",
       loading: true,
-      basePath: this.$store.getters.image_base_link,
-      total_investment: "",
-      total_profit_paid: "",
-      total_due_amount: 0,
+      total_amount: "",
+      total_dollar: "",
+      total_paid: "",
       dollar_store_form: new Form({
         boost_agency_reseller_id: "",
         boost_agency_reseller_ad_account_id: "",
@@ -603,6 +587,21 @@ export default {
     };
   },
   methods: {
+    
+    calculateAmount() {
+      let dollar = this.dollar_store_form.dollar;
+      let rate = this.dollar_store_form.rate;
+      this.dollar_store_form.amount = parseInt(dollar) * parseInt(rate);
+    },
+
+    selectRate(){
+         this.advertise_accounts.forEach(item => {
+              if (item.id == this.dollar_store_form.boost_agency_reseller_ad_account_id) {
+                  this.dollar_store_form.rate = item.dollar_rate ;
+              }
+         });
+    },
+
     actionBtn(id) {
       document
         .getElementById("boost_action_" + id)
@@ -654,11 +653,10 @@ export default {
       );
     },
 
-    getBoostAgencyResellers(page = 1) {
+    getBoostAgencyResellers() {
       axios
-        .get("/api/boost/agency/resellers/list?page=" + page, {
+        .get("/api/boost/agency/resellers/list", {
           params: {
-            id: this.$route.params.id,
             search: this.search,
             status: this.status,
           },
@@ -667,6 +665,9 @@ export default {
           console.log(resp);
           if (resp.data.success == "OK") {
             this.resellers = resp.data.agency_resellers;
+            this.total_amount = resp.data.total_amount ;
+            this.total_paid = resp.data.total_paid ;
+            this.total_dollar = resp.data.total_dollar ;
             this.loading = false;
           }
         });
@@ -687,9 +688,8 @@ export default {
       this.$modal.show("filtering");
     },
 
-    showDollarStoreModal(company_name, dollar_rate, id, accounts) {
+    showDollarStoreModal(company_name, id, accounts) {
       this.reseller_company_name = company_name;
-      this.dollar_store_form.rate = dollar_rate;
       this.advertise_accounts = accounts;
       this.dollar_store_form.boost_agency_reseller_id = id;
       this.$modal.show("store");
@@ -789,124 +789,9 @@ export default {
         });
     },
 
-    calculateAmount() {
-      let dollar = this.dollar_store_form.dollar;
-      let rate = this.dollar_store_form.rate;
-      this.dollar_store_form.amount = parseInt(dollar) * parseInt(rate);
-    },
-
-    totalAmountPaidFromAll() {
-      if (this.resellers.data.length > 0) {
-        let x = 0;
-        this.resellers.data.forEach((reseller) => {
-          reseller.payments.forEach((item) => {
-            x += parseFloat(item.amount);
-          });
-        });
-        return x.toFixed(2);
-      }
-    },
-
-    totalAmountDueFromAll() {
-      let x = 0;
-      let y = 0;
-      if (this.resellers.data.length > 0) {
-        this.resellers.data.forEach((reseller) => {
-          reseller.payments.forEach((item) => {
-            x += parseFloat(item.amount);
-          });
-        });
-      }
-
-      if (this.resellers.data.length > 0) {
-        this.resellers.data.forEach((reseller) => {
-          reseller.transactions.forEach((item) => {
-            y += parseFloat(item.amount);
-          });
-        });
-      }
-      let z = parseFloat(y) - parseFloat(x);
-      return z.toFixed(2);
-    },
-
-    totalDollarDistributed() {
-      if (this.resellers.data.length > 0) {
-        let x = 0;
-        this.resellers.data.forEach((reseller) => {
-          reseller.transactions.forEach((item) => {
-            x += parseFloat(item.dollar);
-          });
-        });
-        return x.toFixed(2);
-      }
-    },
-
-    totalAmountDistributed() {
-      if (this.resellers.data.length > 0) {
-        let x = 0;
-        this.resellers.data.forEach((reseller) => {
-          reseller.transactions.forEach((item) => {
-            x += parseFloat(item.amount);
-          });
-        });
-        return x.toFixed(2);
-      }
-    },
-
-    resellerTotalDollar($dollars) {
-      let x = 0;
-      $dollars.forEach((transaction) => {
-        x += parseFloat(transaction.dollar);
-      });
-      return x.toFixed(2);
-    },
-
-    resellerAverageRate($dollars) {
-      let x = 0;
-      let y = 0;
-      $dollars.forEach((transaction) => {
-        x += parseFloat(transaction.rate);
-        y++;
-      });
-      let average_rate = parseFloat(x) / parseFloat(y);
-      return average_rate.toFixed(2);
-    },
-
-    resellerTotalAmount($amounts) {
-      let x = 0;
-      $amounts.forEach((transaction) => {
-        x += parseFloat(transaction.amount);
-      });
-      return x.toFixed(2);
-    },
-
-    resellerTotalPayment($payments) {
-      let x = 0;
-      $payments.forEach((payment) => {
-        x += parseFloat(payment.amount);
-      });
-      return x.toFixed(2);
-    },
-
-    resellerTotalDue($dollars, $payments) {
-      let x = 0;
-      let y = 0;
-      $payments.forEach((payment) => {
-        x += parseFloat(payment.amount);
-      });
-
-      $dollars.forEach((dollar) => {
-        y += parseFloat(dollar.amount);
-      });
-      let due = y - x;
-      return due.toFixed(2);
-    },
 
     todayDate() {
-      //current date
       let d = new Date();
-      //current mount
-      //current day
       let month = d.getMonth() + 1;
       let day = d.getDate();
       let output =
@@ -930,15 +815,11 @@ export default {
 <style scoped>
 
 
-
-
-
-
 .badge {
   padding: 6px 15px !important;
 }
 span {
-  font-size: 14px;
+  font-size: 15px;
 }
 
 .total_style {

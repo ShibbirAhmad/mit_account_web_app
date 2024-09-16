@@ -489,6 +489,15 @@ const routes = [
             }
         },
 
+        {
+            path: '/backend/boost/resellers/dollar/request',
+            name: 'dollar_request',
+            component: () => import( /*webpackChunkName:"dollar_request"*/ './components/admin/boost_agency/DollarRequest.vue'),
+            meta: {
+                requiresAuthAdmin: true,
+                title: 'user dollar request '
+            }
+        },
 
         {
             path: '/backend/boost/resellers/dollar/and/payment/:id',
@@ -498,7 +507,9 @@ const routes = [
                 requiresAuthAdmin: true,
                 title: 'boost agency resellers dollars and payments '
             }
-        }, {
+        },
+        
+        {
             path: '/backend/boost/agency/reseller/info/edit/:id',
             name: 'boost_agency_reseller_edit',
             component: () => import( /*webpackChunkName: "boost_agency_reseller_edit" */ './components/admin/boost_agency/BoostResellerEdit.vue'),

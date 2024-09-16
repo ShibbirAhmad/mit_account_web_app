@@ -20,6 +20,8 @@ Route::group([
     Route::post('api/boost/agency/update/{id}','BoostAgencyController@update');
     Route::post('api/pay/boost/agency/payment','BoostAgencyController@storeAgencyPayment');
     Route::get('api/boost/reseller/transaction/details/{id}','BoostAgencyController@resellerTransactions');
+    Route::get('api/boost/agency/reseller/dollar/transactions','BoostAgencyController@resellerDollarTransaction');
+    Route::get('api/change/dollar/transaction/status/{id}/{status}','BoostAgencyController@changeStatus');
     Route::post('api/boost/agency/dollar/and/payment/details','BoostAgencyController@boostAgencyDollarAndPaymentDetails');
     Route::get('api/get/boost/agency/reseller/{id}','BoostAgencyController@getBoostReseller');
     Route::post('api/get/boost/agency/reseller/edit/{id}','BoostAgencyController@updateBoostReseller');

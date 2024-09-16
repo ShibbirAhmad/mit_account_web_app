@@ -25,8 +25,7 @@
               <div class="box-body">
                 <form
                   @submit.prevent="addPrintHouse"
-                  @keydown="form.onKeydown($event)"
-                  enctype="multipart/form-data"
+                 
                 >
                   <div class="alert-danger alert" v-if="error">
                     {{ error }}

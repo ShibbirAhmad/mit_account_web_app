@@ -13,7 +13,7 @@ class BoostAgencyResellerAdAccount extends Model
           return $date->format('Y-m-d H:i:s');
      }
 
-     protected $guarded = [];
+     protected $fillable = ['id', 'boost_agency_id', 'boost_agency_reseller_id', 'name', 'page_name', 'dollar_rate', 'total_dollar', 'total_amount', 'previous_dollar', 'created_at', 'updated_at'];
 
      public  function transactions()
      {
