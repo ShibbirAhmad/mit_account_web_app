@@ -91,7 +91,8 @@
                           <td>{{ item.amount }}</td>
                      
                           <td>
-                              <a download :href="base_link + item.image "> <i style="font-size: 16px;color: green;" class="fa fa-file"></i> </a>
+                          
+                              <a v-if="item.image" download :href="base_link + item.image "> <i style="font-size: 16px;color: green;" class="fa fa-file"></i> </a>
                           </td>
                           <td>
                             <span v-if="item.status == 0" class="badge badge-warning">pending</span>
@@ -99,7 +100,7 @@
                             <span v-if="item.status == 2" class="badge badge-success">completed</span>
                             <span v-if="item.status == 3" class="badge badge-danger">rejected</span>
                           </td>
-
+                          
                           <td>
                             <button  v-if="item.status !=2 "
                             @click="actionBtn(item.id)"
