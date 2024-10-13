@@ -12,6 +12,11 @@ class BoostAgencyResellerDollarTransaction extends Model
         return $date->format('Y-m-d H:i:s');
     }
 
+    public  function balance()
+    {
+        return $this->belongsTo('App\Models\Balance', 'balance_id');
+    }
+
     public  function account()
     {
         return $this->belongsTo('App\Models\BoostAgencyResellerAdAccount', 'boost_agency_reseller_ad_account_id');

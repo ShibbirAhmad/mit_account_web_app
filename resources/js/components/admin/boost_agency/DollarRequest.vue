@@ -68,7 +68,7 @@
                         <th width="10%">Dollar Rate</th>
                         <th width="10%">Dollar</th>
                         <th width="10%">Amount</th>
-                        <th width="10%">Attachment</th>
+                        <th width="10%">Payment Method </br> & Attachment</th>
                         <th width="15%">Status</th>
                         <th width="10%">Action</th>
                       
@@ -91,8 +91,8 @@
                           <td>{{ item.amount }}</td>
                      
                           <td>
-                          
-                              <a v-if="item.image" download :href="base_link + item.image "> <i style="font-size: 16px;color: green;" class="fa fa-file"></i> </a>
+                              <p v-if="item.balance">{{  item.balance.name  }}</p>
+                              <a v-if="item.image"  download :href="base_link + item.image "> <i style="font-size: 26px;color: rgb(255 156 16);" class="fa fa-file"></i> </a>
                           </td>
                           <td>
                             <span v-if="item.status == 0" class="badge badge-warning">pending</span>

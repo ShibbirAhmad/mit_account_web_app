@@ -385,7 +385,7 @@ class BoostAgencyController extends Controller
     if(!empty($request->status)) {
       $dollar_transactions = BoostAgencyResellerDollarTransaction::where('status',$request->status)->with(['account:id,name'])->orderBy('id', 'desc')->paginate(100);
     }else{
-      $dollar_transactions = BoostAgencyResellerDollarTransaction::with(['account:id,name'])->orderBy('id', 'desc')->paginate(100);
+      $dollar_transactions = BoostAgencyResellerDollarTransaction::with(['account:id,name','balance:id,name'])->orderBy('id', 'desc')->paginate(100);
     }
     $total_pending = BoostAgencyResellerDollarTransaction::where('status',0)->count();
     $total_processing = BoostAgencyResellerDollarTransaction::where('status',1)->count();
