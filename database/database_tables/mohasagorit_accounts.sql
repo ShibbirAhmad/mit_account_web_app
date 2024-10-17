@@ -60,7 +60,7 @@ INSERT INTO `account_purposes` (`id`, `text`, `is_expense`, `created_at`, `updat
 CREATE TABLE `admins` (
   `id` int(11) NOT NULL,
   `name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `image` text COLLATE utf8_unicode_ci DEFAULT 'user.png',
+  `image` text COLLATE utf8_unicode_ci NULL DEFAULT NULL,
   `email` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `phone` varchar(14) COLLATE utf8_unicode_ci NOT NULL,
   `password` varchar(500) COLLATE utf8_unicode_ci NOT NULL,
