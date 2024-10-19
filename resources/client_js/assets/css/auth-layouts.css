@@ -1,0 +1,421 @@
+/*
+==========================================
+    Header Top css
+==========================================
+*/
+.auth_area {
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+.padding_left_zero {
+    padding-left: 0px;
+}
+.padding_right_zero {
+    padding-right: 0px;
+}
+.header_top_left_side {
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+.header_top {
+    background-color: var(--menuBackground);
+}
+.header_top_left_side p {
+    font-family: "Raleway", sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    color: var(--white);
+}
+.header_top_menu {
+    float: right;
+}
+.header_top_menu ul li {
+    float: left;
+    border-right: var(--border);
+    padding: 5px 15px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.header_top_menu ul li:last-child {
+    border-right: none;
+    padding-right: 0px;
+}
+.header_top_menu ul li .header_top_menu_link {
+    color: var(--white);
+    font-family: "Raleway", sans-serif;
+    font-weight: 500;
+    display: block;
+    font-size: 14px;
+    transition: 0.3s;
+}
+.header_top_menu ul li .header_top_menu_link:hover {
+    color: var(--hoverColor);
+}
+.header_top_language p {
+    color: var(--white);
+    font-size: 13px;
+    line-height: 15px;
+}
+.header_top_language_link {
+    font-size: 14px;
+    color: var(--white);
+}
+.header_top_language span {
+    color: var(--white);
+}
+.header_top_language span .header_top_language_link {
+    color: var(--white);
+    font-size: 14px;
+    transition: 0.3s;
+}
+.header_top_language span .header_top_language_link:hover {
+    color: var(--hoverColor);
+}
+
+/*
+==========================================
+    Header Bottom css
+==========================================
+*/
+.header_bottom {
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    background: #fff;
+}
+.logo {
+    width: 110px;
+}
+.logo img {
+    max-width: 100%;
+    height: auto;
+}
+.header_main_menu {
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+.header_main_menu ul {
+}
+.header_main_menu ul li {
+    display: inline-block;
+    margin-right: 20px;
+}
+.header_main_menu ul li:last-child {
+    margin-right: 0px;
+}
+.header_main_menu ul li .header_main_menu_link {
+    font-family: "Raleway", sans-serif;
+    font-weight: 600;
+    color: var(--black);
+    text-transform: uppercase;
+    font-size: 14px;
+    display: block;
+    transition: 0.3s;
+}
+.header_main_menu ul li .header_main_menu_link:hover {
+    color: var(--hoverColor);
+}
+.header_phone_number {
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+.phone_icon i {
+    width: 14px;
+    float: left;
+    margin-right: 2px;
+    transform: rotate(28deg);
+    color: var(--black);
+    font-size: 14px;
+}
+.phone_number span {
+    font-family: "Raleway", sans-serif;
+    font-weight: 500;
+    color: var(--black);
+    font-size: 15px;
+}
+.phone_number strong {
+    font-family: "Montserrat", sans-serif;
+    color: var(--black);
+    font-size: 15px;
+}
+.header_auth .header_auth_link {
+    font-family: "Raleway", sans-serif;
+    font-weight: 500;
+    color: var(--black);
+    font-size: 15px;
+}
+.header_auth .header_auth_link:hover {
+    color: var(--hoverColor);
+}
+.header_auth {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    height: 100%;
+}
+
+.mobile_device_menu_and_logo {
+    display: none;
+}
+.mobile_device_menu_logo_table_cell {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 50px;
+}
+.mobile_device_menu_btn {
+    background-color: var(--themeColor);
+    color: var(--white);
+    border: none;
+    width: 35px;
+    height: 35px;
+    text-align: center;
+    line-height: 35px;
+    font-size: 18px;
+    border-radius: 3px;
+}
+.mobile_device_auth_link {
+    color: var(--themeColor);
+    font-weight: 600;
+    font-size: 16px;
+}
+.mobile_menu_list ul li .mobile_menu_list_link {
+    display: inline-block;
+    color: var(--themeColor);
+    font-weight: 600;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+.mobile_device_offcanvan_header {
+    border-bottom: 1px solid #dddddd;
+}
+._offcanvas_width {
+    width: 200px !important;
+}
+/*
+==========================================
+    Footer Top Area css
+==========================================
+*/
+.footer_area {
+    background-color: #191919;
+}
+.footer_top {
+    padding: 40px 0px;
+}
+.footer_logo img {
+    max-width: 110px;
+}
+.footer_description {
+    margin-top: 15px;
+}
+.footer_description p {
+    color: var(--white);
+    font-family: "Raleway", sans-serif;
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 26px;
+}
+.footer_menu_title {
+    margin-bottom: 15px;
+}
+.footer_menu_title h5 {
+    font-family: "Poppins", Sans-serif;
+    font-weight: 700;
+    color: var(--white);
+    font-size: 22px;
+    text-transform: capitalize;
+}
+.footer_menu li span {
+    display: block;
+}
+.footer_address_state {
+    color: var(--white);
+    font-family: "Raleway", sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+}
+.footer_menu li a {
+    color: var(--white);
+    font-family: "Raleway", sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    padding: 4px 0px;
+    display: inline-block;
+    transition: 0.4s;
+}
+.footer_menu li a:hover {
+    color: var(--white);
+}
+.footer_bottom {
+    border-top: 1px solid #9999;
+    padding: 10px 0px;
+}
+.footer_bottom_content {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+.footer_bottom_content p {
+    color: var(--white);
+    font-size: 14px;
+}
+.footer_menu ul li {
+    margin-bottom: 5px;
+}
+.footer_bottom_payment_image img {
+    width: 100%;
+}
+
+/*
+==========================================
+    Responsive Area css
+==========================================
+*/
+@media screen and (max-width: 992px) {
+    .header_bottom {
+        display: none;
+    }
+    .header_top_left_side p {
+        font-size: 14px;
+    }
+    .header_top_menu ul li {
+        border-right: 0px;
+        padding: 5px 10px;
+    }
+    .subscription_title {
+        text-align: center;
+    }
+    .subscription_details {
+        text-align: center;
+    }
+    .subscription_social_media {
+        text-align: center;
+    }
+    .footer_bottom_content {
+        justify-content: center;
+    }
+    .footer_bottom_payment_image {
+        text-align: center;
+    }
+}
+@media screen and (max-width: 768px) {
+    .mobile_device_menu_and_logo {
+        display: block;
+    }
+    .header_top_left_side {
+        justify-content: center;
+        margin-top: 2px;
+        padding-bottom: 5px;
+    }
+    .header_top_menu {
+        float: inherit;
+    }
+    .header_top_right_side {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding-bottom: 2px;
+    }
+    .header_top_menu ul li:last-child {
+        padding-right: 10px;
+    }
+    .restaurant_pos_software_top_title h3 {
+        font-size: 28px;
+        line-height: 38px;
+    }
+    .restaurant_pos_software_top_description {
+        margin-top: 10px;
+    }
+    .restaurant_pos_software_top_description p {
+        font-size: 16px;
+        line-height: 25px;
+    }
+    .banner_description p {
+        width: 100%;
+    }
+}
+@media screen and (max-width: 600px) {
+    .padding_top_zero {
+        padding-top: 0px;
+    }
+    .padding_bottom_zero {
+        padding-bottom: 0px;
+    }
+    .padding_zero {
+        padding: 0px;
+    }
+    .banner_subtitle h2 {
+        font-size: 22px;
+    }
+    .restaurant_pos_software_top_title h3 {
+        font-size: 22px;
+        line-height: 27px;
+    }
+    .restaurant_pos_software_bottom_title {
+        margin-bottom: 10px;
+    }
+    .pricing_header_title h3 {
+        font-size: 16px;
+    }
+    .pricing_header_price h3 {
+        font-size: 32px;
+    }
+    .testimonial_client_active .owl-nav div {
+        display: none;
+    }
+    .sme_training_active .owl-nav div {
+        display: none;
+    }
+    .subscription_title h3 {
+        font-size: 22px;
+    }
+    .footer_menu li a {
+        font-size: 14px;
+        padding: 0px 0px;
+    }
+    .blog_most_popular_head h3 {
+        font-size: 18px;
+    }
+    .blog_most_popular_head h3 span {
+        font-size: 18px;
+    }
+    .blog_social_media h4 {
+        font-size: 18px;
+    }
+    .breadcrumbs-title h2 {
+        font-size: 22px;
+        line-height: 32px;
+    }
+    .banner_table {
+        display: block;
+        width: 100%;
+        height: 100%;
+        padding-top: 50px;
+        padding-bottom: 90px;
+    }
+    .single_service_content {
+        padding: 15px 25px;
+    }
+    .section_padding {
+        padding: 30px 0px;
+    }
+    .footer_menu_title h5 {
+        font-size: 18px;
+    }
+    .logo {
+        width: 90px;
+    }
+    .sme_training_title_link {
+        font-size: 16px;
+    }
+
+    .mobile_device_auth_link {
+        color: var(--themeColor);
+        font-weight: 600;
+        font-size: 12px;
+    }
+}

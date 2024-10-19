@@ -1,0 +1,445 @@
+/*  font-family: 'Raleway', sans-serif; */
+@import url("https://fonts.googleapis.com/css?family=Raleway:300,400,500,600,700");
+/*  font-family: 'Montserrat', sans-serif; */
+@import url("https://fonts.googleapis.com/css?family=Montserrat:300,400,600,700");
+
+/*
+==========================================
+    Theme default css
+==========================================
+*/
+
+:root {
+    --white: #ffffff;
+    --black: #404040;
+
+    --border: 1px solid #dddddd;
+    --themeColor: #123a56;
+
+    --menuBackground: #323232;
+
+    --hoverColor: #f3511f;
+
+    --shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "poppins", sans-serif;
+}
+body {
+    background-color: #ffffff;
+}
+ul {
+    margin: 0px;
+    padding: 0px;
+}
+li {
+    list-style: none;
+}
+a {
+    text-decoration: none;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+    margin: 0px;
+    padding: 0px;
+}
+.all-button {
+    background-color: #2a3042;
+    color: #ffffff;
+    border-radius: 5px;
+    font-weight: 500;
+    padding: 10px 20px;
+    text-transform: uppercase;
+}
+
+/* common website title */
+.common_heading {
+    text-align: center;
+    margin-bottom: 30px;
+}
+.common_heading h3 {
+    font-size: 24px;
+    font-family: "poppins", sans-serif;
+    font-weight: 700;
+    text-transform: capitalize;
+}
+.common_heading p {
+    font-family: "Nunito", sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    color: #999;
+    text-transform: capitalize;
+}
+/* common website section padding top */
+.section_padding_top {
+    padding-top: 60px;
+}
+/* common website section margin top */
+.section_margin_top {
+    margin-top: 50px;
+}
+/* common website Button */
+.common_btn {
+    color: #ffffff;
+    font-size: 14px;
+    border: 1px solid var(--themeColor);
+    background-color: var(--themeColor);
+    font-family: "Poppins", Sans-serif;
+    font-weight: 500;
+    padding: 10px 20px;
+    display: inline-block;
+    transition: 0.4s;
+    text-transform: capitalize;
+    border-radius: 4px;
+}
+.common_btn:hover {
+    background-color: transparent;
+    color: #000000;
+    border: 1px solid var(--themeColor);
+}
+
+/*
+==========================================
+    Auth Area css
+==========================================
+*/
+.auth_area {
+    /* background-color: #fff5f5;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    padding: 20px 0px; */
+}
+.auth_content {
+    /* box-shadow: var(--shadow); */
+    background-color: var(--white);
+    overflow: hidden;
+}
+.auth_left_side {
+    padding: 50px 100px;
+}
+.auth_logo {
+    width: 110px;
+    margin: 0 auto;
+}
+.auth_logo img {
+    max-width: 100%;
+    height: auto;
+}
+.auth_title {
+    margin-top: 10px;
+    text-align: center;
+}
+.auth_title h3 {
+    color: var(--black);
+    font-family: "Raleway", sans-serif;
+    font-weight: 600;
+    font-size: 25px;
+}
+.auth_body {
+    margin-top: 30px;
+}
+.auth_form_item {
+    margin-bottom: 20px;
+    position: relative;
+}
+.auth_form_item .auth_form_item_input {
+    width: 100%;
+    border: none;
+    border-bottom: 2px solid #dddddd;
+    padding: 5px 0px;
+    outline: none;
+}
+.auth_form_item i {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 9px 0px;
+}
+.auth_form_item i {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 7px 0px;
+    font-size: 20px;
+    color: rgb(119, 117, 117);
+}
+.auth_form_input_checkbox {
+    width: 20px;
+    height: 20px;
+    border: rgb(119, 117, 117);
+}
+.auth_form_item_table_cell {
+    display: flex;
+    align-items: center;
+}
+.auth_form_item_table_cell label {
+    color: var(--black);
+    font-family: "Raleway", sans-serif;
+    font-weight: 500;
+    font-size: 15px;
+}
+.auth_form_item_btn {
+    margin-top: 20px;
+}
+.auth_form_item_btn_link {
+    border: none;
+    background-color: var(--themeColor);
+    color: var(--white);
+    padding: 10px 0px;
+    display: block;
+    width: 100%;
+    border-radius: 3px;
+    text-align: center;
+}
+.auth_footer p {
+    color: var(--black);
+    font-family: "Raleway", sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+}
+.auth_footer {
+    margin-top: 20px;
+}
+.auth_footer_link {
+    font-family: "Raleway", sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--hoverColor);
+}
+.auth_footer_link:hover {
+    color: var(--themeColor);
+}
+
+.auth_right_side img {
+    max-width: 100%;
+}
+.auth_pricing {
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.single_auth_pricing {
+    width: 100%;
+    margin: 0 auto;
+    display: block;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    background-color: var(--white);
+    border-radius: 3px;
+    margin-top: 15px;
+    border: 10px solid none;
+    cursor: pointer;
+}
+.custom_register_number {
+    border: 1px solid #dddddd;
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+}
+.custom_register_input {
+    border: 1px solid #dddddd;
+    width: 100%;
+    padding: 10px;
+}
+.active_single_auth_pricing {
+    border: 10px solid var(--themeColor);
+}
+
+.auth_pricing_header {
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+.auth_pricing_header_title h3 {
+    color: var(--black);
+    font-family: "Raleway", sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+}
+.auth_pricing_header_price {
+    margin-top: 3px;
+}
+.auth_pricing_header_price h3 {
+    color: var(--themeColor);
+    font-family: "Montserrat", sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+}
+.auth_pricing_header_price h3 small {
+    font-size: 12px;
+    text-transform: capitalize;
+    color: var(--black);
+}
+.auth_pricing_header_content {
+    text-align: center;
+    padding: 15px 0px 35px 0px;
+}
+.auth_pricing_list {
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+}
+.auth_pricing_check {
+    background-color: rgb(237 165 81 / 20%);
+    color: var(--themeColor);
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+    font-size: 10px;
+    border-radius: 100%;
+    margin-right: 5px;
+}
+.auth_pricing_xmark {
+    background-color: rgb(216 9 9 / 25%);
+    color: var(--themeColor);
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+    font-size: 10px;
+    border-radius: 100%;
+    margin-right: 5px;
+}
+.auth_pricing_list ul li {
+    padding-bottom: 5px;
+    display: block;
+    font-size: 13px;
+    font-family: "Raleway", sans-serif;
+    font-weight: 500;
+}
+
+.mobile_device_pricing {
+    display: none;
+}
+
+section.not_verified {
+    width: 100%;
+    height: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+section.not_verified p {
+    color: #0ecc8a;
+    font-weight: 900;
+    font-size: 20px;
+    font-family: Helvetica, Arial, sans-serif;
+}
+
+section.not_verified a {
+    text-decoration: underline;
+}
+
+.label__content__wrapper {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+input.terms_condition {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+
+@media screen and (max-width: 1264px) {
+    .auth_left_side {
+        padding: 50px 50px;
+    }
+
+}
+
+@media screen and (max-width: 768px) {
+    .auth_left_side {
+        padding: 0px 0px;
+    }
+    .auth_title h3 {
+        font-size: 18px;
+    }
+    .custom_register_number {
+        padding: 10px 0px;
+    }
+
+}
+
+@media screen and (max-width: 600px) {
+    .mobile_device_display_none_600 {
+        display: none;
+    }
+    .mobile_device_pricing {
+        display: block;
+        margin-top: 30px;
+    }
+    .auth_body {
+        margin-top: 15px;
+    }
+    .mobile_device_none__768 {
+        display: none;
+    }
+    .auth_pricing_header_content {
+        text-align: center;
+        padding: 15px 0px 15px 0px;
+    }
+    .single_auth_pricing {
+        width: 100px;
+        margin: 0;
+    }
+    .auth_pricing {
+        margin-bottom: 50px;
+        margin-top: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+    }
+    .auth_pricing {
+        margin-bottom: 15px;
+        margin-top: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+    }
+    .auth_pricing_header_title h3 {
+        font-size: 11px;
+    }
+    .auth_pricing_header_price h3 {
+        font-size: 17px;
+    }
+    .active_single_auth_pricing {
+        border: 5px solid var(--themeColor);
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .single_auth_pricing {
+        width: 85px;
+    }
+
+    .custom_auth_left_side {
+        padding: 50px 10px 50px 30px;
+    }
+
+    .auth_footer p {
+        font-size: 14px;
+    }
+
+    .auth_footer_link {
+        font-weight: 500;
+        font-size: 14px;
+    }
+}

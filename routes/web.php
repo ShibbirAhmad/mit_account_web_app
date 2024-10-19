@@ -709,6 +709,10 @@ Route::get('/backend/{any}', function () {
 })->where('any', '^(?!api\/)[\/\w\.\,-]*');
 
 
+Route::get('/client/{any}', function () {
+  return view('clients.master');
+})->where('any', '^(?!api\/)[\/\w\.\,-]*');
+
 
 
 Route::get('/{any}', function () {

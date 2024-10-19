@@ -2,11 +2,22 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Laravel\Sanctum\HasApiTokens;
 use DateTimeInterface;
 
-class BoostAgencyReseller extends Model
+class BoostAgencyReseller extends Authenticatable
 {
+    use HasApiTokens;
+
+    protected $table = 'boost_agency_resellers';
+    protected $fillable = ['id', 'name', 'company_name', 'phone', 'address', 'password', 'status', 'created_at', 'updated_at'];
+
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
 
     protected function serializeDate(DateTimeInterface $date)
     {
@@ -14,7 +25,6 @@ class BoostAgencyReseller extends Model
     }
 
 
-    protected $fillable = ['id', 'name', 'company_name', 'phone', 'address', 'password', 'status', 'created_at', 'updated_at'];
 
 
     public  function transactions()

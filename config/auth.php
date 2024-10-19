@@ -51,16 +51,25 @@ return [
         ],
 
 
-         'merchant' => [
+        'merchant' => [
             'driver' => 'session',
             'provider' => 'merchant',
         ],
+
 
         'api' => [
             'driver' => 'token',
             'provider' => 'users',
             'hash' => false,
         ],
+
+        'api-reseller' => [
+            'driver' => 'sanctum',
+            'provider' => 'boost_agency_resellers',
+        ],
+
+
+
     ],
 
     /*
@@ -89,14 +98,21 @@ return [
             'driver' => 'eloquent',
             'model' => \App\Models\Admin::class,
         ],
-          'reseller' => [
-            'driver' => 'eloquent',
-            'model' => \App\Models\Reseller::class,
-        ],
+
+
+        //   'reseller' => [
+        //     'driver' => 'eloquent',
+        //     'model' => \App\Models\Reseller::class,
+        // ],
 
         'merchant' => [
             'driver' => 'eloquent',
             'model' => App\Models\Merchant::class,
+        ],
+
+        'boost_agency_resellers' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\BoostAgencyReseller::class,
         ],
 
         // 'users' => [

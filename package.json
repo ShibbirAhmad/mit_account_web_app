@@ -10,6 +10,7 @@
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
     },
     "devDependencies": {
+        "@mdi/font": "^6.5.95",
         "axios": "^0.19.2",
         "bootstrap": "^4.1.0",
         "cross-env": "^5.1",
@@ -26,7 +27,6 @@
         "@ckeditor/ckeditor5-build-classic": "^21.0.0",
         "@ckeditor/ckeditor5-easy-image": "^31.0.0",
         "@ckeditor/ckeditor5-vue": "^1.0.1",
-        "@syncfusion/ej2-vue-dropdowns": "^18.2.55",
         "animate.css": "^4.1.0",
         "bootstrap-table": "^1.18.1",
         "datatables.net": "^1.10.23",
@@ -51,6 +51,7 @@
         "vue-toasted": "^1.1.28",
         "vue-toastr": "^2.1.2",
         "vuejs-countdown": "^0.2.1",
+        "vuetify": "^2.6.14",
         "vuex": "^3.5.1"
     }
 }

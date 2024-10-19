@@ -5,6 +5,7 @@ namespace App\Http;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+
 class Kernel extends HttpKernel
 {
     /**
@@ -17,7 +18,7 @@ class Kernel extends HttpKernel
     protected $middleware = [
 
         \Fruitcake\Cors\HandleCors::class,
-       \App\Http\Middleware\TrustProxies::class,
+        \App\Http\Middleware\TrustProxies::class,
         \App\Http\Middleware\CheckForMaintenanceMode::class,
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \App\Http\Middleware\TrimStrings::class,
@@ -41,8 +42,9 @@ class Kernel extends HttpKernel
         ],
 
         'api' => [
-            'throttle:60,1',
-            'bindings',
+            \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
+            'throttle:api',
+            \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
     ];
 
@@ -66,7 +68,7 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'admin' => \App\Http\Middleware\Admin::class,
         'reseller' => \App\Http\Middleware\Reseller::class,
-        'merchant' => \App\Http\Middleware\MerchantMiddleware::class ,
+        'merchant' => \App\Http\Middleware\MerchantMiddleware::class,
 
 
     ];
@@ -88,51 +90,32 @@ class Kernel extends HttpKernel
     ];
 
 
-/**
-* The Artisan commands provided by your application.
-*
-* @var array
-*/
-protected $commands = [
-   //
-];
-/**
-* Define the application's command schedule.
-*
-* @param  \Illuminate\Console\Scheduling\Schedule  $schedule
-* @return void
-*/
-protected function schedule(Schedule $schedule)
-{
-    //
-}
-/**
-* Register the commands for the application.
-*
-* @return void
-*/
-protected function commands()
-{
-$this->load(__DIR__.'/Commands');
-require base_path('routes/console.php');
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    /**
+     * The Artisan commands provided by your application.
+     *
+     * @var array
+     */
+    protected $commands = [
+        //
+    ];
+    /**
+     * Define the application's command schedule.
+     *
+     * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
+     * @return void
+     */
+    protected function schedule(Schedule $schedule)
+    {
+        //
+    }
+    /**
+     * Register the commands for the application.
+     *
+     * @return void
+     */
+    protected function commands()
+    {
+        $this->load(__DIR__ . '/Commands');
+        require base_path('routes/console.php');
+    }
 }
