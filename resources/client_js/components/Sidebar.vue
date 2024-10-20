@@ -1,8 +1,15 @@
 <template>
   <nav>
+    <!-- header -->
     <v-app-bar color="#fff" app>
-      
-      
+      <div class="row">
+        <div class="col-md-1">
+          <div class="header_toggle_icon">
+            <i class="fa-solid fa-bars" @click.stop="drawer = !drawer"></i>
+          </div>
+        </div>
+      </div>
+
     </v-app-bar>
 
     <!-- ====================================== Sidebar Part Start ====================================== -->
@@ -12,12 +19,12 @@
       <!-- side bar header box -->
       <v-layout>
         <div class="">
-          
-          
+
+
         </div>
       </v-layout>
 
-      
+
       <!-- sidebar menu start -->
 
 
@@ -71,8 +78,8 @@ export default {
           });
         });
     },
-    
-    
+
+
     /* ================== Check Breakpoint ================== */
     checkScreenWidth() {
       // Use Vuetify's breakpoint object to check the current screen width
@@ -91,7 +98,7 @@ export default {
     //   return this.$store.getters.auth_merchant;
     // },
 
-    
+
   },
 
   mounted() {
@@ -108,6 +115,4 @@ export default {
   },
 };
 </script>
-<style scoped>
-
-</style>
+<style scoped></style>

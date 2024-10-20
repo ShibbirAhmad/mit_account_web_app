@@ -9,8 +9,9 @@
     <link rel="icon" />
     <title></title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="stylesheet" href="{{ asset('admin/client_admin/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('admin/client_admin/custom.css') }}">
+    <link rel="stylesheet" href="{{ asset('admin/client_admin/css/all.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('admin/client_admin/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('admin/client_admin/css/custom.css') }}">
 
     {{-- @include('include.backend_css') --}}
     <style>
