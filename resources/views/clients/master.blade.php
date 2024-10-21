@@ -8,6 +8,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" />
     <title></title>
+    {{-- api url --}}
+    <meta name="local_base_url" content="http://localhost:8000/api/v1/client">
+    <meta name="production_base_url" content="https://your-production-url.com/api/v1/client">
+    {{-- api url --}}
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="{{ asset('admin/client_admin/css/all.min.css') }}">
     <link rel="stylesheet" href="{{ asset('admin/client_admin/css/bootstrap.min.css') }}">

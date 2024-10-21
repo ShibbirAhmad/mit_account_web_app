@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Route;
 
 
 
-Route::namespace('BoostReseller')->prefix('client')->name('client.')->group(function () {
+Route::prefix('v1/client')->middleware('throttle:10,1')->group(function () {
     
     Route::post('login', 'AuthController@login');
     Route::post('logout', 'AuthController@logout');

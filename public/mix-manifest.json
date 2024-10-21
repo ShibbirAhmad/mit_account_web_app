@@ -44,6 +44,8 @@
     "/chunks/boost_fund_transfer_add.js": "/chunks/boost_fund_transfer_add.js",
     "/chunks/boost_reselller_dollar_payment.js": "/chunks/boost_reselller_dollar_payment.js",
     "/chunks/client/client_dashboard.js": "/chunks/client/client_dashboard.js",
+    "/chunks/client/client_login.js": "/chunks/client/client_login.js",
+    "/chunks/client/client_register.js": "/chunks/client/client_register.js",
     "/chunks/comment.js": "/chunks/comment.js",
     "/chunks/commentAdd.js": "/chunks/commentAdd.js",
     "/chunks/company_assets.js": "/chunks/company_assets.js",
@@ -113,7 +115,10 @@
     "/chunks/tourism_debit_add.js": "/chunks/tourism_debit_add.js",
     "/chunks/tourism_fund_transfer.js": "/chunks/tourism_fund_transfer.js",
     "/chunks/tourism_fund_transfer_add.js": "/chunks/tourism_fund_transfer_add.js",
-    "/chunks/vendors~AssignRoleAdmin~LoanDetails~account_purpose_add~account_purpose_edit~addLoan~add_merchant~ad~32e63321.js": "/chunks/vendors~AssignRoleAdmin~LoanDetails~account_purpose_add~account_purpose_edit~addLoan~add_merchant~ad~32e63321.js",
+    "/chunks/vendors~AssignRoleAdmin~LoanDetails~account_purpose_add~account_purpose_edit~addLoan~add_merchant~ad~9417d555.js": "/chunks/vendors~AssignRoleAdmin~LoanDetails~account_purpose_add~account_purpose_edit~addLoan~add_merchant~ad~9417d555.js",
     "/chunks/vendors~adminProfile~boost_debit_add~debitAdd~mit_debit_add.js": "/chunks/vendors~adminProfile~boost_debit_add~debitAdd~mit_debit_add.js",
-    "/chunks/vendors~admin_note_add~company_assets_add~company_assets_edit~general_setting.js": "/chunks/vendors~admin_note_add~company_assets_add~company_assets_edit~general_setting.js"
+    "/chunks/vendors~admin_note_add~company_assets_add~company_assets_edit~general_setting.js": "/chunks/vendors~admin_note_add~company_assets_add~company_assets_edit~general_setting.js",
+    "/chunks/vendors~client/client_login~client/client_register.js": "/chunks/vendors~client/client_login~client/client_register.js",
+    "/chunks/vendors~AssignRoleAdmin~LoanDetails~account_purpose_add~account_purpose_edit~addLoan~add_merchant~ad~df54b703.js": "/chunks/vendors~AssignRoleAdmin~LoanDetails~account_purpose_add~account_purpose_edit~addLoan~add_merchant~ad~df54b703.js",
+    "/chunks/vendors~client/client_register.js": "/chunks/vendors~client/client_register.js"
 }

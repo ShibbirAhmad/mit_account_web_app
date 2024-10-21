@@ -7,98 +7,103 @@ use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvi
 
 class RouteServiceProvider extends ServiceProvider
 {
-    /**
-     * This namespace is applied to your controller routes.
-     *
-     * In addition, it is set as the URL generator's root namespace.
-     *
-     * @var string
-     */
-    protected $namespace = 'App\Http\Controllers';
+     /**
+      * This namespace is applied to your controller routes.
+      *
+      * In addition, it is set as the URL generator's root namespace.
+      *
+      * @var string
+      */
+     protected $namespace = 'App\Http\Controllers';
+     protected $boost_namespace = 'App\Http\Controllers\BoostReseller';
 
-    /**
-     * Define your route model bindings, pattern filters, etc.
-     *
-     * @return void
-     */
-    public function boot()
-    {
-        //
-    
-        parent::boot();
-    }
+     /**
+      * Define your route model bindings, pattern filters, etc.
+      *
+      * @return void
+      */
+     public function boot()
+     {
+          //
 
-    /**
-     * Define the routes for the application.
-     *
-     * @return void
-     */
-    public function map()
-    {
-        $this->mapApiRoutes();
+          parent::boot();
+     }
 
-        $this->mapWebRoutes();
+     /**
+      * Define the routes for the application.
+      *
+      * @return void
+      */
+     public function map()
+     {
+          $this->mapApiRoutes();
 
-        //
-    }
+          $this->mapWebRoutes();
 
-    /**
-     * Define the "web" routes for the application.
-     *
-     * These routes all receive session state, CSRF protection, etc.
-     *
-     * @return void
-     */
-    protected function mapWebRoutes()
-    {
+          //
+     }
 
-
-        Route::middleware('web')
-             ->namespace($this->namespace)
-             ->group(base_path('routes/web.php'));
+     /**
+      * Define the "web" routes for the application.
+      *
+      * These routes all receive session state, CSRF protection, etc.
+      *
+      * @return void
+      */
+     protected function mapWebRoutes()
+     {
 
 
-        Route::middleware('web')
-             ->namespace($this->namespace)
-             ->group(base_path('routes/Frontend.php'));
+          Route::middleware('web')
+               ->namespace($this->namespace)
+               ->group(base_path('routes/web.php'));
 
 
-        Route::middleware('web')
-             ->namespace($this->namespace)
-             ->group(base_path('routes/reseller.php'));
+          Route::middleware('web')
+               ->namespace($this->namespace)
+               ->group(base_path('routes/Frontend.php'));
 
 
-        Route::middleware('web')
-             ->namespace($this->namespace)
-             ->group(base_path('routes/BoostService.php'));
+          Route::middleware('web')
+               ->namespace($this->namespace)
+               ->group(base_path('routes/reseller.php'));
 
 
-        Route::middleware('web')
-             ->namespace($this->namespace)
-             ->group(base_path('routes/ClientService.php'));
+          Route::middleware('web')
+               ->namespace($this->namespace)
+               ->group(base_path('routes/BoostService.php'));
 
 
-        Route::middleware('web')
-             ->namespace($this->namespace)
-             ->group(base_path('routes/merchant.php'));
+          Route::middleware('web')
+               ->namespace($this->namespace)
+               ->group(base_path('routes/ClientService.php'));
 
 
-    }
+          Route::middleware('web')
+               ->namespace($this->namespace)
+               ->group(base_path('routes/merchant.php'));
+     }
 
 
 
-    /**
-     * Define the "api" routes for the application.
-     *
-     * These routes are typically stateless.
-     *
-     * @return void
-     */
-    protected function mapApiRoutes()
-    {
-        Route::prefix('api')
-             ->middleware('api')
-             ->namespace($this->namespace)
-             ->group(base_path('routes/api.php'));
-    }
+     /**
+      * Define the "api" routes for the application.
+      *
+      * These routes are typically stateless.
+      *
+      * @return void
+      */
+     protected function mapApiRoutes()
+     {
+          Route::prefix('api')
+               ->middleware('api')
+               ->namespace($this->namespace)
+               ->group(base_path('routes/api.php'));
+
+
+          Route::prefix('api')
+               ->middleware('api')
+               ->namespace($this->boost_namespace)
+               ->group(base_path('routes/v1/boost_reseller.php'));
+     }
 }
