@@ -16,4 +16,3 @@ mix.config.webpackConfig.output = {
     publicPath: '/',
 };
 mix.js('resources/js/app.js', 'public/js');
-mix.js("resources/client_js/app.js", "public/js/client.js");
