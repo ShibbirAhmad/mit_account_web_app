@@ -17,11 +17,22 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('auth')->group(function () {
     
     Route::post('login', 'AuthController@login');
+    Route::post('register', 'AuthController@register');
+
+
+    Route::post('reset/code', 'AuthController@resetCode');
+
+    Route::post('verify/code', 'AuthController@codeVerify');
     
 
 });
 
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware('auth:api-reseller')->prefix('auth')->group(function (){
+    Route::post('/logout', 'AuthController@logout');
+    Route::get('/user', function (Request $request) {
+        return response()->json($request->user('api-reseller'));
+    });
 });
+
+
