@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="">
         <!-- <v-img class="mx-auto my-6" max-width="228"
             src="https://cdn.vuetifyjs.com/docs/images/logos/vuetify-logo-v3-slim-text-light.svg"></v-img>
 
@@ -33,28 +33,51 @@
         </v-card> -->
 
 
-        <form class="auth-form" @submit.prevent="handleSubmit">
-            <h1>
-                <span>ToeDoe</span>
-                <strong>List</strong>
-            </h1>
-            <h2 class="h3 mb-4 fw-normal">Please sign in</h2>
-            <div class="form-floating mb-2">
-                <input type="email" class="form-control" :class="{ 'is-invalid': errors.email && errors.email[0] }" id="email" v-model="form.email" placeholder="name@example.com" />
-                <label for="email">Email</label>
-                <div class="invalid-feedback" v-if="errors.email && errors.email[0]">
-                    {{ errors.email && errors.email[0] }}
+        <div class="login_form_area" style="background-image: url('https://img.freepik.com/premium-photo/abstract-background-design-images-wallpaper-ai-generated_643360-78986.jpg');">
+
+            <div class="container">
+                <div class="login_form">
+                    <div class="login_form_title">
+                        <h1>ToeDoe List</h1>
+                        <h2 class="h3 mb-4 fw-normal">Please sign in</h2>
+                    </div>
+                    <div class="logo_icon">
+                        <img src="https://i.ibb.co.com/j5M6qzp/Screenshot-3.png" alt="Logo icon">
+                    </div>
+                    <form class="auth-form" @submit.prevent="handleSubmit">
+
+
+                        <div class="form-floating mb-3 mt-5">
+                            <input type="email" class="form-control"
+                                :class="{ 'is-invalid': errors.email && errors.email[0] }" id="email"
+                                v-model="form.email" placeholder="name@example.com" />
+                            <label for="email">Email</label>
+                            <div class="invalid-feedback" v-if="errors.email && errors.email[0]">
+                                {{ errors.email && errors.email[0] }}
+                            </div>
+                        </div>
+                        <div class="form-floating mb-4">
+                            <input type="password" class="form-control"
+                                :class="{ 'is-invalid': errors.password && errors.password[0] }" id="password"
+                                v-model="form.password" placeholder="Password" />
+                            <label for="password">Password</label>
+                            <div class="invalid-feedback" v-if="errors.password && errors.password[0]">
+                                {{ errors.password && errors.password[0] }}
+                            </div>
+                        </div>
+                        <div class="login_from_btn">
+                            <button class="submit_btn" type="submit">Sign in</button>
+                        </div>
+
+
+                        <!-- <div class="">
+                            <p>or</p>
+                            <h5>sign up</h5>
+                        </div> -->
+                    </form>
                 </div>
             </div>
-            <div class="form-floating mb-3">
-                <input type="password" class="form-control" :class="{ 'is-invalid': errors.password && errors.password[0] }" id="password" v-model="form.password" placeholder="Password" />
-                <label for="password">Password</label>
-                <div class="invalid-feedback" v-if="errors.password && errors.password[0]">
-                    {{ errors.password && errors.password[0] }}
-                </div>
-            </div>
-            <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
-        </form>
+        </div>
 
 
 
@@ -74,7 +97,7 @@ const { handleLogin } = store
 
 const form = reactive({
     email: '',
-    password: '' 
+    password: ''
 })
 
 const handleSubmit = async () => {
